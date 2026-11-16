@@ -15,15 +15,17 @@ en ES y EN, y la 404) están maquetadas, con temas claro y oscuro, botón ES/EN,
 workflow de Pages. Lighthouse en local da 100 en accesibilidad, buenas prácticas y SEO, y de 95 a 100 en rendimiento.
 La portada transfiere ~52 KB (5,6 KB de JS). `/jugar/` funciona con Optiline compilado a WebAssembly.
 
-**Falta (bloquea `node build.mjs --strict`, y por tanto la publicación):**
-- Rellenar los `{{TODO}}` de la portada y del CV: cargo, fechas y descripción en Xeridia, años del grado y nivel de inglés.
+**Publicada** en https://gonzalocolina.github.io desde el repo público `gonzalocolina/gonzalocolina.github.io`
+(antes `GonzaloColinaWebPersonal`). Cada push a `main` la vuelve a publicar con `node build.mjs --strict --publish`.
+
+**Falta:** rellenar los `{{TODO}}` de la portada y del CV (cargo, fechas y descripción en Xeridia, años del grado y
+nivel de inglés). Hasta entonces la versión publicada omite esos bloques; en local se ven marcados en amarillo.
 
 **Opcional:**
 - Vídeo de RoadSignAI (`src/assets/video/roadsignai.mp4`).
 - PDF del CV (la página `/cv/` ya se imprime bien como PDF).
 - Llevar el build wasm al repo Optiline (`tools/engine/sync-search.patch` + `web_main.cpp`) y publicarlo con cada release.
-
-**Al terminar:** renombrar el repo a `gonzalocolina.github.io`, hacerlo público y en Settings → Pages elegir “GitHub Actions”.
+- Enlazar la web en los CV, en LinkedIn y en el README del perfil de GitHub.
 
 ## Decisiones tomadas (2026-11-16)
 
@@ -34,7 +36,7 @@ La portada transfiere ~52 KB (5,6 KB de JS). `/jugar/` funciona con Optiline com
 | Navegador para pruebas | El Chromium del sistema (`/usr/bin/chromium`); ningún proyecto descarga el suyo |
 | Idiomas | Español e inglés desde el lanzamiento, con un botón ES/EN en la cabecera |
 | AQUILAE | Desarrollo: Gonzalo. Diseño didáctico, preguntas y validación en el aula: Juan Pérez González (PID PhilHum-Games+). Se cita igual que en el README |
-| Visibilidad | El repo se hace público al terminar la web |
+| Visibilidad | Repo público desde el lanzamiento (16/11/2026) |
 
 ---
 
