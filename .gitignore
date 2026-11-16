@@ -1,0 +1,9 @@
+.DS_Store
+Thumbs.db
+*.swp
+*~
+.vscode/
+.idea/
+# Material en bruto (grabaciones sin comprimir, capturas originales)
+raw/
+_site/
