@@ -1,0 +1,99 @@
+---
+{
+  "id": "cv",
+  "title": "CV",
+  "description": "Currículum de Gonzalo Colina: ingeniero informático (UVa), máster en IA (UNIR), proyectos de IA y backend con resultados medidos."
+}
+---
+<div class="wrap cv">
+  <div class="cv-actions actions">
+    <button class="btn btn--primary" type="button" data-print>Imprimir o guardar como PDF</button>
+    <a class="btn btn--ghost" href="@home">Volver a la web</a>
+  </div>
+  <header>
+    <div>
+      <h1>Gonzalo Colina Báscones</h1>
+      <p>Ingeniero informático · IA y backend · Valladolid / Palencia</p>
+    </div>
+    <ul class="cv__contact">
+      <li><a href="mailto:gonzalocolina05@gmail.com">gonzalocolina05@gmail.com</a></li>
+      <li><a href="https://gonzalocolina.github.io">gonzalocolina.github.io</a></li>
+      <li><a href="https://github.com/gonzalocolina">github.com/gonzalocolina</a></li>
+      <li><a href="https://www.linkedin.com/in/gonzalo-colina-b%C3%A1scones-965361330/">LinkedIn</a></li>
+    </ul>
+  </header>
+
+  <section aria-labelledby="cv-perfil">
+    <h2 id="cv-perfil">Perfil</h2>
+    <p>Ingeniero informático por la Universidad de Valladolid y estudiante del Máster en Inteligencia Artificial de UNIR. Me gusta terminar lo que empiezo y medirlo: un motor de ajedrez con red neuronal de ~3100 Elo, un detector de señales de tráfico y una plataforma en tiempo real probada con carga. Busco prácticas o un primer empleo en IA o backend.</p>
+  </section>
+
+<!--todo-block-->  <section aria-labelledby="cv-exp">
+    <h2 id="cv-exp">Experiencia</h2>
+    <div class="cv-item">
+      <div class="cv-item__head"><h3>{{TODO: cargo}} · Xeridia</h3><span class="cv-item__when">{{TODO: fechas}}</span></div>
+      <p>{{TODO: qué hiciste, con qué tecnologías y con algún resultado}}</p>
+    </div>
+  </section><!--/todo-block-->
+
+  <section aria-labelledby="cv-proy">
+    <h2 id="cv-proy">Proyectos</h2>
+    <div class="cv-item">
+      <div class="cv-item__head"><h3>Optiline · motor de ajedrez con NNUE</h3><span class="cv-item__when">C++20 · Python · CUDA</span></div>
+      <ul>
+        <li>~3100 ± 35 Elo en la escala de Stockfish 18 a 100 ms; +125 ± 43 contra Stockfish limitado a 2900 (200 partidas).</li>
+        <li>Red int16 con kernels AVX2 y SIMD128 propios; proceso de entrenamiento que solo promociona redes que ganan un SPRT de partidas completas; más de 80 experimentos con manifiesto y hashes.</li>
+      </ul>
+    </div>
+    <div class="cv-item">
+      <div class="cv-item__head"><h3>RoadSignAI · detector de señales de tráfico</h3><span class="cv-item__when">Python · PyTorch · YOLO</span></div>
+      <ul>
+        <li>36 clases con códigos DGT 2025; comparación de cinco arquitecturas en el test oficial de GTSDB.</li>
+        <li>YOLO11s: mAP50 0,626 a 73 FPS en una GTX 1650 de portátil; dos etapas (detector + MobileNetV3): recall 0,951.</li>
+      </ul>
+    </div>
+    <div class="cv-item">
+      <div class="cv-item__head"><h3>TFG · eventos de Marvel Champions en tiempo real (9,7/10)</h3><span class="cv-item__when">Java 17 · Spring Boot · Vue 3</span></div>
+      <ul>
+        <li>REST + WebSocket (STOMP), JWT, Docker. Escritorio para organizar y móvil para cada mesa.</li>
+        <li>Con 100 clientes a la vez: 0 errores y propagación del estado a todos en 12 ms (p95).</li>
+      </ul>
+    </div>
+    <div class="cv-item">
+      <div class="cv-item__head"><h3>Aquilae · juego educativo del Imperio Romano</h3><span class="cv-item__when">JavaScript · Leaflet · Turf.js</span></div>
+      <p>Probado en 3 centros de Secundaria y Bachillerato, dentro del PID PhilHum-Games+ (UVa). Desarrollo completo.</p>
+    </div>
+    <div class="cv-item">
+      <div class="cv-item__head"><h3>Pasos de María · app Android</h3><span class="cv-item__when">Kotlin · Jetpack Compose · Firebase</span></div>
+      <p>3.er premio OnAppExperience; en Google Play y en 4 idiomas. Autor de unos dos tercios de los commits del equipo.</p>
+    </div>
+  </section>
+
+  <section aria-labelledby="cv-form">
+    <h2 id="cv-form">Formación</h2>
+    <div class="cv-item">
+      <div class="cv-item__head"><h3>Máster Universitario en Inteligencia Artificial · UNIR</h3><span class="cv-item__when">En curso</span></div>
+    </div>
+    <div class="cv-item">
+      <div class="cv-item__head"><h3>Grado en Ingeniería Informática · Universidad de Valladolid</h3><span class="cv-item__when">{{TODO: años}}</span></div>
+      <p>Mención en Ingeniería de Software. TFG: 9,7/10.</p>
+    </div>
+  </section>
+
+  <section aria-labelledby="cv-otros">
+    <h2 id="cv-otros">Certificaciones, premios e idiomas</h2>
+    <div class="cv-item"><p><strong>Microsoft Azure Fundamentals (AZ-900)</strong> · <strong>3.er premio OnAppExperience</strong> con Pasos de María</p></div>
+    <div class="cv-item"><p>Español nativo<!--todo-block--> · Inglés {{TODO: nivel}}<!--/todo-block--></p></div>
+  </section>
+
+  <section aria-labelledby="cv-skills">
+    <h2 id="cv-skills">Tecnologías</h2>
+    <div class="cv-item">
+      <p><strong>Lenguajes:</strong> Java, Python, C++, JavaScript, Kotlin, SQL</p>
+      <p><strong>Backend:</strong> Spring Boot, REST, WebSocket/STOMP, JWT, Docker, Nginx</p>
+      <p><strong>IA:</strong> PyTorch, Ultralytics YOLO, NumPy, ONNX</p>
+      <p><strong>Frontend y móvil:</strong> Vue 3, Jetpack Compose, Leaflet, HTML/CSS</p>
+      <p><strong>Herramientas:</strong> Git, GitHub Actions, CMake, Emscripten, Linux, Azure</p>
+    </div>
+  </section>
+</div>

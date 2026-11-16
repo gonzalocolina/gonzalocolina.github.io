@@ -1,0 +1,93 @@
+---
+{
+  "id": "pasos",
+  "title": "Pasos de María: app Android sobre María de Molina",
+  "description": "Caso de estudio de Pasos de María: app Android en Kotlin y Jetpack Compose con mapa, fotos 360°, cuestionario multijugador en tiempo real y modo infantil. 3.er premio OnAppExperience y publicada en Google Play.",
+  "bodyClass": "case"
+}
+---
+<article>
+  <header class="wrap case-head">
+    <a class="crumb" href="@home#proyectos">← Proyectos</a>
+    <span class="eyebrow">App Android · Kotlin · Jetpack Compose · Firebase</span>
+    <h1>Pasos de María</h1>
+    <p class="lead">Una app educativa sobre María de Molina y los lugares de Valladolid relacionados con ella, para niños y adultos. Ganó el <strong>3.er premio del concurso OnAppExperience</strong> y está publicada en Google Play en español, inglés, francés y alemán.</p>
+    <dl class="facts">
+      <div><dt>Mi papel</dt><dd>Proyecto en equipo: autor de unos dos tercios de los commits</dd></div>
+      <div><dt>Tecnologías</dt><dd>Kotlin, Jetpack Compose (Material 3), MVVM, Hilt, Firebase (Auth, Firestore, Crashlytics), OpenStreetMap</dd></div>
+      <div><dt>Contexto</dt><dd>Asignatura Sistemas Móviles, Grado en Ingeniería Informática (UVa)</dd></div>
+      <div><dt>Publicación</dt><dd>Google Play · 4 idiomas</dd></div>
+    </dl>
+    <div class="actions">
+      <a class="btn btn--primary" href="https://play.google.com/store/apps/details?id=com.edunova.mariamolina">Google Play</a>
+      <a class="btn btn--ghost" href="https://github.com/gonzalocolina/app-maria-molina">Código</a>
+    </div>
+  </header>
+
+  <div class="wrap case-media">
+    <div class="gallery gallery--phones">
+      {{img pasos-inicio | Pantalla de inicio con la biografía de María de Molina | eager | class=shot}}
+      {{img pasos-mapa | Mapa interactivo de Valladolid con los puntos de interés | eager | class=shot}}
+      {{img pasos-quiz | Cuestionario con temporizador | eager | class=shot}}
+    </div>
+  </div>
+
+  <div class="wrap case-body">
+    <nav class="toc" aria-label="En esta página">
+      <p>En esta página</p>
+      <ol>
+        <li><a href="#problema">Problema</a></li>
+        <li><a href="#funciones">Funciones</a></li>
+        <li><a href="#enfoque">Arquitectura</a></li>
+        <li><a href="#pantallas">Más pantallas</a></li>
+      </ol>
+    </nav>
+    <div class="prose">
+      <section id="problema">
+        <h2>Problema</h2>
+        <p>Acercar la historia de María de Molina, reina de Castilla, y los lugares de Valladolid ligados a ella a públicos muy distintos: adultos, niños y grupos de clase con su profesor.</p>
+      </section>
+
+      <section id="funciones">
+        <h2>Funciones</h2>
+        <ul>
+          <li><strong>Mapa interactivo</strong> con los puntos de interés y navegación GPS hasta cada lugar.</li>
+          <li><strong>Fotos panorámicas en 360°</strong> de los monumentos.</li>
+          <li><strong>Cuestionario</strong> en solitario o <strong>multijugador en tiempo real</strong> entre varios dispositivos, con un <strong>modo profesor</strong> para crear partidas en clase.</li>
+          <li><strong>Modo infantil</strong> con la historia narrada por la propia María de Molina.</li>
+          <li>Tema claro y oscuro, soporte para tabletas y distintas orientaciones, y traducción completa a 4 idiomas.</li>
+        </ul>
+      </section>
+
+      <section id="enfoque">
+        <h2>Arquitectura</h2>
+        <ol class="flow" aria-label="Arquitectura de la app">
+          <li><span class="step"><b>Interfaz</b><small>Jetpack Compose · Material 3</small></span></li>
+          <li><span class="step"><b>ViewModels</b><small>MVVM · Hilt</small></span></li>
+          <li><span class="step"><b>Repositorios</b><small>datos locales y remotos</small></span></li>
+          <li><span class="step step--accent"><b>Firebase</b><small>Auth · Firestore en tiempo real</small></span></li>
+        </ol>
+        <ul>
+          <li><strong>Multijugador con listeners de Firestore.</strong> Las partidas se sincronizan en tiempo real entre dispositivos sin un servidor propio.</li>
+          <li><strong>MVVM con Hilt:</strong> la interfaz habla con ViewModels, y estos con repositorios inyectados.</li>
+          <li><strong>Crashlytics</strong> para registrar los fallos en los dispositivos de los usuarios.</li>
+          <li><strong>OpenStreetMap</strong> para los mapas.</li>
+        </ul>
+      </section>
+
+      <section id="pantallas">
+        <h2>Más pantallas</h2>
+        <div class="gallery gallery--phones">
+          {{img pasos-puntos-interes | Lista de puntos de interés con el progreso de lugares visitados | class=shot}}
+          {{img pasos-detalle-lugar | Detalle de un lugar histórico con la opción de marcarlo como visitado | class=shot}}
+          {{img pasos-modo-infantil | Modo infantil: la historia contada por María de Molina | class=shot}}
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <nav class="wrap next-case" aria-label="Más proyectos">
+    <a href="@aquilae"><span>Anterior</span><strong>← Aquilae</strong></a>
+    <a href="@optiline"><span>Volver al principio</span><strong>Optiline →</strong></a>
+  </nav>
+</article>

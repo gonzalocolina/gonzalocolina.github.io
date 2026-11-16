@@ -1,0 +1,99 @@
+---
+{
+  "id": "cv",
+  "title": "CV",
+  "description": "Gonzalo Colina’s CV: computer engineer (University of Valladolid), MSc in AI student (UNIR), AI and backend projects with measured results."
+}
+---
+<div class="wrap cv">
+  <div class="cv-actions actions">
+    <button class="btn btn--primary" type="button" data-print>Print or save as PDF</button>
+    <a class="btn btn--ghost" href="@home">Back to the site</a>
+  </div>
+  <header>
+    <div>
+      <h1>Gonzalo Colina Báscones</h1>
+      <p>Software engineer · AI and backend · Valladolid / Palencia, Spain</p>
+    </div>
+    <ul class="cv__contact">
+      <li><a href="mailto:gonzalocolina05@gmail.com">gonzalocolina05@gmail.com</a></li>
+      <li><a href="https://gonzalocolina.github.io">gonzalocolina.github.io</a></li>
+      <li><a href="https://github.com/gonzalocolina">github.com/gonzalocolina</a></li>
+      <li><a href="https://www.linkedin.com/in/gonzalo-colina-b%C3%A1scones-965361330/">LinkedIn</a></li>
+    </ul>
+  </header>
+
+  <section aria-labelledby="cv-perfil">
+    <h2 id="cv-perfil">Profile</h2>
+    <p>Computer engineering graduate from the University of Valladolid, studying for an MSc in Artificial Intelligence at UNIR. I like to finish what I start and measure it: a ~3100 Elo neural-network chess engine, a traffic-sign detector and a load-tested real-time platform. Looking for an internship or a first job in AI or backend.</p>
+  </section>
+
+<!--todo-block-->  <section aria-labelledby="cv-exp">
+    <h2 id="cv-exp">Experience</h2>
+    <div class="cv-item">
+      <div class="cv-item__head"><h3>{{TODO: role}} · Xeridia</h3><span class="cv-item__when">{{TODO: dates}}</span></div>
+      <p>{{TODO: what you did, with which technologies and a result}}</p>
+    </div>
+  </section><!--/todo-block-->
+
+  <section aria-labelledby="cv-proy">
+    <h2 id="cv-proy">Projects</h2>
+    <div class="cv-item">
+      <div class="cv-item__head"><h3>Optiline · NNUE chess engine</h3><span class="cv-item__when">C++20 · Python · CUDA</span></div>
+      <ul>
+        <li>~3100 ± 35 Elo on Stockfish 18’s scale at 100 ms; +125 ± 43 against Stockfish limited to 2900 (200 games).</li>
+        <li>int16 network with hand-written AVX2 and SIMD128 kernels; a training pipeline that only promotes networks that win a full-game SPRT; 80+ experiments with manifests and hashes.</li>
+      </ul>
+    </div>
+    <div class="cv-item">
+      <div class="cv-item__head"><h3>RoadSignAI · traffic-sign detector</h3><span class="cv-item__when">Python · PyTorch · YOLO</span></div>
+      <ul>
+        <li>36 classes with Spain’s 2025 DGT codes; five architectures compared on the official GTSDB test set.</li>
+        <li>YOLO11s: mAP50 0.626 at 73 FPS on a laptop GTX 1650; two-stage (detector + MobileNetV3): recall 0.951.</li>
+      </ul>
+    </div>
+    <div class="cv-item">
+      <div class="cv-item__head"><h3>Bachelor’s thesis · real-time Marvel Champions events (9.7/10)</h3><span class="cv-item__when">Java 17 · Spring Boot · Vue 3</span></div>
+      <ul>
+        <li>REST + WebSocket (STOMP), JWT, Docker. Desktop app for organisers and mobile app for each table.</li>
+        <li>With 100 concurrent clients: 0 errors and state propagated to every client in 12 ms (p95).</li>
+      </ul>
+    </div>
+    <div class="cv-item">
+      <div class="cv-item__head"><h3>Aquilae · Roman Empire educational game</h3><span class="cv-item__when">JavaScript · Leaflet · Turf.js</span></div>
+      <p>Tested in 3 secondary schools within the PhilHum-Games+ teaching research project (University of Valladolid). All development.</p>
+    </div>
+    <div class="cv-item">
+      <div class="cv-item__head"><h3>Pasos de María · Android app</h3><span class="cv-item__when">Kotlin · Jetpack Compose · Firebase</span></div>
+      <p>3rd prize at OnAppExperience; on Google Play in 4 languages. Author of about two thirds of the team’s commits.</p>
+    </div>
+  </section>
+
+  <section aria-labelledby="cv-form">
+    <h2 id="cv-form">Education</h2>
+    <div class="cv-item">
+      <div class="cv-item__head"><h3>MSc in Artificial Intelligence (Máster Universitario) · UNIR</h3><span class="cv-item__when">In progress</span></div>
+    </div>
+    <div class="cv-item">
+      <div class="cv-item__head"><h3>BSc in Computer Engineering · University of Valladolid</h3><span class="cv-item__when">{{TODO: years}}</span></div>
+      <p>Software Engineering track. Thesis: 9.7/10.</p>
+    </div>
+  </section>
+
+  <section aria-labelledby="cv-otros">
+    <h2 id="cv-otros">Certifications, awards and languages</h2>
+    <div class="cv-item"><p><strong>Microsoft Azure Fundamentals (AZ-900)</strong> · <strong>3rd prize, OnAppExperience</strong> with Pasos de María</p></div>
+    <div class="cv-item"><p>Spanish (native)<!--todo-block--> · English {{TODO: level}}<!--/todo-block--></p></div>
+  </section>
+
+  <section aria-labelledby="cv-skills">
+    <h2 id="cv-skills">Skills</h2>
+    <div class="cv-item">
+      <p><strong>Languages:</strong> Java, Python, C++, JavaScript, Kotlin, SQL</p>
+      <p><strong>Backend:</strong> Spring Boot, REST, WebSocket/STOMP, JWT, Docker, Nginx</p>
+      <p><strong>AI:</strong> PyTorch, Ultralytics YOLO, NumPy, ONNX</p>
+      <p><strong>Frontend and mobile:</strong> Vue 3, Jetpack Compose, Leaflet, HTML/CSS</p>
+      <p><strong>Tools:</strong> Git, GitHub Actions, CMake, Emscripten, Linux, Azure</p>
+    </div>
+  </section>
+</div>

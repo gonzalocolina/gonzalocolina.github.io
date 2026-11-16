@@ -1,0 +1,99 @@
+---
+{
+  "id": "aquilae",
+  "title": "Aquilae: a Roman Empire game for the classroom",
+  "description": "Case study of Aquilae: a browser-based turn-based strategy game for reviewing Roman history and Latin, tested in 3 secondary schools. Framework-free JavaScript, Leaflet and Turf.js.",
+  "bodyClass": "case"
+}
+---
+<article>
+  <header class="wrap case-head">
+    <a class="crumb" href="@home#projects">← Projects</a>
+    <span class="eyebrow">Educational web game · JavaScript · Leaflet · Turf.js</span>
+    <h1>Aquilae</h1>
+    <p class="lead">A browser-based, turn-based strategy game for reviewing Roman history and Latin. The class splits into teams that share out the provinces of the Empire on a real map; to conquer an enemy province, a team must answer a question correctly. It has been tested in <strong>3 schools</strong> with secondary and sixth-form students.</p>
+    <dl class="facts">
+      <div><dt>My role</dt><dd>All development: game, question editor and deployment</dd></div>
+      <div><dt>Idea and validation</dt><dd>Teaching design, questions and classroom testing: Juan Pérez González, within the University of Valladolid’s <a href="https://philid.uva.es/pid_philhum_games_plus/"><em>PhilHum-Games+</em></a> teaching research project</dd></div>
+      <div><dt>Tech</dt><dd>Framework-free HTML, CSS and JavaScript, Leaflet, Turf.js, GitHub Actions</dd></div>
+      <div><dt>Context</dt><dd>Master’s thesis for a Master’s in Education</dd></div>
+    </dl>
+    <div class="actions">
+      <a class="btn btn--primary" href="https://gonzalocolina.github.io/Aquilae/">Play online</a>
+      <a class="btn" href="https://gonzalocolina.github.io/Aquilae/editor/">Question editor</a>
+      <a class="btn btn--ghost" href="https://github.com/gonzalocolina/Aquilae">Code</a>
+    </div>
+  </header>
+
+  <div class="wrap case-media">
+    <figure>
+      {{img aquilae-mapa | Map of the Roman Empire split between four teams, with each province’s troops and the turn panel (interface in Spanish) | sizes=(min-width: 72rem) 68rem, 100vw | eager | class=shot}}
+      <figcaption>A four-team game. Dashed lines are sea routes between provinces. The interface is in Spanish.</figcaption>
+    </figure>
+  </div>
+
+  <div class="wrap case-body">
+    <nav class="toc" aria-label="On this page">
+      <p>On this page</p>
+      <ol>
+        <li><a href="#problem">Problem</a></li>
+        <li><a href="#rules">How it is played</a></li>
+        <li><a href="#approach">Technical decisions</a></li>
+        <li><a href="#screens">Screens</a></li>
+        <li><a href="#limits">Limits</a></li>
+      </ol>
+    </nav>
+    <div class="prose">
+      <section id="problem">
+        <h2>Problem</h2>
+        <p>The game had to run on school computers, where you often cannot install anything or create accounts. Teachers also had to be able to prepare their own questions without programming, and the same game had to work for any topic or subject.</p>
+      </section>
+
+      <section id="rules">
+        <h2>How it is played</h2>
+        <ol>
+          <li>Pick 2 to 4 teams and load the questions: your own file or the sample bank.</li>
+          <li>Provinces are dealt at random and each starts with 3 troops.</li>
+          <li>On its turn, a team attacks from a province with at least 2 troops into a neighbouring enemy province, by land or by sea. It can choose on the map, which highlights valid targets, or in the side panel.</li>
+          <li>A question appears. The teacher reveals the answer and marks it right (the province is conquered) or wrong (the attacking province drops to 1 troop).</li>
+          <li>The team that conquers the whole Empire wins, or the team with most troops if the questions run out.</li>
+        </ol>
+      </section>
+
+      <section id="approach">
+        <h2>Technical decisions</h2>
+        <ul>
+          <li><strong>One HTML file per tool, no build step.</strong> It works by opening it in a browser, with no server or database. That fits school computers best.</li>
+          <li><strong>A real map.</strong> Leaflet with the Roman provinces as GeoJSON from <a href="https://github.com/klokantech/roman-empire">klokantech/roman-empire</a>.</li>
+          <li><strong>Computed, not hand-written, adjacency.</strong> Turf.js (<code>booleanIntersects</code>) decides which provinces share a border. Sea routes are drawn as curves and checked so they never cross land.</li>
+          <li><strong>JSON question banks validated on load.</strong> Format, required fields and duplicate IDs are checked. The editor creates, duplicates and validates banks without touching JSON; the sample bank has 249 questions about Rome.</li>
+          <li><strong>Games that span several lessons.</strong> A game is saved to a file and resumed in the next session. The teacher can adjust the troops of any province.</li>
+          <li><strong>Built for projectors, desktops and phones.</strong> On narrow screens the game panel moves to the bottom. It is deployed to GitHub Pages with GitHub Actions.</li>
+        </ul>
+      </section>
+
+      <section id="screens">
+        <h2>Screens</h2>
+        <div class="gallery">
+          {{img aquilae-inicio | Game setup: teams and question bank | sizes=(min-width: 60rem) 20rem, 100vw | class=shot}}
+          {{img aquilae-ataque | Attack chosen in the side panel, with the attacking province and targets highlighted on the map | sizes=(min-width: 60rem) 20rem, 100vw | class=shot}}
+          {{img aquilae-pregunta | A question during an attack | sizes=(min-width: 60rem) 20rem, 100vw | class=shot}}
+          {{img aquilae-editor | Question editor | sizes=(min-width: 60rem) 20rem, 100vw | class=shot}}
+        </div>
+      </section>
+
+      <section id="limits">
+        <h2>Limits</h2>
+        <ul>
+          <li><strong>One device.</strong> Having no server keeps everything simple, but the game is played on a single screen (usually the projector), not on each team’s phone.</li>
+          <li><strong>The teacher referees.</strong> Answers are not marked automatically: questions are open-ended and the teacher decides whether each answer is right or wrong.</li>
+        </ul>
+      </section>
+    </div>
+  </div>
+
+  <nav class="wrap next-case" aria-label="More projects">
+    <a href="@tfg"><span>Previous</span><strong>← Marvel Champions events</strong></a>
+    <a href="@pasos"><span>Next project</span><strong>Pasos de María →</strong></a>
+  </nav>
+</article>

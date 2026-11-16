@@ -1,0 +1,116 @@
+---
+{
+  "id": "roadsignai",
+  "title": "RoadSignAI: detector de señales de tráfico",
+  "description": "Caso de estudio de RoadSignAI: detector de señales con los códigos DGT 2025 que compara cinco arquitecturas YOLO sobre el test oficial de GTSDB en una GTX 1650. mAP50 0,626 a 73 FPS.",
+  "bodyClass": "case"
+}
+---
+<article>
+  <header class="wrap case-head">
+    <a class="crumb" href="@home#proyectos">← Proyectos</a>
+    <span class="eyebrow">Visión por computador · YOLO · PyTorch</span>
+    <h1>RoadSignAI</h1>
+    <p class="lead">Un detector de señales de tráfico que, a partir de vídeo de una cámara de salpicadero, dibuja cada señal con su nombre en español, su código del <strong>catálogo DGT 2025</strong> y su confianza, y la sigue entre fotogramas.</p>
+    <dl class="facts">
+      <div><dt>Mi papel</dt><dd>Autor: datos, entrenamiento, evaluación y vídeo de demostración</dd></div>
+      <div><dt>Tecnologías</dt><dd>Python, PyTorch, Ultralytics (YOLO11, YOLO26), MobileNetV3, ByteTrack, ONNX</dd></div>
+      <div><dt>Hardware</dt><dd>NVIDIA GTX 1650 de portátil, 4 GB</dd></div>
+      <div><dt>Código</dt><dd>Privado por ahora; <a href="mailto:gonzalocolina05@gmail.com?subject=RoadSignAI">disponible bajo petición</a></dd></div>
+    </dl>
+  </header>
+
+  <div class="wrap case-media">
+    {{video roadsignai | Detección y seguimiento de señales en un vídeo del conjunto de test, con el código DGT y la confianza de cada caja.}}
+    <figure class="media-panel chart">
+      <span class="eyebrow">Precisión frente a velocidad · test oficial GTSDB · 36 clases</span>
+      {{> chart-roadsignai-es}}
+      <figcaption>YOLO11s a 640 px es el mejor detector de una sola etapa. Más capacidad gana más que más resolución o que la arquitectura nueva YOLO26n. La tabla con todas las cifras está en <a href="#resultados">Resultados</a>.</figcaption>
+    </figure>
+  </div>
+
+  <div class="wrap case-body">
+    <nav class="toc" aria-label="En esta página">
+      <p>En esta página</p>
+      <ol>
+        <li><a href="#problema">Problema</a></li>
+        <li><a href="#enfoque">Enfoque</a></li>
+        <li><a href="#resultados">Resultados</a></li>
+        <li><a href="#fallos">Lo que no funcionó</a></li>
+        <li><a href="#siguiente">Siguientes pasos</a></li>
+      </ol>
+    </nav>
+    <div class="prose">
+      <section id="problema">
+        <h2>Problema</h2>
+        <p>Detectar señales españolas con sus códigos actuales tiene tres dificultades. No hay un conjunto de datos español completo y accesible. El catálogo cambió en 2025: por ejemplo, la prohibición de adelantar pasó de R-302 a R-305. Y las señales suelen ser objetos pequeños, lo que castiga a los modelos ligeros.</p>
+        <p>Además quería que todo cupiera en una GPU de portátil de 4 GB, con un tamaño de red pensado para un posible despliegue en hardware embebido. No es un sistema de ayuda a la conducción: es un proyecto de percepción, y el README lo dice.</p>
+      </section>
+
+      <section id="enfoque">
+        <h2>Enfoque</h2>
+        <ol class="flow" aria-label="Proceso de RoadSignAI">
+          <li><span class="step"><b>Taxonomía DGT 2025</b><small>36 clases</small></span></li>
+          <li><span class="step"><b>Mapeo de datos</b><small>GTSDB / GTSRB → códigos 2025</small></span></li>
+          <li><span class="step step--accent"><b>Arquitecturas</b><small>una etapa vs dos etapas</small></span></li>
+          <li><span class="step"><b>Resolución</b><small>640 vs 960 px</small></span></li>
+          <li><span class="step"><b>Seguimiento</b><small>ByteTrack + overlay</small></span></li>
+          <li><span class="step"><b>Exportación</b><small>ONNX · FP16</small></span></li>
+        </ol>
+        <ul>
+          <li><strong>Taxonomía propia.</strong> 36 señales frecuentes y compatibles con la Convención de Viena, con su código DGT 2025. No pretende cubrir el catálogo entero.</li>
+          <li><strong>Datos.</strong> GTSDB para detectar y GTSRB para clasificar recortes, mapeados a los códigos españoles. Revisé otras fuentes y las descarté con motivo: el dataset español de 25 clases de Roboflow no se encontró y el repositorio de Ceit-TSR da error 404.</li>
+          <li><strong>Sin fugas entre conjuntos.</strong> GTSDB se divide en bloques contiguos por nombre de archivo (train 0–499, val 500–599, test oficial 600–899), nunca al azar: dos fotogramas del mismo tramo de carretera no pueden acabar uno en train y otro en test.</li>
+          <li><strong>Ajuste fino, no desde cero.</strong> Se parte de detectores YOLO preentrenados.</li>
+          <li><strong>Dos arquitecturas.</strong> Un detector de una etapa con 36 clases, frente a un detector genérico de “señal” seguido de un clasificador MobileNetV3-Small para el recorte.</li>
+        </ul>
+      </section>
+
+      <section id="resultados">
+        <h2>Resultados</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Modelo</th><th class="num">mAP50</th><th class="num">mAP50-95</th><th class="num">AP pequeñas</th><th class="num">FPS</th><th class="num">Tamaño</th></tr></thead>
+            <tbody>
+              <tr><td>YOLO11n · 640</td><td class="num">0,417</td><td class="num">0,337</td><td class="num">0,331</td><td class="num">117</td><td class="num">5,2 MB</td></tr>
+              <tr class="is-best"><td>YOLO11s · 640</td><td class="num">0,626</td><td class="num">0,501</td><td class="num">0,493</td><td class="num">73</td><td class="num">18,3 MB</td></tr>
+              <tr><td>YOLO26n · 640</td><td class="num">0,406</td><td class="num">0,314</td><td class="num">0,274</td><td class="num">110</td><td class="num">5,2 MB</td></tr>
+              <tr><td>YOLO11n · 960</td><td class="num">0,454</td><td class="num">0,368</td><td class="num">0,407</td><td class="num">81</td><td class="num">5,3 MB</td></tr>
+              <tr><td>Dos etapas (detector + MobileNetV3)</td><td class="num" colspan="4">recall de extremo a extremo 0,951 (IoU ≥ 0,5)</td><td class="num">5,2 + 6,1 MB</td></tr>
+            </tbody>
+            <caption>Test oficial de GTSDB: 300 imágenes y 349 cajas. FPS de PyTorch en FP32 en una GTX 1650 de portátil. “AP pequeñas” es el AP COCO (mAP50-95) de las cajas pequeñas.</caption>
+          </table>
+        </div>
+        <ul>
+          <li><strong>La capacidad gana.</strong> Pasar de YOLO11n a YOLO11s sube el mAP50 en +0,21. Subir la resolución a 960 px ayuda menos, aunque sí mejora las cajas pequeñas (0,331 → 0,407).</li>
+          <li><strong>Las señales frecuentes van muy bien.</strong> Con YOLO11s: ceda el paso (R-1) 0,968, stop (R-2) 0,962, prioridad (R-3) 0,949 y R-401 0,939.</li>
+          <li><strong>Localizar es fácil; reconocer el pictograma, no.</strong> Un detector de una sola clase “señal” alcanza 0,974 de mAP50, y el clasificador de recortes acierta el 98,0 % en el test de GTSRB. Por eso la arquitectura de dos etapas llega a 0,951 de recall.</li>
+        </ul>
+      </section>
+
+      <section id="fallos">
+        <h2>Lo que no funcionó</h2>
+        <ul>
+          <li><strong>Las señales raras.</strong> Advertencias poco frecuentes como P-17 (0,067), P-22b (0,030) o R-506 (0,071) se quedan cerca de cero incluso con YOLO11s. Con pocos ejemplos, un modelo más grande no inventa los que faltan.</li>
+          <li><strong>El modelo más nuevo no fue el mejor.</strong> YOLO26n es algo más ligero, pero en este conjunto no supera a YOLO11n (0,406 frente a 0,417).</li>
+          <li><strong>Señales lejanas a 640 px.</strong> Fallan, como se esperaba.</li>
+          <li><strong>Sin medidas en hardware embebido.</strong> El tamaño de red se eligió pensando en el borde, pero no hay pruebas en Jetson, Raspberry Pi ni Hailo, y no lo afirmo.</li>
+        </ul>
+      </section>
+
+      <section id="siguiente">
+        <h2>Siguientes pasos</h2>
+        <ul>
+          <li>Grabar carreteras españolas para tener test propio.</li>
+          <li>Reintentar Ceit-TSR como validación difícil y ampliar el número de clases.</li>
+          <li>Probar INT8 solo si se puede calibrar en esta misma GPU.</li>
+        </ul>
+      </section>
+    </div>
+  </div>
+
+  <nav class="wrap next-case" aria-label="Más proyectos">
+    <a href="@optiline"><span>Anterior</span><strong>← Optiline</strong></a>
+    <a href="@tfg"><span>Siguiente proyecto</span><strong>Eventos de Marvel Champions →</strong></a>
+  </nav>
+</article>

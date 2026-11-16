@@ -1,0 +1,92 @@
+---
+{
+  "id": "play",
+  "title": "Juega contra Optiline",
+  "description": "Juega al ajedrez contra Optiline, un motor con red neuronal de ~3100 Elo, directamente en el navegador. WebAssembly, sin servidor y con su análisis en directo.",
+  "scripts": ["/assets/js/play.js"],
+  "styles": ["/assets/css/play.css"]
+}
+---
+{{> pieces}}
+<div class="wrap play" id="play" data-worker="/assets/js/engine-worker.js?v={{hash /assets/engine/nsce.wasm}}{{hash /assets/js/engine-worker.js}}" data-board-label="Tablero. Usa las flechas para moverte por las casillas y Enter para elegir pieza y destino.">
+  <header class="play__head">
+    <span class="eyebrow">Optiline · WebAssembly · en tu navegador</span>
+    <h1>Juega contra Optiline</h1>
+    <p>El motor funciona entero en tu dispositivo: no se envía nada a ningún servidor. Arrastra una pieza, o púlsala y luego pulsa la casilla de destino. <a href="#como-funciona">Cómo funciona</a></p>
+  </header>
+  <noscript><p class="note">Esta página necesita JavaScript para ejecutar el motor.</p></noscript>
+
+  <div class="play__grid">
+    <div class="board-wrap">
+      <div class="board-row">
+        <div class="evalbar" aria-hidden="true"><div class="evalbar__fill"></div></div>
+        <div class="board-host"></div>
+      </div>
+      <p class="play-status" role="status" aria-live="polite">Cargando el motor…</p>
+      <div class="board-tools">
+        <button class="btn" type="button" data-act="undo">↶ Deshacer</button>
+        <button class="btn" type="button" data-act="flip">Girar tablero</button>
+        <button class="btn" type="button" data-act="copy"><span>Copiar PGN</span></button>
+      </div>
+    </div>
+    <aside class="play__side" aria-label="Controles y análisis">
+      <section class="panel" aria-labelledby="setup-h">
+        <h2 id="setup-h">Nueva partida</h2>
+        <form class="play-setup">
+          <fieldset>
+            <legend>Juegas con</legend>
+            <div class="seg">
+              <label><input type="radio" name="color" value="w" checked><span>Blancas</span></label>
+              <label><input type="radio" name="color" value="b"><span>Negras</span></label>
+              <label><input type="radio" name="color" value="random"><span>Al azar</span></label>
+            </div>
+          </fieldset>
+          <div>
+            <label class="field" for="level">Nivel</label>
+            <select id="level" name="level">
+              <option value="1">1 · Iniciación (60 nodos)</option>
+              <option value="2">2 · Rápido (2000 nodos)</option>
+              <option value="3" selected>3 · Normal (0,5 s por jugada)</option>
+              <option value="4">4 · Máximo (2 s por jugada)</option>
+            </select>
+          </div>
+          <button class="btn btn--primary" type="submit">Empezar partida</button>
+        </form>
+      </section>
+      <section class="panel" aria-labelledby="engine-h">
+        <h2 id="engine-h">Lo que piensa el motor</h2>
+        <p class="eval-score" title="Evaluación desde el punto de vista de las blancas, en peones">0.00</p>
+        <dl class="engine-info">
+          <dt>Profundidad</dt><dd data-info="depth">–</dd>
+          <dt>Nodos/s</dt><dd data-info="nps">–</dd>
+          <dt>Línea</dt><dd data-info="pv">–</dd>
+        </dl>
+      </section>
+      <section class="panel" aria-labelledby="moves-h">
+        <h2 id="moves-h">Jugadas</h2>
+        <ol class="movelist"></ol>
+      </section>
+    </aside>
+  </div>
+
+  <dialog class="promo" aria-labelledby="promo-t">
+    <p id="promo-t">Coronar como…</p>
+    <div class="promo__choices">
+      <button type="button" data-p="q" aria-label="Dama"><svg viewBox="0 0 45 45" aria-hidden="true"><use href="#p-wQ"></use></svg></button>
+      <button type="button" data-p="r" aria-label="Torre"><svg viewBox="0 0 45 45" aria-hidden="true"><use href="#p-wR"></use></svg></button>
+      <button type="button" data-p="b" aria-label="Alfil"><svg viewBox="0 0 45 45" aria-hidden="true"><use href="#p-wB"></use></svg></button>
+      <button type="button" data-p="n" aria-label="Caballo"><svg viewBox="0 0 45 45" aria-hidden="true"><use href="#p-wN"></use></svg></button>
+    </div>
+  </dialog>
+
+  <section class="play-notes prose" id="como-funciona" aria-labelledby="como-h">
+    <h2 id="como-h">Cómo funciona</h2>
+    <ul>
+      <li><strong>Es el motor de verdad, no una versión reducida.</strong> Optiline está compilado a WebAssembly con SIMD128 y usa la misma red neuronal que la release nativa. Corre en un Web Worker con un solo hilo para no bloquear la página.</li>
+      <li><strong>Algo más lento que en nativo.</strong> En el navegador va unas 1,6 veces más lento que con AVX2. Con partidas de 100 ms, esa diferencia cuesta unos 40 Elo, medido con 1600 partidas con la misma desventaja de tiempo.</li>
+      <li><strong>Los ~3100 Elo son del motor nativo</strong> a 100 ms por jugada. Los niveles 1 y 2 limitan los nodos que puede explorar; no están calibrados a un Elo concreto y no les pongo uno.</li>
+      <li><strong>Descarga una vez unos 1,9 MB</strong> (motor y red juntos), que luego quedan en la caché del navegador. La partida en curso se guarda en tu navegador por si cierras la pestaña.</li>
+      <li><strong>Código abierto.</strong> Optiline es GPL-3.0: <a href="https://github.com/gonzalocolina/Optiline">código fuente</a>. Este build parte del commit <code>9cec21b</code> con dos parches pequeños (kernels SIMD128 y búsqueda sin hilos), y el script que lo reproduce está en el repositorio de esta web. Más detalles en el <a href="@optiline#navegador">caso de estudio</a>.</li>
+    </ul>
+  </section>
+</div>

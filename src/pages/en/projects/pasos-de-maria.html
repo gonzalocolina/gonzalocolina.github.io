@@ -1,0 +1,93 @@
+---
+{
+  "id": "pasos",
+  "title": "Pasos de María: an Android app about María de Molina",
+  "description": "Case study of Pasos de María: an Android app in Kotlin and Jetpack Compose with a map, 360° photos, a real-time multiplayer quiz and a children’s mode. 3rd prize at OnAppExperience, published on Google Play.",
+  "bodyClass": "case"
+}
+---
+<article>
+  <header class="wrap case-head">
+    <a class="crumb" href="@home#projects">← Projects</a>
+    <span class="eyebrow">Android app · Kotlin · Jetpack Compose · Firebase</span>
+    <h1>Pasos de María</h1>
+    <p class="lead">An educational app about Queen María de Molina and the places in Valladolid linked to her, for children and adults. It won <strong>3rd prize at the OnAppExperience contest</strong> and is on Google Play in Spanish, English, French and German.</p>
+    <dl class="facts">
+      <div><dt>My role</dt><dd>Team project: author of about two thirds of the commits</dd></div>
+      <div><dt>Tech</dt><dd>Kotlin, Jetpack Compose (Material 3), MVVM, Hilt, Firebase (Auth, Firestore, Crashlytics), OpenStreetMap</dd></div>
+      <div><dt>Context</dt><dd>Mobile Systems course, BSc in Computer Engineering (University of Valladolid)</dd></div>
+      <div><dt>Available on</dt><dd>Google Play · 4 languages</dd></div>
+    </dl>
+    <div class="actions">
+      <a class="btn btn--primary" href="https://play.google.com/store/apps/details?id=com.edunova.mariamolina">Google Play</a>
+      <a class="btn btn--ghost" href="https://github.com/gonzalocolina/app-maria-molina">Code</a>
+    </div>
+  </header>
+
+  <div class="wrap case-media">
+    <div class="gallery gallery--phones">
+      {{img pasos-inicio | Home screen with María de Molina’s biography (in Spanish) | eager | class=shot}}
+      {{img pasos-mapa | Interactive map of Valladolid with the points of interest | eager | class=shot}}
+      {{img pasos-quiz | Timed quiz | eager | class=shot}}
+    </div>
+  </div>
+
+  <div class="wrap case-body">
+    <nav class="toc" aria-label="On this page">
+      <p>On this page</p>
+      <ol>
+        <li><a href="#problem">Problem</a></li>
+        <li><a href="#features">Features</a></li>
+        <li><a href="#architecture">Architecture</a></li>
+        <li><a href="#screens">More screens</a></li>
+      </ol>
+    </nav>
+    <div class="prose">
+      <section id="problem">
+        <h2>Problem</h2>
+        <p>Bring the story of María de Molina, Queen of Castile, and the places in Valladolid linked to her to very different audiences: adults, children and school groups with their teacher.</p>
+      </section>
+
+      <section id="features">
+        <h2>Features</h2>
+        <ul>
+          <li><strong>Interactive map</strong> of the points of interest, with GPS navigation to each place.</li>
+          <li><strong>360° panoramic photos</strong> of the monuments.</li>
+          <li>A <strong>quiz</strong>, solo or <strong>real-time multiplayer</strong> across devices, with a <strong>teacher mode</strong> for running games in class.</li>
+          <li>A <strong>children’s mode</strong> where María de Molina tells her own story.</li>
+          <li>Light and dark themes, tablet and orientation support, and full translation into 4 languages.</li>
+        </ul>
+      </section>
+
+      <section id="architecture">
+        <h2>Architecture</h2>
+        <ol class="flow" aria-label="App architecture">
+          <li><span class="step"><b>UI</b><small>Jetpack Compose · Material 3</small></span></li>
+          <li><span class="step"><b>ViewModels</b><small>MVVM · Hilt</small></span></li>
+          <li><span class="step"><b>Repositories</b><small>local and remote data</small></span></li>
+          <li><span class="step step--accent"><b>Firebase</b><small>Auth · real-time Firestore</small></span></li>
+        </ol>
+        <ul>
+          <li><strong>Multiplayer with Firestore listeners.</strong> Games sync in real time across devices without a custom server.</li>
+          <li><strong>MVVM with Hilt:</strong> the UI talks to ViewModels, which talk to injected repositories.</li>
+          <li><strong>Crashlytics</strong> to record crashes on users’ devices.</li>
+          <li><strong>OpenStreetMap</strong> for maps.</li>
+        </ul>
+      </section>
+
+      <section id="screens">
+        <h2>More screens</h2>
+        <div class="gallery gallery--phones">
+          {{img pasos-puntos-interes | Points of interest with progress on places visited | class=shot}}
+          {{img pasos-detalle-lugar | A historic place, with the option to mark it as visited | class=shot}}
+          {{img pasos-modo-infantil | Children’s mode: the story told by María de Molina | class=shot}}
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <nav class="wrap next-case" aria-label="More projects">
+    <a href="@aquilae"><span>Previous</span><strong>← Aquilae</strong></a>
+    <a href="@optiline"><span>Back to the start</span><strong>Optiline →</strong></a>
+  </nav>
+</article>

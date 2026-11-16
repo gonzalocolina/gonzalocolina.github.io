@@ -1,0 +1,116 @@
+---
+{
+  "id": "roadsignai",
+  "title": "RoadSignAI: a traffic-sign detector",
+  "description": "Case study of RoadSignAI: a traffic-sign detector with Spain’s 2025 DGT codes that compares five YOLO architectures on the official GTSDB test set on a GTX 1650. mAP50 0.626 at 73 FPS.",
+  "bodyClass": "case"
+}
+---
+<article>
+  <header class="wrap case-head">
+    <a class="crumb" href="@home#projects">← Projects</a>
+    <span class="eyebrow">Computer vision · YOLO · PyTorch</span>
+    <h1>RoadSignAI</h1>
+    <p class="lead">A traffic-sign detector that takes dashcam video and draws every sign with its Spanish name, its code from Spain’s <strong>2025 DGT catalogue</strong> and its confidence, tracking it across frames.</p>
+    <dl class="facts">
+      <div><dt>My role</dt><dd>Author: data, training, evaluation and demo video</dd></div>
+      <div><dt>Tech</dt><dd>Python, PyTorch, Ultralytics (YOLO11, YOLO26), MobileNetV3, ByteTrack, ONNX</dd></div>
+      <div><dt>Hardware</dt><dd>NVIDIA GTX 1650 Laptop, 4 GB</dd></div>
+      <div><dt>Code</dt><dd>Private for now; <a href="mailto:gonzalocolina05@gmail.com?subject=RoadSignAI">available on request</a></dd></div>
+    </dl>
+  </header>
+
+  <div class="wrap case-media">
+    {{video roadsignai | Sign detection and tracking on a test-set video, with the DGT code and confidence of each box.}}
+    <figure class="media-panel chart">
+      <span class="eyebrow">Accuracy versus speed · official GTSDB test · 36 classes</span>
+      {{> chart-roadsignai-en}}
+      <figcaption>YOLO11s at 640 px is the best single-stage detector. More capacity beats higher resolution and the newer YOLO26n architecture. The full numbers are in <a href="#results">Results</a>.</figcaption>
+    </figure>
+  </div>
+
+  <div class="wrap case-body">
+    <nav class="toc" aria-label="On this page">
+      <p>On this page</p>
+      <ol>
+        <li><a href="#problem">Problem</a></li>
+        <li><a href="#approach">Approach</a></li>
+        <li><a href="#results">Results</a></li>
+        <li><a href="#failures">What did not work</a></li>
+        <li><a href="#next">Next steps</a></li>
+      </ol>
+    </nav>
+    <div class="prose">
+      <section id="problem">
+        <h2>Problem</h2>
+        <p>Detecting Spanish signs with their current codes has three difficulties. There is no complete, accessible Spanish dataset. The catalogue changed in 2025: “no overtaking”, for example, moved from R-302 to R-305. And signs are usually small objects, which hurts lightweight models.</p>
+        <p>I also wanted everything to fit on a 4 GB laptop GPU, with a network size chosen with a possible embedded deployment in mind. It is not a driver-assistance system: it is a perception project, and the README says so.</p>
+      </section>
+
+      <section id="approach">
+        <h2>Approach</h2>
+        <ol class="flow" aria-label="RoadSignAI pipeline">
+          <li><span class="step"><b>DGT 2025 taxonomy</b><small>36 classes</small></span></li>
+          <li><span class="step"><b>Data mapping</b><small>GTSDB / GTSRB → 2025 codes</small></span></li>
+          <li><span class="step step--accent"><b>Architectures</b><small>single vs two-stage</small></span></li>
+          <li><span class="step"><b>Resolution</b><small>640 vs 960 px</small></span></li>
+          <li><span class="step"><b>Tracking</b><small>ByteTrack + overlay</small></span></li>
+          <li><span class="step"><b>Export</b><small>ONNX · FP16</small></span></li>
+        </ol>
+        <ul>
+          <li><strong>Own taxonomy.</strong> 36 frequent, Vienna-compatible signs with their 2025 DGT code. It does not try to cover the whole catalogue.</li>
+          <li><strong>Data.</strong> GTSDB for detection and GTSRB for crop classification, mapped to Spanish codes. I reviewed other sources and dropped them for a reason: the 25-class Spanish Roboflow dataset could not be found, and the Ceit-TSR repository returns 404.</li>
+          <li><strong>No leakage between splits.</strong> GTSDB is split into contiguous blocks by file name (train 0–499, val 500–599, official test 600–899), never at random: two frames from the same stretch of road cannot end up one in train and one in test.</li>
+          <li><strong>Fine-tuning, not training from scratch.</strong> It starts from pretrained YOLO detectors.</li>
+          <li><strong>Two architectures.</strong> A single-stage 36-class detector, versus a generic “sign” detector followed by a MobileNetV3-Small classifier for the crop.</li>
+        </ul>
+      </section>
+
+      <section id="results">
+        <h2>Results</h2>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Model</th><th class="num">mAP50</th><th class="num">mAP50-95</th><th class="num">AP small</th><th class="num">FPS</th><th class="num">Size</th></tr></thead>
+            <tbody>
+              <tr><td>YOLO11n · 640</td><td class="num">0.417</td><td class="num">0.337</td><td class="num">0.331</td><td class="num">117</td><td class="num">5.2 MB</td></tr>
+              <tr class="is-best"><td>YOLO11s · 640</td><td class="num">0.626</td><td class="num">0.501</td><td class="num">0.493</td><td class="num">73</td><td class="num">18.3 MB</td></tr>
+              <tr><td>YOLO26n · 640</td><td class="num">0.406</td><td class="num">0.314</td><td class="num">0.274</td><td class="num">110</td><td class="num">5.2 MB</td></tr>
+              <tr><td>YOLO11n · 960</td><td class="num">0.454</td><td class="num">0.368</td><td class="num">0.407</td><td class="num">81</td><td class="num">5.3 MB</td></tr>
+              <tr><td>Two-stage (detector + MobileNetV3)</td><td class="num" colspan="4">end-to-end recall 0.951 (IoU ≥ 0.5)</td><td class="num">5.2 + 6.1 MB</td></tr>
+            </tbody>
+            <caption>Official GTSDB test set: 300 images and 349 boxes. PyTorch FP32 FPS on a laptop GTX 1650. “AP small” is the COCO AP (mAP50-95) of small boxes.</caption>
+          </table>
+        </div>
+        <ul>
+          <li><strong>Capacity wins.</strong> Going from YOLO11n to YOLO11s adds +0.21 mAP50. Raising the resolution to 960 px helps less, although it does improve small boxes (0.331 → 0.407).</li>
+          <li><strong>Frequent signs work very well.</strong> With YOLO11s: give way (R-1) 0.968, stop (R-2) 0.962, priority road (R-3) 0.949 and R-401 0.939.</li>
+          <li><strong>Finding a sign is easy; reading the pictogram is not.</strong> A single-class “sign” detector reaches 0.974 mAP50, and the crop classifier scores 98.0% on the GTSRB test set. That is why the two-stage design reaches 0.951 recall.</li>
+        </ul>
+      </section>
+
+      <section id="failures">
+        <h2>What did not work</h2>
+        <ul>
+          <li><strong>Rare signs.</strong> Infrequent warnings such as P-17 (0.067), P-22b (0.030) or R-506 (0.071) stay close to zero even with YOLO11s. With few examples, a bigger model cannot invent the missing ones.</li>
+          <li><strong>The newest model was not the best.</strong> YOLO26n is slightly lighter, but on this data it does not beat YOLO11n (0.406 versus 0.417).</li>
+          <li><strong>Distant signs at 640 px.</strong> They fail, as expected.</li>
+          <li><strong>No embedded measurements.</strong> The network size was chosen with the edge in mind, but there are no tests on Jetson, Raspberry Pi or Hailo, and I do not claim any.</li>
+        </ul>
+      </section>
+
+      <section id="next">
+        <h2>Next steps</h2>
+        <ul>
+          <li>Record Spanish roads to build an in-domain test set.</li>
+          <li>Retry Ceit-TSR as a hard validation set and add more classes.</li>
+          <li>Try INT8 only if it can be calibrated on this same GPU.</li>
+        </ul>
+      </section>
+    </div>
+  </div>
+
+  <nav class="wrap next-case" aria-label="More projects">
+    <a href="@optiline"><span>Previous</span><strong>← Optiline</strong></a>
+    <a href="@tfg"><span>Next project</span><strong>Marvel Champions events →</strong></a>
+  </nav>
+</article>

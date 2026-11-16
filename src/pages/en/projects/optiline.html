@@ -1,0 +1,153 @@
+---
+{
+  "id": "optiline",
+  "title": "Optiline: a neural-network chess engine",
+  "description": "Case study of Optiline: a C++20 UCI chess engine with ~3100 Elo NNUE evaluation and a training pipeline that only promotes networks that win full games.",
+  "bodyClass": "case"
+}
+---
+<article>
+  <header class="wrap case-head">
+    <a class="crumb" href="@home#projects">← Projects</a>
+    <span class="eyebrow">Chess engine · C++20 · Python · NNUE</span>
+    <h1>Optiline</h1>
+    <p class="lead">A UCI chess engine that pairs modern alpha-beta search with a quantised neural network, plus the full pipeline that trains, validates and promotes those networks. It plays at <strong>~3100 Elo</strong> on Stockfish 18’s scale at 100 ms per move.</p>
+    <dl class="facts">
+      <div><dt>My role</dt><dd>Author: engine, training, measurement tooling and CI</dd></div>
+      <div><dt>Tech</dt><dd>C++20, CMake, AVX2, Python, NumPy, bullet (CUDA/ROCm), fastchess</dd></div>
+      <div><dt>Status</dt><dd>v0.12.0 released with Linux and Windows binaries; v0.13 in development</dd></div>
+      <div><dt>Licence</dt><dd>GPL-3.0</dd></div>
+    </dl>
+    <div class="actions">
+      <a class="btn btn--accent" href="@play">Play against Optiline</a>
+      <a class="btn" href="https://github.com/gonzalocolina/Optiline">Code on GitHub</a>
+      <a class="btn btn--ghost" href="https://github.com/gonzalocolina/Optiline/releases/tag/v0.12.0">Release v0.12.0</a>
+    </div>
+  </header>
+
+  <div class="wrap case-media">
+    <figure class="media-panel chart">
+      <span class="eyebrow">Ladder against Stockfish 18 · 200 games per rung · 100 ms/move</span>
+      {{> chart-ladder-en}}
+      <figcaption>Bars: Optiline’s Elo difference against Stockfish 18 limited to each <code>UCI_Elo</code> level, with its confidence interval. Against full-strength Stockfish it loses by −323 ± 64 (1 win, 25 draws and 74 losses in 100 games).</figcaption>
+    </figure>
+  </div>
+
+  <div class="wrap case-body">
+    <nav class="toc" aria-label="On this page">
+      <p>On this page</p>
+      <ol>
+        <li><a href="#problem">Problem</a></li>
+        <li><a href="#approach">Approach</a></li>
+        <li><a href="#results">Results</a></li>
+        <li><a href="#browser">In the browser</a></li>
+        <li><a href="#failures">What did not work</a></li>
+        <li><a href="#next">Next steps</a></li>
+      </ol>
+    </nav>
+    <div class="prose">
+      <section id="problem">
+        <h2>Problem</h2>
+        <p>I wanted a strong engine that runs on ordinary machines, laptops rather than server farms, and above all a reliable way to know whether each change makes it stronger. Intuition is misleading in computer chess: a change that looks like an improvement often loses Elo, and a network with lower validation error can play worse.</p>
+        <p>So the project has two halves of equal weight: the engine, and the system that decides what goes into it.</p>
+      </section>
+
+      <section id="approach">
+        <h2>Approach</h2>
+        <h3>The engine</h3>
+        <ol class="flow" aria-label="Engine architecture">
+          <li><span class="step"><b>UCI</b><small>options, time control</small></span></li>
+          <li><span class="step"><b>PVS search</b><small>iterative deepening</small></span></li>
+          <li><span class="step"><b>Move generation</b><small>bitboards · TT · SEE</small></span></li>
+          <li><span class="step step--accent"><b>NNUE evaluation</b><small>int16 · AVX2</small></span></li>
+        </ol>
+        <ul>
+          <li><strong>Search:</strong> PVS with aspiration windows and the pruning set of modern engines: late move reductions, null move, futility, razoring, ProbCut, SEE pruning and singular extensions. Every technique can be switched on or off over UCI to measure what it contributes.</li>
+          <li><strong>Move ordering:</strong> killers, capture and continuation history, countermoves and a history indexed by threatened squares.</li>
+          <li><strong>Evaluation:</strong> a (768→1024)×2 network with SCReLU activation and 8 material output buckets, quantised to int16. Accumulators update incrementally with hand-written AVX2 kernels.</li>
+        </ul>
+
+        <h3>The training and promotion loop</h3>
+        <ol class="flow flow--loop" aria-label="Training and promotion loop">
+          <li><span class="step"><b>Data</b><small>self-play · public binpacks</small></span></li>
+          <li><span class="step"><b>Training</b><small>bullet (GPU) · NumPy with QAT</small></span></li>
+          <li><span class="step"><b>Quantised export</b><small>int16</small></span></li>
+          <li><span class="step"><b>Validation</b><small>C++ = float reference</small></span></li>
+          <li><span class="step step--accent"><b>SPRT</b><small>full games</small></span></li>
+          <li><span class="step"><b>Promotion gate</b><small>one change · hashed evidence</small></span></li>
+        </ol>
+        <p class="flow-caption">If the network fails the SPRT, it goes back to data. If it passes, it becomes the new baseline and the experiment is archived.</p>
+        <ul>
+          <li><strong>A network is only promoted if it wins games.</strong> Validation error is used to reject broken networks, never to accept good ones. The decision comes from a full-game SPRT run with fastchess against the current baseline.</li>
+          <li><strong>Immutable evidence.</strong> Each experiment lives in <code>experiments/YYYYMMDD_*</code> with a <code>manifest.json</code> (SHA-256 of the engine and the opening book, seed and concurrency) and a <code>report.md</code>. Reference Stockfish binaries are pinned by hash.</li>
+          <li><strong>One change at a time.</strong> <code>promotion_gate.py</code> rejects a promotion that changes more than one UCI option.</li>
+          <li><strong>Testing:</strong> GoogleTest (perft, board, NNUE, search, SEE, TT), Python contract tests and a CI matrix with four configurations: Release, ASan+UBSan, TSan and stats.</li>
+        </ul>
+      </section>
+
+      <section id="results">
+        <h2>Results</h2>
+        <p>The current network was trained on 8 billion positions from Stockfish’s public binpacks. These are its games against Stockfish 18 limited to different levels, at 100 ms per move:</p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Opponent</th><th class="num">W-D-L</th><th class="num">Optiline’s Elo</th></tr></thead>
+            <tbody>
+              <tr><td>Stockfish 18 · 2600</td><td class="num">192-4-4</td><td class="num">+604 ± 156</td></tr>
+              <tr class="is-best"><td>Stockfish 18 · 2900</td><td class="num">109-51-40</td><td class="num">+125 ± 43</td></tr>
+              <tr><td>Stockfish 18 · 3190 (maximum)</td><td class="num">52-73-75</td><td class="num">−40 ± 37</td></tr>
+              <tr><td>Unlimited Stockfish 18 (100 games)</td><td class="num">1-25-74</td><td class="num">−323 ± 64</td></tr>
+            </tbody>
+            <caption>200 games per rung with balanced openings and alternating colours. Source: <a href="https://github.com/gonzalocolina/Optiline/blob/master/experiments/20261114_simple1024_test80_elo/report.md">report of 14 Nov 2026</a>.</caption>
+          </table>
+        </div>
+        <ul>
+          <li>The two nearest rungs put its strength between <strong>3025 and 3150</strong> on that scale: ~3100 ± 35. The previous 768×128 network plays at about 2400 with the same search.</li>
+          <li>Against that previous network, the new one passed the [0, 5] SPRT at 8+0.08 with <strong>293 wins, 1 draw and 0 losses</strong>.</li>
+          <li>That SPRT was won almost entirely by adjudication, so I re-checked its 12 adjudications with Stockfish 18 at depth 20: in every one the winner was at least 8.4 pawns ahead or had a forced mate. None was a false win.</li>
+        </ul>
+        <div class="callout"><p><code>UCI_Elo</code> is calibrated at longer time controls and is not a CCRL rating. Read these numbers as positions on one ladder, not as absolute ratings.</p></div>
+      </section>
+
+      <section id="browser">
+        <h2>In the browser</h2>
+        <p>The <a href="@play">Play</a> page runs Optiline compiled to WebAssembly with Emscripten, inside a Web Worker on a single thread, because GitHub Pages cannot send the headers WebAssembly threads need. The network’s AVX2 kernels have an equivalent SIMD128 version that produces exactly the same search, node for node.</p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Build</th><th class="num">Nodes/s</th><th class="num">vs. AVX2</th></tr></thead>
+            <tbody>
+              <tr><td>Native, AVX2</td><td class="num">1,437,732</td><td class="num">1.00×</td></tr>
+              <tr class="is-best"><td>WebAssembly, SIMD128 (V8)</td><td class="num">917,527</td><td class="num">1.57× slower</td></tr>
+              <tr><td>WebAssembly, scalar (V8)</td><td class="num">98,376</td><td class="num">14.6× slower</td></tr>
+            </tbody>
+            <caption>Same benchmark for every build: 966,156 identical nodes. Measured on Node 24 on 16 Nov 2026.</caption>
+          </table>
+        </div>
+        <p>To find out what that gap costs in strength, I played the native engine against itself with the same time handicap: at 100 ms versus 64 ms, the slower side loses <strong>−40 ± 7 Elo</strong> (1,600 games). Without SIMD the loss grows to −311 ± 51.</p>
+      </section>
+
+      <section id="failures">
+        <h2>What did not work</h2>
+        <ul>
+          <li><strong>Truncated games.</strong> The first ablation runs stopped games after 60 plies (30 moves each), and about 90% ended as adjudicated draws: they could not tell real strength apart. They are now telemetry only, and the gate uses full games.</li>
+          <li><strong>A lying meter.</strong> The old runner cut games at 120 plies and scored unfinished ones as draws. With the current method, the previous network’s edge over the 2200 rung went from +38 to +207.</li>
+          <li><strong>SPRTs without a verdict.</strong> The match script could not parse fastchess’s <code>LLR</code> line, so SPRT JSON files were saved without their decision. I fixed it and added a test for that output.</li>
+          <li><strong>Lower error is not more Elo.</strong> A network can have lower validation error and still play worse. Hence the project rule: loss can reject broken networks, but it never promotes one.</li>
+        </ul>
+      </section>
+
+      <section id="next">
+        <h2>Next steps</h2>
+        <ul>
+          <li>Move the WebAssembly build this site uses into the Optiline repository and publish it with every release.</li>
+          <li>Measure the browser build’s strength directly, not only through a time handicap.</li>
+          <li>Continue v0.13: more data and SPSA tuning of the search.</li>
+        </ul>
+      </section>
+    </div>
+  </div>
+
+  <nav class="wrap next-case" aria-label="More projects">
+    <a href="@home#projects"><span>Back</span><strong>All projects</strong></a>
+    <a href="@roadsignai"><span>Next project</span><strong>RoadSignAI →</strong></a>
+  </nav>
+</article>

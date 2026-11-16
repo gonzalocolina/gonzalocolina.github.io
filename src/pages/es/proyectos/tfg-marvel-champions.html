@@ -1,0 +1,126 @@
+---
+{
+  "id": "tfg",
+  "title": "Eventos de Marvel Champions en tiempo real (TFG)",
+  "description": "Caso de estudio del TFG (9,7/10): plataforma en tiempo real con Spring Boot, WebSockets y Vue 3 para coordinar partidas presenciales con muchas mesas. 0 errores con 100 clientes y 12 ms de p95.",
+  "bodyClass": "case"
+}
+---
+<article>
+  <header class="wrap case-head">
+    <a class="crumb" href="@home#proyectos">← Proyectos</a>
+    <span class="eyebrow">Trabajo Fin de Grado · Java · Spring Boot · Vue 3</span>
+    <h1>Eventos de Marvel Champions en tiempo real</h1>
+    <p class="lead">Una plataforma para organizar partidas presenciales del modo <em>Multijugador épico</em> de Marvel Champions. Cada mesa sigue jugando con cartas físicas, y la web coordina en tiempo real lo que comparten todas: la vida del villano, la amenaza del plan principal, el temporizador y las cartas entre mesas.</p>
+    <dl class="facts">
+      <div><dt>Mi papel</dt><dd>Autor del TFG: análisis, diseño, backend, frontend, pruebas y despliegue</dd></div>
+      <div><dt>Tecnologías</dt><dd>Java 17, Spring Boot, WebSocket (STOMP/SockJS), JWT, H2, Vue 3, Vite, Docker Compose, Nginx</dd></div>
+      <div><dt>Calificación</dt><dd>9,7/10 · Grado en Ingeniería Informática (UVa)</dd></div>
+      <div><dt>Tutor</dt><dd>Mario Corrales Astorgano</dd></div>
+    </dl>
+    <div class="actions">
+      <a class="btn btn--primary" href="https://github.com/gonzalocolina/tfg-gonzalo-colina">Código en GitHub</a>
+      <a class="btn btn--ghost" href="https://github.com/gonzalocolina/tfg-gonzalo-colina/tree/main/load-tests">Pruebas de carga</a>
+    </div>
+  </header>
+
+  <div class="wrap case-media">
+    <figure>
+      {{img tfg-org-partida | Panel de partida del organizador: vida del villano, amenaza del plan principal, temporizador y registro delegado | sizes=(min-width: 72rem) 68rem, 100vw | eager | class=shot}}
+      <figcaption>Panel de partida del organizador, en escritorio.</figcaption>
+    </figure>
+  </div>
+
+  <div class="wrap case-body">
+    <nav class="toc" aria-label="En esta página">
+      <p>En esta página</p>
+      <ol>
+        <li><a href="#problema">Problema</a></li>
+        <li><a href="#enfoque">Enfoque</a></li>
+        <li><a href="#pantallas">Pantallas</a></li>
+        <li><a href="#resultados">Resultados</a></li>
+        <li><a href="#limites">Límites</a></li>
+      </ol>
+    </nav>
+    <div class="prose">
+      <section id="problema">
+        <h2>Problema</h2>
+        <p>En un evento épico de Marvel Champions juegan muchas mesas a la vez contra un mismo villano. Cada mesa hace daño, genera amenaza y activa cartas que afectan a otras mesas, y alguien tiene que llevar la cuenta global sin parar el juego.</p>
+        <p>Hacía falta un estado compartido que se actualice al instante en todas las pantallas, una interfaz de escritorio para quien organiza y otra de móvil para cada mesa, y la posibilidad de corregir errores sin perder el historial.</p>
+      </section>
+
+      <section id="enfoque">
+        <h2>Enfoque</h2>
+        <div class="arch" role="group" aria-label="Arquitectura">
+          <div class="arch__col">
+            <p>Clientes · Vue 3</p>
+            <span class="step"><b>Portal</b><small>organizar o unirse</small></span>
+            <span class="step"><b>Organizador</b><small>escritorio: eventos, nodos, mesas</small></span>
+            <span class="step"><b>Jugador</b><small>móvil: código de evento, progreso</small></span>
+          </div>
+          <div class="arch__col">
+            <p>Backend · Spring Boot</p>
+            <span class="step"><b>API REST</b><small>autenticación JWT, configuración, acciones</small></span>
+            <span class="step step--accent"><b>WebSocket</b><small>STOMP/SockJS: difunde el nuevo estado</small></span>
+            <span class="step"><b>Registro de acciones</b><small>correcciones y estadísticas</small></span>
+          </div>
+          <div class="arch__col">
+            <p>Datos y despliegue</p>
+            <span class="step"><b>H2 en fichero</b><small>eventos, usuarios, acciones</small></span>
+            <span class="step"><b>Docker Compose</b><small>Nginx + backend + volumen</small></span>
+          </div>
+        </div>
+        <ul>
+          <li><strong>REST para escribir, WebSocket para avisar.</strong> Las mesas envían daño, amenaza o cartas por la API. Tras procesar el cambio, el backend publica el nuevo estado por WebSocket y todas las pantallas se actualizan sin recargar.</li>
+          <li><strong>Tres aplicaciones, una dirección.</strong> Portal, organizador y jugador son aplicaciones Vue separadas, cada una adaptada a su dispositivo, publicadas bajo la misma URL y sin duplicar la lógica común.</li>
+          <li><strong>Todo queda registrado.</strong> Cada acción se guarda con la mesa de origen y quien la hizo. El organizador puede corregir un valor sin borrar el historial, y al final se generan las estadísticas a partir de ese registro.</li>
+          <li><strong>Delegación.</strong> El organizador reparte las mesas en nodos y puede delegar la vida del villano, la amenaza o el temporizador en coorganizadores.</li>
+        </ul>
+      </section>
+
+      <section id="pantallas">
+        <h2>Pantallas</h2>
+        <div class="gallery">
+          {{img tfg-landing-page | Portal de entrada para elegir entre organizar una partida o unirse a ella | sizes=(min-width: 60rem) 20rem, 100vw | class=shot}}
+          {{img tfg-org-nodos | Distribución de las mesas en nodos | sizes=(min-width: 60rem) 20rem, 100vw | class=shot}}
+          {{img tfg-org-stats | Resumen y estadísticas al terminar la partida | sizes=(min-width: 60rem) 20rem, 100vw | class=shot}}
+        </div>
+        <div class="gallery gallery--phones">
+          {{img tfg-player-unirseapartida | Unirse a una partida con el código del evento | class=shot}}
+          {{img tfg-player-partida | Estado global de la partida en el móvil | class=shot}}
+          {{img tfg-player-vercartasinternodo | Cartas entre nodos activas | class=shot}}
+        </div>
+      </section>
+
+      <section id="resultados">
+        <h2>Resultados</h2>
+        <p>Medido con un arnés de carga propio: clientes sintéticos que inician sesión por HTTP, se suscriben por WebSocket/STOMP y escriben durante 30 s de carga estable, con 100 clientes conectados a la vez.</p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Escenario</th><th class="num">Operaciones</th><th class="num">Entregas en tiempo real</th><th class="num">Errores</th><th class="num">HTTP p95</th><th class="num">Propagación p95</th></tr></thead>
+            <tbody>
+              <tr><td>100 clientes, 20 escritores/s</td><td class="num">600</td><td class="num">60 100</td><td class="num">0</td><td class="num">14 ms</td><td class="num">8 ms</td></tr>
+              <tr class="is-best"><td>100 clientes, 100 escritores/s</td><td class="num">3000</td><td class="num">300 300</td><td class="num">0</td><td class="num">29 ms</td><td class="num">12 ms</td></tr>
+            </tbody>
+            <caption>“Propagación” es el tiempo hasta que el cambio llega a todos los clientes. Fuente: <a href="https://github.com/gonzalocolina/tfg-gonzalo-colina/tree/main/load-tests">load-tests/</a>.</caption>
+          </table>
+        </div>
+        <p>El requisito no funcional era un p95 de HTTP por debajo de 500 ms: se cumple con mucho margen. El trabajo obtuvo un <strong>9,7/10</strong>.</p>
+      </section>
+
+      <section id="limites">
+        <h2>Límites</h2>
+        <ul>
+          <li><strong>Pruebas en local.</strong> Se hicieron sin latencia de red; en un despliegue real los tiempos serán algo mayores.</li>
+          <li><strong>Pensado para un evento.</strong> H2 en un fichero simplifica mucho el despliegue de un evento con Docker. Para muchos eventos a la vez lo cambiaría por PostgreSQL.</li>
+          <li><strong>Proyecto no oficial.</strong> Marvel Champions pertenece a Fantasy Flight Games; esto es una herramienta académica sin relación con ellos.</li>
+        </ul>
+      </section>
+    </div>
+  </div>
+
+  <nav class="wrap next-case" aria-label="Más proyectos">
+    <a href="@roadsignai"><span>Anterior</span><strong>← RoadSignAI</strong></a>
+    <a href="@aquilae"><span>Siguiente proyecto</span><strong>Aquilae →</strong></a>
+  </nav>
+</article>

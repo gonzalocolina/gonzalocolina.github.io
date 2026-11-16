@@ -1,0 +1,99 @@
+---
+{
+  "id": "aquilae",
+  "title": "Aquilae: juego del Imperio Romano para el aula",
+  "description": "Caso de estudio de Aquilae: juego de estrategia por turnos en el navegador para repasar Historia de Roma y Latín, probado en 3 centros de Secundaria y Bachillerato. JavaScript sin framework, Leaflet y Turf.js.",
+  "bodyClass": "case"
+}
+---
+<article>
+  <header class="wrap case-head">
+    <a class="crumb" href="@home#proyectos">← Proyectos</a>
+    <span class="eyebrow">Juego web educativo · JavaScript · Leaflet · Turf.js</span>
+    <h1>Aquilae</h1>
+    <p class="lead">Un juego de estrategia por turnos en el navegador para repasar Historia de Roma y Latín. La clase se divide en equipos que se reparten las provincias del Imperio sobre un mapa real; para conquistar una provincia enemiga, el equipo tiene que acertar una pregunta. Se ha probado en <strong>3 centros</strong> con alumnado de Secundaria y Bachillerato.</p>
+    <dl class="facts">
+      <div><dt>Mi papel</dt><dd>Desarrollo completo: juego, editor de preguntas y despliegue</dd></div>
+      <div><dt>Idea y validación</dt><dd>Diseño didáctico, preguntas y pruebas en el aula: Juan Pérez González, dentro del Proyecto de Investigación Docente <a href="https://philid.uva.es/pid_philhum_games_plus/"><em>PhilHum-Games+</em></a> (UVa)</dd></div>
+      <div><dt>Tecnologías</dt><dd>HTML, CSS y JavaScript sin framework, Leaflet, Turf.js, GitHub Actions</dd></div>
+      <div><dt>Contexto</dt><dd>Trabajo Fin de Máster del Máster en Educación</dd></div>
+    </dl>
+    <div class="actions">
+      <a class="btn btn--primary" href="https://gonzalocolina.github.io/Aquilae/">Jugar online</a>
+      <a class="btn" href="https://gonzalocolina.github.io/Aquilae/editor/">Creador de preguntas</a>
+      <a class="btn btn--ghost" href="https://github.com/gonzalocolina/Aquilae">Código</a>
+    </div>
+  </header>
+
+  <div class="wrap case-media">
+    <figure>
+      {{img aquilae-mapa | Mapa del Imperio Romano repartido entre cuatro equipos, con las tropas de cada provincia y el panel del turno | sizes=(min-width: 72rem) 68rem, 100vw | eager | class=shot}}
+      <figcaption>Partida a cuatro equipos. Las líneas discontinuas son rutas marítimas entre provincias.</figcaption>
+    </figure>
+  </div>
+
+  <div class="wrap case-body">
+    <nav class="toc" aria-label="En esta página">
+      <p>En esta página</p>
+      <ol>
+        <li><a href="#problema">Problema</a></li>
+        <li><a href="#juego">Cómo se juega</a></li>
+        <li><a href="#enfoque">Decisiones técnicas</a></li>
+        <li><a href="#pantallas">Pantallas</a></li>
+        <li><a href="#limites">Límites</a></li>
+      </ol>
+    </nav>
+    <div class="prose">
+      <section id="problema">
+        <h2>Problema</h2>
+        <p>El juego tenía que funcionar en los ordenadores de un instituto, donde a menudo no se puede instalar nada ni crear cuentas. Además, el profesorado tenía que poder preparar sus propias preguntas sin saber programar, y el mismo juego debía servir para cualquier tema o asignatura.</p>
+      </section>
+
+      <section id="juego">
+        <h2>Cómo se juega</h2>
+        <ol>
+          <li>Se eligen de 2 a 4 equipos y se cargan las preguntas: un archivo propio o el banco de ejemplo.</li>
+          <li>Las provincias se reparten al azar y cada una empieza con 3 tropas.</li>
+          <li>En su turno, un equipo ataca desde una provincia con al menos 2 tropas a una vecina enemiga, por tierra o por mar. Se puede elegir en el mapa, que resalta los objetivos posibles, o en el panel lateral.</li>
+          <li>Sale una pregunta. El docente muestra la respuesta y marca si es un acierto (se conquista la provincia) o un fallo (la atacante se queda con 1 tropa).</li>
+          <li>Gana quien conquiste todo el Imperio, o el equipo con más tropas si se acaban las preguntas.</li>
+        </ol>
+      </section>
+
+      <section id="enfoque">
+        <h2>Decisiones técnicas</h2>
+        <ul>
+          <li><strong>Un archivo HTML por herramienta, sin compilación.</strong> Funciona abriéndolo en el navegador, sin servidor ni base de datos. Es lo que mejor encaja con los ordenadores de un centro educativo.</li>
+          <li><strong>Mapa real.</strong> Leaflet con las provincias romanas en GeoJSON de <a href="https://github.com/klokantech/roman-empire">klokantech/roman-empire</a>.</li>
+          <li><strong>Vecindad calculada, no escrita a mano.</strong> Turf.js (<code>booleanIntersects</code>) decide qué provincias limitan. Las rutas marítimas se dibujan como curvas y se comprueba que no atraviesen tierra.</li>
+          <li><strong>Preguntas en JSON validadas al cargar.</strong> Se comprueba el formato, los campos obligatorios y los identificadores repetidos. El editor permite crear, duplicar y validar bancos sin tocar JSON; el de ejemplo tiene 249 preguntas sobre Roma.</li>
+          <li><strong>Partidas que duran varias clases.</strong> La partida se guarda en un archivo y se retoma en la siguiente sesión. El docente puede ajustar las tropas de cualquier provincia.</li>
+          <li><strong>Pensado para proyector, ordenador y móvil.</strong> En pantallas estrechas el panel de juego pasa abajo. Se publica en GitHub Pages con GitHub Actions.</li>
+        </ul>
+      </section>
+
+      <section id="pantallas">
+        <h2>Pantallas</h2>
+        <div class="gallery">
+          {{img aquilae-inicio | Configuración de la partida: equipos y banco de preguntas | sizes=(min-width: 60rem) 20rem, 100vw | class=shot}}
+          {{img aquilae-ataque | Ataque elegido en el panel lateral, con la provincia atacante y los objetivos resaltados en el mapa | sizes=(min-width: 60rem) 20rem, 100vw | class=shot}}
+          {{img aquilae-pregunta | Pregunta durante un ataque | sizes=(min-width: 60rem) 20rem, 100vw | class=shot}}
+          {{img aquilae-editor | Creador de preguntas | sizes=(min-width: 60rem) 20rem, 100vw | class=shot}}
+        </div>
+      </section>
+
+      <section id="limites">
+        <h2>Límites</h2>
+        <ul>
+          <li><strong>Un solo dispositivo.</strong> No usar servidor simplifica todo, pero la partida se juega en una única pantalla (normalmente el proyector) y no en el móvil de cada equipo.</li>
+          <li><strong>El docente arbitra.</strong> Las respuestas no se corrigen solas: las preguntas son abiertas y el docente decide si cada una es acierto o fallo.</li>
+        </ul>
+      </section>
+    </div>
+  </div>
+
+  <nav class="wrap next-case" aria-label="Más proyectos">
+    <a href="@tfg"><span>Anterior</span><strong>← Eventos de Marvel Champions</strong></a>
+    <a href="@pasos"><span>Siguiente proyecto</span><strong>Pasos de María →</strong></a>
+  </nav>
+</article>

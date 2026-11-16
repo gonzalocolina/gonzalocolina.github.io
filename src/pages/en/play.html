@@ -1,0 +1,92 @@
+---
+{
+  "id": "play",
+  "title": "Play against Optiline",
+  "description": "Play chess against Optiline, a ~3100 Elo neural-network engine, right in your browser. WebAssembly, no server, with its live analysis.",
+  "scripts": ["/assets/js/play.js"],
+  "styles": ["/assets/css/play.css"]
+}
+---
+{{> pieces}}
+<div class="wrap play" id="play" data-worker="/assets/js/engine-worker.js?v={{hash /assets/engine/nsce.wasm}}{{hash /assets/js/engine-worker.js}}" data-board-label="Chessboard. Use the arrow keys to move between squares and Enter to pick a piece and its destination.">
+  <header class="play__head">
+    <span class="eyebrow">Optiline · WebAssembly · in your browser</span>
+    <h1>Play against Optiline</h1>
+    <p>The engine runs entirely on your device: nothing is sent to any server. Drag a piece, or tap it and then tap the destination square. <a href="#how-it-works">How it works</a></p>
+  </header>
+  <noscript><p class="note">This page needs JavaScript to run the engine.</p></noscript>
+
+  <div class="play__grid">
+    <div class="board-wrap">
+      <div class="board-row">
+        <div class="evalbar" aria-hidden="true"><div class="evalbar__fill"></div></div>
+        <div class="board-host"></div>
+      </div>
+      <p class="play-status" role="status" aria-live="polite">Loading the engine…</p>
+      <div class="board-tools">
+        <button class="btn" type="button" data-act="undo">↶ Undo</button>
+        <button class="btn" type="button" data-act="flip">Flip board</button>
+        <button class="btn" type="button" data-act="copy"><span>Copy PGN</span></button>
+      </div>
+    </div>
+    <aside class="play__side" aria-label="Controls and analysis">
+      <section class="panel" aria-labelledby="setup-h">
+        <h2 id="setup-h">New game</h2>
+        <form class="play-setup">
+          <fieldset>
+            <legend>You play</legend>
+            <div class="seg">
+              <label><input type="radio" name="color" value="w" checked><span>White</span></label>
+              <label><input type="radio" name="color" value="b"><span>Black</span></label>
+              <label><input type="radio" name="color" value="random"><span>Random</span></label>
+            </div>
+          </fieldset>
+          <div>
+            <label class="field" for="level">Level</label>
+            <select id="level" name="level">
+              <option value="1">1 · Beginner (60 nodes)</option>
+              <option value="2">2 · Quick (2,000 nodes)</option>
+              <option value="3" selected>3 · Normal (0.5 s per move)</option>
+              <option value="4">4 · Maximum (2 s per move)</option>
+            </select>
+          </div>
+          <button class="btn btn--primary" type="submit">Start game</button>
+        </form>
+      </section>
+      <section class="panel" aria-labelledby="engine-h">
+        <h2 id="engine-h">What the engine is thinking</h2>
+        <p class="eval-score" title="Evaluation from White’s point of view, in pawns">0.00</p>
+        <dl class="engine-info">
+          <dt>Depth</dt><dd data-info="depth">–</dd>
+          <dt>Nodes/s</dt><dd data-info="nps">–</dd>
+          <dt>Line</dt><dd data-info="pv">–</dd>
+        </dl>
+      </section>
+      <section class="panel" aria-labelledby="moves-h">
+        <h2 id="moves-h">Moves</h2>
+        <ol class="movelist"></ol>
+      </section>
+    </aside>
+  </div>
+
+  <dialog class="promo" aria-labelledby="promo-t">
+    <p id="promo-t">Promote to…</p>
+    <div class="promo__choices">
+      <button type="button" data-p="q" aria-label="Queen"><svg viewBox="0 0 45 45" aria-hidden="true"><use href="#p-wQ"></use></svg></button>
+      <button type="button" data-p="r" aria-label="Rook"><svg viewBox="0 0 45 45" aria-hidden="true"><use href="#p-wR"></use></svg></button>
+      <button type="button" data-p="b" aria-label="Bishop"><svg viewBox="0 0 45 45" aria-hidden="true"><use href="#p-wB"></use></svg></button>
+      <button type="button" data-p="n" aria-label="Knight"><svg viewBox="0 0 45 45" aria-hidden="true"><use href="#p-wN"></use></svg></button>
+    </div>
+  </dialog>
+
+  <section class="play-notes prose" id="how-it-works" aria-labelledby="how-h">
+    <h2 id="how-h">How it works</h2>
+    <ul>
+      <li><strong>It is the real engine, not a cut-down version.</strong> Optiline is compiled to WebAssembly with SIMD128 and uses the same neural network as the native release. It runs in a single-threaded Web Worker so the page never freezes.</li>
+      <li><strong>A little slower than native.</strong> In the browser it runs about 1.6 times slower than with AVX2. In 100 ms games that gap costs about 40 Elo, measured over 1,600 games with the same time handicap.</li>
+      <li><strong>The ~3100 Elo is the native engine’s</strong> at 100 ms per move. Levels 1 and 2 cap the nodes it may search; they are not calibrated to any Elo, so I do not give them one.</li>
+      <li><strong>It downloads about 1.9 MB once</strong> (engine and network together), which then stay in the browser cache. The current game is saved in your browser in case you close the tab.</li>
+      <li><strong>Open source.</strong> Optiline is GPL-3.0: <a href="https://github.com/gonzalocolina/Optiline">source code</a>. This build starts from commit <code>9cec21b</code> with two small patches (SIMD128 kernels and thread-free search), and the script that reproduces it lives in this site’s repository. More in the <a href="@optiline#browser">case study</a>.</li>
+    </ul>
+  </section>
+</div>

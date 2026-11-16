@@ -1,0 +1,153 @@
+---
+{
+  "id": "optiline",
+  "title": "Optiline: motor de ajedrez con red neuronal",
+  "description": "Caso de estudio de Optiline: motor de ajedrez UCI en C++20 con evaluación NNUE de ~3100 Elo y un proceso de entrenamiento que solo promociona redes que ganan partidas completas.",
+  "bodyClass": "case"
+}
+---
+<article>
+  <header class="wrap case-head">
+    <a class="crumb" href="@home#proyectos">← Proyectos</a>
+    <span class="eyebrow">Motor de ajedrez · C++20 · Python · NNUE</span>
+    <h1>Optiline</h1>
+    <p class="lead">Un motor de ajedrez UCI que combina una búsqueda alfa-beta moderna con una red neuronal cuantizada, y el proceso completo que entrena, valida y promociona esas redes. Juega a <strong>~3100 Elo</strong> en la escala de Stockfish 18 a 100 ms por jugada.</p>
+    <dl class="facts">
+      <div><dt>Mi papel</dt><dd>Autor: motor, entrenamiento, herramientas de medida y CI</dd></div>
+      <div><dt>Tecnologías</dt><dd>C++20, CMake, AVX2, Python, NumPy, bullet (CUDA/ROCm), fastchess</dd></div>
+      <div><dt>Estado</dt><dd>v0.12.0 publicada con binarios para Linux y Windows; v0.13 en desarrollo</dd></div>
+      <div><dt>Licencia</dt><dd>GPL-3.0</dd></div>
+    </dl>
+    <div class="actions">
+      <a class="btn btn--accent" href="@play">Jugar contra Optiline</a>
+      <a class="btn" href="https://github.com/gonzalocolina/Optiline">Código en GitHub</a>
+      <a class="btn btn--ghost" href="https://github.com/gonzalocolina/Optiline/releases/tag/v0.12.0">Release v0.12.0</a>
+    </div>
+  </header>
+
+  <div class="wrap case-media">
+    <figure class="media-panel chart">
+      <span class="eyebrow">Escalera contra Stockfish 18 · 200 partidas por escalón · 100 ms/jugada</span>
+      {{> chart-ladder-es}}
+      <figcaption>Barras: diferencia de Elo de Optiline frente a Stockfish 18 limitado a cada nivel de <code>UCI_Elo</code>, con su intervalo de confianza. Contra el Stockfish completo pierde por −323 ± 64 (1 victoria, 25 tablas y 74 derrotas en 100 partidas).</figcaption>
+    </figure>
+  </div>
+
+  <div class="wrap case-body">
+    <nav class="toc" aria-label="En esta página">
+      <p>En esta página</p>
+      <ol>
+        <li><a href="#problema">Problema</a></li>
+        <li><a href="#enfoque">Enfoque</a></li>
+        <li><a href="#resultados">Resultados</a></li>
+        <li><a href="#navegador">En el navegador</a></li>
+        <li><a href="#fallos">Lo que no funcionó</a></li>
+        <li><a href="#siguiente">Siguientes pasos</a></li>
+      </ol>
+    </nav>
+    <div class="prose">
+      <section id="problema">
+        <h2>Problema</h2>
+        <p>Quería un motor fuerte que funcionara en máquinas normales, portátiles y no granjas de servidores, y sobre todo una forma fiable de saber si cada cambio lo hace más fuerte. En ajedrez por ordenador la intuición engaña: un cambio que parece una mejora pierde Elo con frecuencia, y una red con menos error de validación puede jugar peor.</p>
+        <p>Así que el proyecto tiene dos mitades del mismo peso: el motor y el sistema que decide qué entra en él.</p>
+      </section>
+
+      <section id="enfoque">
+        <h2>Enfoque</h2>
+        <h3>El motor</h3>
+        <ol class="flow" aria-label="Arquitectura del motor">
+          <li><span class="step"><b>UCI</b><small>opciones, control de tiempo</small></span></li>
+          <li><span class="step"><b>Búsqueda PVS</b><small>profundización iterativa</small></span></li>
+          <li><span class="step"><b>Generación de jugadas</b><small>bitboards · TT · SEE</small></span></li>
+          <li><span class="step step--accent"><b>Evaluación NNUE</b><small>int16 · AVX2</small></span></li>
+        </ol>
+        <ul>
+          <li><strong>Búsqueda:</strong> PVS con ventanas de aspiración y el conjunto de podas habitual en motores modernos: reducciones tardías (LMR), movimiento nulo, futilidad, razoring, ProbCut, poda por SEE y extensiones singulares. Cada técnica se puede activar o desactivar por UCI para medir lo que aporta.</li>
+          <li><strong>Ordenación:</strong> killers, historial de capturas y de continuación, contramovimientos e historial indexado por las casillas amenazadas.</li>
+          <li><strong>Evaluación:</strong> una red (768→1024)×2 con activación SCReLU y 8 salidas según el material, cuantizada a int16. Los acumuladores se actualizan de forma incremental con kernels AVX2 escritos a mano.</li>
+        </ul>
+
+        <h3>El bucle de entrenamiento y promoción</h3>
+        <ol class="flow flow--loop" aria-label="Bucle de entrenamiento y promoción">
+          <li><span class="step"><b>Datos</b><small>self-play · binpacks públicos</small></span></li>
+          <li><span class="step"><b>Entrenamiento</b><small>bullet (GPU) · NumPy con QAT</small></span></li>
+          <li><span class="step"><b>Exportación cuantizada</b><small>int16</small></span></li>
+          <li><span class="step"><b>Validación</b><small>C++ = referencia en float</small></span></li>
+          <li><span class="step step--accent"><b>SPRT</b><small>partidas completas</small></span></li>
+          <li><span class="step"><b>Puerta de promoción</b><small>un cambio · evidencias con hash</small></span></li>
+        </ol>
+        <p class="flow-caption">Si la red no gana el SPRT, vuelve a la casilla de datos. Si lo gana, pasa a ser la nueva referencia y el experimento queda archivado.</p>
+        <ul>
+          <li><strong>Una red solo se promociona si gana partidas.</strong> El error de validación sirve para descartar redes rotas, no para aceptar las buenas. La decisión la toma un SPRT de partidas completas con fastchess contra la referencia actual.</li>
+          <li><strong>Evidencias inmutables.</strong> Cada experimento vive en <code>experiments/AAAAMMDD_*</code> con un <code>manifest.json</code> (SHA-256 del motor y del libro de aperturas, semilla y concurrencia) y un <code>report.md</code>. Los binarios de Stockfish de referencia están fijados por hash.</li>
+          <li><strong>Un cambio cada vez.</strong> <code>promotion_gate.py</code> rechaza una promoción que cambie más de una opción UCI a la vez.</li>
+          <li><strong>Pruebas:</strong> GoogleTest (perft, tablero, NNUE, búsqueda, SEE, TT), tests de contrato en Python y CI con cuatro configuraciones: Release, ASan+UBSan, TSan y estadísticas.</li>
+        </ul>
+      </section>
+
+      <section id="resultados">
+        <h2>Resultados</h2>
+        <p>La red actual se entrenó con 8 000 millones de posiciones de los binpacks públicos de Stockfish. Estas son sus partidas contra Stockfish 18 limitado a distintos niveles, a 100 ms por jugada:</p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Rival</th><th class="num">V-T-D</th><th class="num">Elo de Optiline</th></tr></thead>
+            <tbody>
+              <tr><td>Stockfish 18 · 2600</td><td class="num">192-4-4</td><td class="num">+604 ± 156</td></tr>
+              <tr class="is-best"><td>Stockfish 18 · 2900</td><td class="num">109-51-40</td><td class="num">+125 ± 43</td></tr>
+              <tr><td>Stockfish 18 · 3190 (máximo)</td><td class="num">52-73-75</td><td class="num">−40 ± 37</td></tr>
+              <tr><td>Stockfish 18 sin límite (100 partidas)</td><td class="num">1-25-74</td><td class="num">−323 ± 64</td></tr>
+            </tbody>
+            <caption>200 partidas por escalón con aperturas equilibradas y colores alternos. Fuente: <a href="https://github.com/gonzalocolina/Optiline/blob/master/experiments/20261114_simple1024_test80_elo/report.md">informe del 14/11/2026</a>.</caption>
+          </table>
+        </div>
+        <ul>
+          <li>De los dos escalones más cercanos sale una fuerza de entre <strong>3025 y 3150</strong> en esa escala: ~3100 ± 35. La red anterior, de 768×128, juega a unos 2400 con la misma búsqueda.</li>
+          <li>Contra esa red anterior, la nueva aceptó el SPRT [0, 5] a 8+0,08 con <strong>293 victorias, 1 tablas y 0 derrotas</strong>.</li>
+          <li>Ese SPRT ganó casi todo por adjudicación, así que revisé las 12 adjudicaciones con Stockfish 18 a profundidad 20: en todas el ganador iba +8,4 peones por delante o tenía mate forzado. Ninguna era una victoria falsa.</li>
+        </ul>
+        <div class="callout"><p><code>UCI_Elo</code> está calibrado a tiempos más largos y no es un rating CCRL. Estas cifras son posiciones en una misma escalera, no un Elo absoluto.</p></div>
+      </section>
+
+      <section id="navegador">
+        <h2>En el navegador</h2>
+        <p>La página <a href="@play">Jugar</a> ejecuta Optiline compilado a WebAssembly con Emscripten, dentro de un Web Worker y con un solo hilo, porque GitHub Pages no permite las cabeceras que necesitan los hilos de WebAssembly. Los kernels AVX2 de la red tienen una versión equivalente con SIMD128, que da exactamente la misma búsqueda nodo a nodo.</p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Compilación</th><th class="num">Nodos/s</th><th class="num">Respecto a AVX2</th></tr></thead>
+            <tbody>
+              <tr><td>Nativa con AVX2</td><td class="num">1 437 732</td><td class="num">1,00×</td></tr>
+              <tr class="is-best"><td>WebAssembly con SIMD128 (V8)</td><td class="num">917 527</td><td class="num">1,57× más lenta</td></tr>
+              <tr><td>WebAssembly escalar (V8)</td><td class="num">98 376</td><td class="num">14,6× más lenta</td></tr>
+            </tbody>
+            <caption>Mismo benchmark en todas: 966 156 nodos idénticos. Medido en Node 24 el 16/11/2026.</caption>
+          </table>
+        </div>
+        <p>Para saber cuánto cuesta esa diferencia en fuerza, jugué el motor nativo contra sí mismo con la misma desventaja de tiempo: a 100 ms frente a 64 ms, la versión lenta pierde <strong>−40 ± 7 Elo</strong> (1600 partidas). Sin SIMD la pérdida sube a −311 ± 51.</p>
+      </section>
+
+      <section id="fallos">
+        <h2>Lo que no funcionó</h2>
+        <ul>
+          <li><strong>Partidas truncadas.</strong> Las primeras pruebas de ablación cortaban las partidas a los 60 plies (30 jugadas por bando) y alrededor del 90 % acababan en tablas adjudicadas: no distinguían fuerza real. Ahora solo sirven como telemetría y la puerta usa partidas completas.</li>
+          <li><strong>Un medidor que mentía.</strong> El runner antiguo cortaba en 120 plies y contaba las partidas sin terminar como tablas. Con el método actual, la ventaja de la red anterior contra el escalón de 2200 pasó de +38 a +207.</li>
+          <li><strong>SPRT sin decisión.</strong> El script no sabía leer la línea <code>LLR</code> de fastchess, así que los JSON de los SPRT se guardaban sin su decisión. Lo arreglé y añadí un test para esa salida.</li>
+          <li><strong>Menos error no es más Elo.</strong> Una red puede tener menos error de validación y jugar peor. Por eso la regla del proyecto es que la pérdida sirve para descartar redes rotas, pero nunca para promocionar.</li>
+        </ul>
+      </section>
+
+      <section id="siguiente">
+        <h2>Siguientes pasos</h2>
+        <ul>
+          <li>Llevar al repositorio de Optiline el build de WebAssembly que usa esta web y publicarlo con cada release.</li>
+          <li>Medir la fuerza del build del navegador directamente, no solo con desventaja de tiempo.</li>
+          <li>Seguir con la v0.13: más datos y ajuste de la búsqueda con SPSA.</li>
+        </ul>
+      </section>
+    </div>
+  </div>
+
+  <nav class="wrap next-case" aria-label="Más proyectos">
+    <a href="@home#proyectos"><span>Volver</span><strong>Todos los proyectos</strong></a>
+    <a href="@roadsignai"><span>Siguiente proyecto</span><strong>RoadSignAI →</strong></a>
+  </nav>
+</article>

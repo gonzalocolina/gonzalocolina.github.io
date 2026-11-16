@@ -1,0 +1,126 @@
+---
+{
+  "id": "tfg",
+  "title": "Real-time Marvel Champions events (bachelor’s thesis)",
+  "description": "Case study of my bachelor’s thesis (9.7/10): a real-time platform built with Spring Boot, WebSockets and Vue 3 to run in-person games across many tables. 0 errors with 100 clients and a 12 ms p95.",
+  "bodyClass": "case"
+}
+---
+<article>
+  <header class="wrap case-head">
+    <a class="crumb" href="@home#projects">← Projects</a>
+    <span class="eyebrow">Bachelor’s thesis · Java · Spring Boot · Vue 3</span>
+    <h1>Real-time Marvel Champions events</h1>
+    <p class="lead">A platform for running in-person games of Marvel Champions’ <em>Epic Multiplayer</em> mode. Each table keeps playing with physical cards, while the web app coordinates in real time what they all share: the villain’s health, the main scheme’s threat, the timer and cross-table cards.</p>
+    <dl class="facts">
+      <div><dt>My role</dt><dd>Thesis author: analysis, design, backend, frontend, testing and deployment</dd></div>
+      <div><dt>Tech</dt><dd>Java 17, Spring Boot, WebSocket (STOMP/SockJS), JWT, H2, Vue 3, Vite, Docker Compose, Nginx</dd></div>
+      <div><dt>Grade</dt><dd>9.7/10 · BSc in Computer Engineering (University of Valladolid)</dd></div>
+      <div><dt>Supervisor</dt><dd>Mario Corrales Astorgano</dd></div>
+    </dl>
+    <div class="actions">
+      <a class="btn btn--primary" href="https://github.com/gonzalocolina/tfg-gonzalo-colina">Code on GitHub</a>
+      <a class="btn btn--ghost" href="https://github.com/gonzalocolina/tfg-gonzalo-colina/tree/main/load-tests">Load tests</a>
+    </div>
+  </header>
+
+  <div class="wrap case-media">
+    <figure>
+      {{img tfg-org-partida | Organiser game dashboard: villain health, main scheme threat, timer and delegated logging (interface in Spanish) | sizes=(min-width: 72rem) 68rem, 100vw | eager | class=shot}}
+      <figcaption>The organiser’s game dashboard on desktop (the interface is in Spanish).</figcaption>
+    </figure>
+  </div>
+
+  <div class="wrap case-body">
+    <nav class="toc" aria-label="On this page">
+      <p>On this page</p>
+      <ol>
+        <li><a href="#problem">Problem</a></li>
+        <li><a href="#approach">Approach</a></li>
+        <li><a href="#screens">Screens</a></li>
+        <li><a href="#results">Results</a></li>
+        <li><a href="#limits">Limits</a></li>
+      </ol>
+    </nav>
+    <div class="prose">
+      <section id="problem">
+        <h2>Problem</h2>
+        <p>In an epic Marvel Champions event, many tables play at once against the same villain. Each table deals damage, adds threat and triggers cards that affect other tables, and someone has to keep the global count without stopping play.</p>
+        <p>It needed shared state that updates instantly on every screen, a desktop interface for the organiser and a mobile one for each table, and a way to correct mistakes without losing the history.</p>
+      </section>
+
+      <section id="approach">
+        <h2>Approach</h2>
+        <div class="arch" role="group" aria-label="Architecture">
+          <div class="arch__col">
+            <p>Clients · Vue 3</p>
+            <span class="step"><b>Portal</b><small>organise or join</small></span>
+            <span class="step"><b>Organiser</b><small>desktop: events, nodes, tables</small></span>
+            <span class="step"><b>Player</b><small>mobile: event code, progress</small></span>
+          </div>
+          <div class="arch__col">
+            <p>Backend · Spring Boot</p>
+            <span class="step"><b>REST API</b><small>JWT auth, configuration, actions</small></span>
+            <span class="step step--accent"><b>WebSocket</b><small>STOMP/SockJS: broadcasts new state</small></span>
+            <span class="step"><b>Action log</b><small>corrections and statistics</small></span>
+          </div>
+          <div class="arch__col">
+            <p>Data and deployment</p>
+            <span class="step"><b>File-based H2</b><small>events, users, actions</small></span>
+            <span class="step"><b>Docker Compose</b><small>Nginx + backend + volume</small></span>
+          </div>
+        </div>
+        <ul>
+          <li><strong>REST to write, WebSocket to notify.</strong> Tables send damage, threat or cards through the API. Once the change is processed, the backend publishes the new state over WebSocket and every screen updates without reloading.</li>
+          <li><strong>Three apps, one address.</strong> Portal, organiser and player are separate Vue apps, each tailored to its device, served under the same URL without duplicating shared logic.</li>
+          <li><strong>Everything is logged.</strong> Each action is stored with its source table and who made it. The organiser can correct a value without erasing history, and end-of-game statistics are built from that log.</li>
+          <li><strong>Delegation.</strong> The organiser assigns tables to nodes and can delegate the villain’s health, the threat or the timer to co-organisers.</li>
+        </ul>
+      </section>
+
+      <section id="screens">
+        <h2>Screens</h2>
+        <div class="gallery">
+          {{img tfg-landing-page | Entry portal to organise a game or join one | sizes=(min-width: 60rem) 20rem, 100vw | class=shot}}
+          {{img tfg-org-nodos | Tables assigned to nodes | sizes=(min-width: 60rem) 20rem, 100vw | class=shot}}
+          {{img tfg-org-stats | Summary and statistics at the end of the game | sizes=(min-width: 60rem) 20rem, 100vw | class=shot}}
+        </div>
+        <div class="gallery gallery--phones">
+          {{img tfg-player-unirseapartida | Joining a game with the event code | class=shot}}
+          {{img tfg-player-partida | Global game state on a phone | class=shot}}
+          {{img tfg-player-vercartasinternodo | Active cross-node cards | class=shot}}
+        </div>
+      </section>
+
+      <section id="results">
+        <h2>Results</h2>
+        <p>Measured with a purpose-built load harness: synthetic clients that log in over HTTP, subscribe over WebSocket/STOMP and write during 30 s of steady load, with 100 clients connected at once.</p>
+        <div class="table-wrap">
+          <table>
+            <thead><tr><th>Scenario</th><th class="num">Operations</th><th class="num">Real-time deliveries</th><th class="num">Errors</th><th class="num">HTTP p95</th><th class="num">Propagation p95</th></tr></thead>
+            <tbody>
+              <tr><td>100 clients, 20 writers/s</td><td class="num">600</td><td class="num">60,100</td><td class="num">0</td><td class="num">14 ms</td><td class="num">8 ms</td></tr>
+              <tr class="is-best"><td>100 clients, 100 writers/s</td><td class="num">3,000</td><td class="num">300,300</td><td class="num">0</td><td class="num">29 ms</td><td class="num">12 ms</td></tr>
+            </tbody>
+            <caption>“Propagation” is the time until a change reaches every client. Source: <a href="https://github.com/gonzalocolina/tfg-gonzalo-colina/tree/main/load-tests">load-tests/</a>.</caption>
+          </table>
+        </div>
+        <p>The non-functional requirement was an HTTP p95 below 500 ms: it is met by a wide margin. The thesis was graded <strong>9.7/10</strong>.</p>
+      </section>
+
+      <section id="limits">
+        <h2>Limits</h2>
+        <ul>
+          <li><strong>Local tests.</strong> They ran without network latency; a real deployment will show somewhat higher times.</li>
+          <li><strong>Built for one event.</strong> File-based H2 makes deploying a single event with Docker very simple. For many concurrent events I would move to PostgreSQL.</li>
+          <li><strong>Unofficial.</strong> Marvel Champions belongs to Fantasy Flight Games; this is an academic tool with no affiliation.</li>
+        </ul>
+      </section>
+    </div>
+  </div>
+
+  <nav class="wrap next-case" aria-label="More projects">
+    <a href="@roadsignai"><span>Previous</span><strong>← RoadSignAI</strong></a>
+    <a href="@aquilae"><span>Next project</span><strong>Aquilae →</strong></a>
+  </nav>
+</article>
