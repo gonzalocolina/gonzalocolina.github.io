@@ -1,0 +1,294 @@
+/* /jugar/ — tablero interactivo, panel del motor y controles. */
+
+.play {
+  padding-block: clamp(1.5rem, 4vw, 3rem) clamp(3rem, 6vw, 4.5rem);
+}
+.play__head {
+  margin-bottom: 1.75rem;
+}
+.play__head h1 {
+  font-size: clamp(2rem, 5vw, 3.2rem);
+  margin-bottom: 0.5rem;
+}
+.play__head p {
+  color: var(--muted);
+  max-width: 44rem;
+  margin: 0;
+}
+.play__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 38rem) minmax(16rem, 1fr);
+  gap: 1rem clamp(1rem, 3vw, 2rem);
+  align-items: start;
+}
+@media (max-width: 62rem) {
+  .play__grid {
+    grid-template-columns: minmax(0, 1fr);
+  }
+}
+
+/* barra de evaluación (blancas abajo) */
+.board-row {
+  display: flex;
+  gap: 0.6rem;
+  align-items: stretch;
+}
+.board-row .board-host {
+  flex: 1;
+  min-width: 0;
+}
+.evalbar {
+  position: relative;
+  flex: none;
+  width: 0.9rem;
+  border-radius: 4px;
+  background: #2a2724;
+  overflow: hidden;
+  border: 1px solid var(--line-strong);
+}
+.evalbar__fill {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 50%;
+  background: #f4efe6;
+  transition: height 0.4s var(--ease);
+}
+.board-wrap {
+  position: relative;
+}
+.board-wrap .board {
+  touch-action: none;
+}
+
+/* casillas como botones */
+.board button.sq {
+  border: 0;
+  padding: 0;
+  margin: 0;
+  font: inherit;
+  cursor: pointer;
+  border-radius: 0;
+}
+.board button.sq:focus-visible {
+  outline: 3px solid var(--focus);
+  outline-offset: -3px;
+  z-index: 3;
+}
+.sq.target::before {
+  content: "";
+  position: absolute;
+  inset: 36%;
+  border-radius: 50%;
+  background: rgba(20, 20, 20, 0.28);
+  z-index: 3;
+  pointer-events: none;
+}
+.sq.capture::before {
+  content: "";
+  position: absolute;
+  inset: 4%;
+  border-radius: 50%;
+  border: 0.32rem solid rgba(20, 20, 20, 0.28);
+  z-index: 3;
+  pointer-events: none;
+}
+.piece.dragging {
+  z-index: 10;
+  filter: drop-shadow(0 6px 8px rgba(0, 0, 0, 0.35));
+  transform-origin: center;
+}
+
+.play-status {
+  min-height: 1.6em;
+  margin: 0.8rem 0 0;
+  font-weight: 500;
+}
+.is-error .play-status {
+  color: #b91c1c;
+}
+.board-tools {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin-top: 0.8rem;
+}
+.board-tools .btn {
+  min-height: 2.5rem;
+  padding: 0.4rem 0.8rem;
+  font-size: 0.92rem;
+}
+.board-tools .btn[data-done]::after {
+  content: attr(data-done);
+}
+.board-tools .btn[data-done] span {
+  display: none;
+}
+
+/* panel lateral */
+.play__side {
+  display: grid;
+  gap: 1rem;
+}
+.panel {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  padding: 1rem 1.1rem;
+}
+.panel h2 {
+  font: 500 0.74rem/1.4 var(--mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--faint);
+  margin-bottom: 0.75rem;
+}
+.play-setup {
+  display: grid;
+  gap: 0.9rem;
+}
+.play-setup fieldset {
+  border: 0;
+  padding: 0;
+  margin: 0;
+}
+.play-setup legend,
+.play-setup label.field {
+  font-size: 0.88rem;
+  color: var(--muted);
+  margin-bottom: 0.35rem;
+  display: block;
+}
+.seg {
+  display: flex;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-s);
+  overflow: hidden;
+}
+.seg label {
+  flex: 1;
+  text-align: center;
+  cursor: pointer;
+  position: relative;
+}
+.seg input {
+  position: absolute;
+  opacity: 0;
+  inset: 0;
+  cursor: pointer;
+}
+.seg span {
+  display: block;
+  padding: 0.5rem 0.4rem;
+  font-size: 0.9rem;
+}
+.seg label + label span {
+  border-left: 1px solid var(--line-strong);
+}
+.seg input:checked + span {
+  background: var(--text);
+  color: var(--bg);
+}
+.seg input:focus-visible + span {
+  outline: 2px solid var(--focus);
+  outline-offset: -2px;
+}
+select {
+  width: 100%;
+  min-height: 2.6rem;
+  padding: 0.4rem 0.6rem;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-s);
+  background: var(--surface);
+  color: var(--text);
+  font: inherit;
+  font-size: 0.95rem;
+}
+
+.engine-info {
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 0.35rem 1rem;
+  margin: 0;
+  font-size: 0.9rem;
+}
+.engine-info dt {
+  color: var(--muted);
+}
+.engine-info dd {
+  margin: 0;
+  font-family: var(--mono);
+  font-variant-numeric: tabular-nums;
+  overflow-wrap: anywhere;
+}
+.eval-score {
+  font: 500 1.6rem/1.1 var(--mono);
+  font-variant-numeric: tabular-nums;
+  margin-bottom: 0.6rem;
+}
+
+.movelist {
+  list-style: none;
+  counter-reset: mv;
+  margin: 0;
+  padding: 0;
+  max-height: 13rem;
+  overflow-y: auto;
+  font: 400 0.9rem/1.7 var(--mono);
+  columns: 2;
+  column-gap: 1rem;
+}
+.movelist li {
+  counter-increment: mv;
+  display: grid;
+  grid-template-columns: 2.2rem 1fr 1fr;
+  break-inside: avoid;
+}
+.movelist li::before {
+  content: counter(mv) ".";
+  color: var(--faint);
+}
+.movelist:empty::after {
+  content: "—";
+  color: var(--faint);
+}
+
+/* diálogo de coronación */
+.promo {
+  border: 1px solid var(--line);
+  border-radius: var(--radius);
+  background: var(--surface);
+  color: var(--text);
+  padding: 1rem;
+  box-shadow: var(--shadow);
+}
+.promo::backdrop {
+  background: rgba(0, 0, 0, 0.35);
+}
+.promo p {
+  margin: 0 0 0.75rem;
+  font-weight: 500;
+}
+.promo__choices {
+  display: flex;
+  gap: 0.5rem;
+}
+.promo button {
+  width: 4rem;
+  height: 4rem;
+  border: 1px solid var(--line-strong);
+  border-radius: var(--radius-s);
+  background: var(--sq-light);
+  cursor: pointer;
+  padding: 0.3rem;
+}
+.promo button:hover,
+.promo button:focus-visible {
+  background: var(--accent-soft);
+  border-color: var(--accent);
+}
+
+.play-notes {
+  margin-top: clamp(2.5rem, 6vw, 4rem);
+}
