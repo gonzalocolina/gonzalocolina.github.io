@@ -1,0 +1,33 @@
+--- a/engine/src/uci.cpp	2026-11-14 15:54:27.000000000 +0100
++++ b/engine/src/uci.cpp	2026-11-16 23:19:06.466430562 +0100
+@@ -236,12 +236,20 @@
+ 
+   search_.set_position(pos_);
+   search_.prepare();
++#if defined(__EMSCRIPTEN__)
++  // The browser build has no pthreads: search synchronously inside the worker.
++  {
++    SearchInfo info = search_.go_prepared(limits);
++    std::cout << "bestmove " << (info.best_move ? move_to_uci(info.best_move) : "0000") << std::endl;
++  }
++#else
+   search_thread_ = std::thread([this, limits]() {
+     SearchInfo info = search_.go_prepared(limits);
+     static std::mutex io_mu;
+     std::lock_guard<std::mutex> lock(io_mu);
+     std::cout << "bestmove " << (info.best_move ? move_to_uci(info.best_move) : "0000") << std::endl;
+   });
++#endif
+ }
+ 
+ void Uci::handle_setoption(std::istringstream& is) {
+--- a/engine/include/nsce/uci.hpp	2026-11-14 15:54:27.000000000 +0100
++++ b/engine/include/nsce/uci.hpp	2026-11-16 23:19:06.466430562 +0100
+@@ -16,6 +16,7 @@
+   ~Uci();
+   void loop();
+   void bench(int depth = 6);
++  void command(const std::string& line) { handle_command(line); }
+ 
+  private:
+   void stop_search();

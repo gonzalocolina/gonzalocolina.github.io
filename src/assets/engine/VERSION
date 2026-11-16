@@ -1,0 +1,6 @@
+optiline_commit=9cec21bdd447fdfaf7f3be73c19eb773a0c5f45e
+net=nets/nsceper1_simple1024_test80.bin sha256=1087969741e838f82b6fde8d6729908374d5cecb68203374656a323e387094fd
+patches=wasm_simd128.patch sync-search.patch
+emcc=emcc (Emscripten gcc/clang-like replacement + linker emulating GNU ld) 7.0.0 (777e6e5db7b4990bcaeb1b9998ed642cc84e6629)
+wasm_sha256=07148419ae7f83849cf6c0e24e11e891d00b7cb2a64d9a1b7baf262993a1eb91
+built=2026-11-16T22:22:14Z
