@@ -49,8 +49,11 @@ tools/
 
 La primera visita de cada sesión a la portada abre con una intro (`src/assets/js/intro.js`, unos 4,5 s): una red neuronal
 se dibuja, el nombre se traza a pulso, una caja de detección lo encuadra y la pantalla se deshace en píxeles para dejar ver
-la portada. Se salta con el botón, Esc o Intro, y nunca aparece con «reducir movimiento». `?intro=on` la repite y
-`?intro=off` la omite (útil para enlaces directos y capturas).
+la portada. Se salta con el botón, Esc o Intro. `?intro=on` la repite y `?intro=off` la omite (útil para enlaces
+directos y capturas).
+
+Las animaciones se ven aunque el sistema tenga activado «reducir movimiento». Para quitarlas todas en la sesión:
+`?motion=off` (y `?motion=on` para volver).
 
 ## Tareas habituales
 

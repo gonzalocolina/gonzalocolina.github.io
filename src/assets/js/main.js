@@ -2,7 +2,8 @@
 // vídeos que solo se reproducen a la vista e índice activo en los casos de estudio.
 
 const root = document.documentElement;
-const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+// Las animaciones se ven siempre; solo se apagan a propósito con ?motion=off (lo pone el <head>).
+const reduced = document.documentElement.classList.contains("motion-off");
 const store = {
   get(k) {
     try {

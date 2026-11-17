@@ -1,7 +1,8 @@
 // Portada: fondo de red neuronal en canvas, titular letra a letra, texto que se escribe solo,
 // contadores animados e inclinación 3D de la tarjeta del resumen. Todo respeta el movimiento reducido.
 
-const reduced = matchMedia("(prefers-reduced-motion: reduce)").matches;
+// Las animaciones se ven siempre; solo se apagan a propósito con ?motion=off (lo pone el <head>).
+const reduced = document.documentElement.classList.contains("motion-off");
 const fine = matchMedia("(pointer: fine)").matches;
 const root = document.documentElement;
 const css = (name) => getComputedStyle(root).getPropertyValue(name).trim();

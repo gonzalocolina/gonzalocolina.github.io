@@ -1666,6 +1666,81 @@ mark.todo {
   }
 }
 
+/* botón grande para jugar contra Optiline desde su tarjeta */
+.play-cta {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  margin: 0 0 1.3rem;
+  padding: 1rem 1.4rem 1rem 1rem;
+  border-radius: var(--radius-s);
+  background: var(--grad);
+  background-size: 160% 100%;
+  color: #1a0c04;
+  text-decoration: none;
+  overflow: hidden;
+  isolation: isolate;
+  box-shadow: 0 14px 36px -14px color-mix(in srgb, var(--accent) 80%, transparent);
+  transition:
+    background-position 0.5s var(--ease-out),
+    box-shadow 0.3s,
+    translate 0.35s var(--ease-out),
+    transform 0.15s var(--ease);
+}
+.play-cta::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(110deg, transparent 30%, rgba(255, 255, 255, 0.45) 50%, transparent 70%);
+  transform: translateX(-120%);
+  transition: transform 0.8s var(--ease-out);
+}
+.play-cta:hover {
+  color: #1a0c04;
+  background-position: 100% 0;
+  box-shadow: 0 18px 44px -12px color-mix(in srgb, var(--accent) 95%, transparent);
+}
+.play-cta:hover::after {
+  transform: translateX(120%);
+}
+.play-cta:active {
+  transform: scale(0.98);
+}
+.play-cta__icon {
+  display: grid;
+  place-items: center;
+  flex: none;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 10px;
+  background: rgba(26, 12, 4, 0.14);
+  font-size: 1.8rem;
+  line-height: 1;
+}
+.play-cta__text {
+  display: grid;
+  flex: 1;
+  line-height: 1.25;
+}
+.play-cta__text b {
+  font-size: 1.15rem;
+  font-weight: 650;
+}
+.play-cta__text small {
+  font-size: 0.85rem;
+  opacity: 0.75;
+}
+.play-cta .arrow {
+  font-size: 1.4rem;
+  transition: transform 0.3s var(--ease-out);
+}
+.play-cta:hover .arrow {
+  transform: translateX(5px);
+}
+
 /* tarjeta "código privado" y similares */
 .note {
   display: flex;
@@ -3046,48 +3121,47 @@ html.intro-on:not(.intro-built)::before {
 @view-transition {
   navigation: auto;
 }
-@media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
-  *,
-  *::before,
-  *::after {
-    transition-duration: 0.01ms !important;
-    animation-duration: 0.01ms !important;
-    animation-delay: 0s !important;
-    animation-iteration-count: 1 !important;
-  }
-  .js [data-reveal] {
-    opacity: 1;
-    transform: none;
-  }
-  .js .project[data-reveal] .project__cover {
-    clip-path: none;
-  }
-  /* sin movimiento, la tira se queda quieta: una sola copia, centrada y en varias líneas si hace falta */
-  .marquee {
-    justify-content: center;
-    -webkit-mask-image: none;
-    mask-image: none;
-  }
-  .marquee__track {
-    flex: 0 1 auto;
-    flex-wrap: wrap;
-    justify-content: center;
-    row-gap: 0.75rem;
-    padding-inline: var(--gutter);
-    animation: none;
-  }
-  .marquee__track[aria-hidden="true"] {
-    display: none;
-  }
-  .marquee li:last-child::after {
-    content: none;
-  }
-  @view-transition {
-    navigation: none;
-  }
+/* Sin animaciones solo si se pide con ?motion=off */
+:root.motion-off {
+  scroll-behavior: auto;
+}
+:root.motion-off *,
+:root.motion-off *::before,
+:root.motion-off *::after {
+  transition-duration: 0.01ms !important;
+  animation-duration: 0.01ms !important;
+  animation-delay: 0s !important;
+  animation-iteration-count: 1 !important;
+}
+:root.motion-off [data-reveal] {
+  opacity: 1;
+  transform: none;
+}
+:root.motion-off .project[data-reveal] .project__cover {
+  clip-path: none;
+}
+/* sin movimiento, la tira se queda quieta: una sola copia, centrada y en varias líneas si hace falta */
+:root.motion-off .marquee {
+  justify-content: center;
+  -webkit-mask-image: none;
+  mask-image: none;
+}
+:root.motion-off .marquee__track {
+  flex: 0 1 auto;
+  flex-wrap: wrap;
+  justify-content: center;
+  row-gap: 0.75rem;
+  padding-inline: var(--gutter);
+  animation: none;
+}
+:root.motion-off .marquee__track[aria-hidden="true"] {
+  display: none;
+}
+:root.motion-off .marquee li:last-child::after {
+  content: none;
+}
+:root.motion-off .w > * {
+  transform: none;
 }
 
 /* ------------------------------------------------------------------ print */
