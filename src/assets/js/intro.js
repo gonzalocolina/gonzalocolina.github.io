@@ -4,13 +4,13 @@
 // 3. Una caja de detección, al estilo de RoadSignAI, encuadra el nombre con su etiqueta y confianza.
 // 4. La pantalla se deshace en píxeles desde el nombre hacia fuera y deja ver la portada, que empieza su entrada.
 // El <head> decide si hay intro (clase .intro-on) y tapa la página hasta que este módulo toma el control.
-// Los tiempos de abajo están escritos para la versión larga (≈4,3 s); K los comprime para que dure ≈2 s.
+// Los tiempos de abajo dan una intro de ≈4,3 s; K los escala todos a la vez (0,5 ≈ 2 s, demasiado rápida para leerla).
 
 const root = document.documentElement;
 const SVG = "http://www.w3.org/2000/svg";
 const BG = "#0c0a09";
 const ACCENT = "#ff7a2f";
-const K = 0.45;
+const K = 1;
 const at = (delay, duration) => ({ delay: delay * K, duration: duration * K });
 
 const T = {
@@ -316,9 +316,9 @@ function dissolve(intro, center, done) {
       const x = q * S;
       const y = r * S;
       const d = Math.hypot(x + S / 2 - center.x, (y + S / 2 - center.y) * 1.25) / maxD;
-      tiles.push({ x, y, delay: d * 400 + Math.random() * 90 });
+      tiles.push({ x, y, delay: d * 620 + Math.random() * 140 });
     }
-  const LIFE = 240;
+  const LIFE = 360;
   const paint = (t) => {
     ctx.clearRect(0, 0, W, H);
     let alive = false;
