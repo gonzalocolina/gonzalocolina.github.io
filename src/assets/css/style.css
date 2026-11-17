@@ -935,18 +935,10 @@ mark.todo {
   display: inline-block;
   padding-bottom: 0.08em;
 }
-.line--grad {
+.line--it {
   font-style: italic;
   font-weight: 350;
   padding-right: 0.06em;
-  background: var(--grad);
-  background-size: 200% 100%;
-  -webkit-background-clip: text;
-  background-clip: text;
-  color: transparent;
-  animation:
-    sweep 1.3s 0.55s var(--ease-out) both,
-    shimmer 7s 2s ease-in-out infinite alternate;
 }
 .hero__title.is-split .ch {
   display: inline-block;
@@ -2940,24 +2932,6 @@ html.intro-on:not(.intro-built)::before {
     opacity: 1;
     transform: none;
     filter: none;
-  }
-}
-@keyframes sweep {
-  from {
-    clip-path: inset(-10% 100% -10% 0);
-    filter: blur(8px);
-  }
-  to {
-    clip-path: inset(-10% -5% -10% 0);
-    filter: none;
-  }
-}
-@keyframes shimmer {
-  from {
-    background-position: 0% 50%;
-  }
-  to {
-    background-position: 100% 50%;
   }
 }
 @keyframes blink {

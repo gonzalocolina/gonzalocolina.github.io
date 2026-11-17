@@ -11,7 +11,7 @@ const title = document.querySelector(".hero__title");
 if (title && !reduced) {
   title.setAttribute("aria-label", title.textContent.replace(/\s+/g, " ").trim());
   let i = 0;
-  for (const line of title.querySelectorAll(".line:not(.line--grad)")) {
+  for (const line of title.querySelectorAll(".line")) {
     const text = line.textContent;
     line.textContent = "";
     line.setAttribute("aria-hidden", "true");
