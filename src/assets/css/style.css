@@ -3014,11 +3014,25 @@ html.intro-on:not(.intro-built)::before {
     opacity: 1;
     transform: none;
   }
+  /* sin movimiento, la tira se queda quieta: una sola copia, centrada y en varias líneas si hace falta */
+  .marquee {
+    justify-content: center;
+    -webkit-mask-image: none;
+    mask-image: none;
+  }
   .marquee__track {
+    flex: 0 1 auto;
+    flex-wrap: wrap;
+    justify-content: center;
+    row-gap: 0.75rem;
+    padding-inline: var(--gutter);
     animation: none;
   }
-  .marquee {
-    flex-wrap: wrap;
+  .marquee__track[aria-hidden="true"] {
+    display: none;
+  }
+  .marquee li:last-child::after {
+    content: none;
   }
   @view-transition {
     navigation: none;
