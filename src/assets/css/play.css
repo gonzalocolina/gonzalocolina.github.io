@@ -117,34 +117,6 @@
   }
 }
 
-/* barra de evaluación (blancas abajo) */
-.board-row {
-  display: flex;
-  gap: 0.6rem;
-  align-items: stretch;
-}
-.board-row .board-host {
-  flex: 1;
-  min-width: 0;
-}
-.evalbar {
-  position: relative;
-  flex: none;
-  width: 0.9rem;
-  border-radius: 4px;
-  background: #2a2724;
-  overflow: hidden;
-  border: 1px solid var(--line-strong);
-}
-.evalbar__fill {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  height: 50%;
-  background: #f4efe6;
-  transition: height 0.4s var(--ease);
-}
 .board-wrap {
   position: relative;
 }

@@ -60,7 +60,6 @@ const LEVELS = {
 const root = document.getElementById("play");
 const $ = (sel) => root.querySelector(sel);
 const statusEl = $(".play-status");
-const evalFill = $(".evalbar__fill");
 const evalText = $(".eval-score");
 const infoDepth = $("[data-info=depth]");
 const infoNps = $("[data-info=nps]");
@@ -293,17 +292,14 @@ function showInfo(line) {
   if (tok.includes("score")) {
     const kind = get("score");
     const val = Number(tok[tok.indexOf("score") + 2]);
-    let pct, text;
+    let text;
     if (kind === "mate") {
       const m = val * sign;
-      pct = m > 0 ? 100 : 0;
       text = (m > 0 ? "+" : "−") + T.mate(Math.abs(m));
     } else {
       const cp = val * sign;
-      pct = 100 / (1 + Math.pow(10, -cp / 400));
       text = (cp > 0 ? "+" : cp < 0 ? "−" : "") + Math.abs(cp / 100).toFixed(2);
     }
-    evalFill.style.height = `${pct}%`;
     evalText.textContent = text;
   }
   const pv = tok.slice(tok.indexOf("pv") + 1, tok.indexOf("pv") + 9);
@@ -327,7 +323,6 @@ function newGame(color) {
   selected = null;
   userColor = color === "random" ? (Math.random() < 0.5 ? "w" : "b") : color;
   if ((board.orientation === "white") !== (userColor === "w")) board.flip();
-  evalFill.style.height = "50%";
   evalText.textContent = "0.00";
   infoDepth.textContent = infoNps.textContent = infoPv.textContent = "–";
   render(null, false);
