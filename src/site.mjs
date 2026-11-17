@@ -4,7 +4,7 @@ export const site = {
   url: "https://gonzalocolina.github.io",
   name: "Gonzalo Colina",
   fullName: "Gonzalo José Colina Báscones",
-  email: "gonzalocolina05@gmail.com",
+  email: "gonzalocolinab@gmail.com",
   github: "https://github.com/gonzalocolina",
   linkedin: "https://www.linkedin.com/in/gonzalo-colina-b%C3%A1scones-965361330/",
   langs: ["es", "en"],
