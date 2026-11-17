@@ -153,9 +153,27 @@ if (canvas && canvas.getContext) {
     }));
   };
 
+  // el brillo de fondo sigue al cursor con retraso, para que no dé tirones
+  const glow = { x: null, y: null, tx: null, ty: null };
+  const moveGlow = () => {
+    if (glow.tx === null) return;
+    if (glow.x === null) {
+      glow.x = glow.tx;
+      glow.y = glow.ty;
+    }
+    const dx = glow.tx - glow.x;
+    const dy = glow.ty - glow.y;
+    if (Math.abs(dx) + Math.abs(dy) < 0.5) return;
+    glow.x += dx * 0.04;
+    glow.y += dy * 0.04;
+    hero.style.setProperty("--mx", `${glow.x.toFixed(1)}px`);
+    hero.style.setProperty("--my", `${glow.y.toFixed(1)}px`);
+  };
+
   const LINK = 140;
   const draw = (t = 0) => {
     ctx.clearRect(0, 0, W, H);
+    moveGlow();
     for (const n of nodes) {
       if (!reduced) {
         n.x += n.vx;
@@ -231,8 +249,10 @@ if (canvas && canvas.getContext) {
     const r = hero.getBoundingClientRect();
     mouse.x = e.clientX - r.left;
     mouse.y = e.clientY - r.top;
-    hero.style.setProperty("--mx", `${mouse.x}px`);
-    hero.style.setProperty("--my", `${mouse.y}px`);
+    if (!reduced) {
+      glow.tx = mouse.x;
+      glow.ty = mouse.y;
+    }
   });
   hero.addEventListener("pointerleave", () => {
     mouse.x = mouse.y = -1e4;
