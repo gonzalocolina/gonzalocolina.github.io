@@ -932,7 +932,7 @@ mark.todo {
 /* el nombre ocupa el ancho de la pantalla */
 .hero__title {
   font-family: var(--display);
-  font-size: clamp(3.9rem, 16.6vw, 19rem);
+  font-size: clamp(3.9rem, 10.9vw, 11rem);
   font-weight: 400;
   letter-spacing: -0.045em;
   line-height: 0.88;
@@ -959,7 +959,7 @@ mark.todo {
 @media (max-width: 48rem) {
   .hero__title {
     white-space: normal;
-    font-size: clamp(3.9rem, 21vw, 9rem);
+    font-size: clamp(3.9rem, 19.5vw, 8.5rem);
   }
   .hero__title .line {
     display: block;
