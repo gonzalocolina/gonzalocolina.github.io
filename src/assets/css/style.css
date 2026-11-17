@@ -36,6 +36,11 @@
 
 /* ------------------------------------------------------------------ tokens */
 
+@property --corner {
+  syntax: "<length>";
+  inherits: false;
+  initial-value: 0.6rem;
+}
 :root {
   --bg: #0c0a09;
   --surface: #151311;
@@ -359,36 +364,48 @@ mark.todo {
   letter-spacing: -0.01em;
   margin-right: auto;
 }
+/* una «g» dentro de una caja de detección, con su etiqueta de confianza */
 .brand__mark {
+  --corner: 0.6rem;
+  --stroke: 1.5px;
   position: relative;
   display: inline-grid;
   place-items: center;
-  width: 2.25rem;
-  height: 2.25rem;
-  border-radius: 10px;
-  background: var(--surface);
-  font: 700 0.85rem/1 var(--font);
-  letter-spacing: -0.02em;
-  transition: transform 0.4s var(--ease-out);
+  width: 2.15rem;
+  height: 2.15rem;
+  margin-right: 2.2rem;
+  padding-bottom: 0.12em;
+  font: italic 500 1.6rem/1 var(--display);
+  color: var(--text);
+  background:
+    linear-gradient(var(--accent) 0 0) top left / var(--corner) var(--stroke),
+    linear-gradient(var(--accent) 0 0) top left / var(--stroke) var(--corner),
+    linear-gradient(var(--accent) 0 0) top right / var(--corner) var(--stroke),
+    linear-gradient(var(--accent) 0 0) top right / var(--stroke) var(--corner),
+    linear-gradient(var(--accent) 0 0) bottom left / var(--corner) var(--stroke),
+    linear-gradient(var(--accent) 0 0) bottom left / var(--stroke) var(--corner),
+    linear-gradient(var(--accent) 0 0) bottom right / var(--corner) var(--stroke),
+    linear-gradient(var(--accent) 0 0) bottom right / var(--stroke) var(--corner);
+  background-repeat: no-repeat;
+  transition: --corner 0.35s var(--ease-out);
 }
-.brand__mark::before {
-  content: "";
+.brand__mark::after {
+  content: "0.99";
   position: absolute;
-  inset: 0;
-  border-radius: inherit;
-  padding: 1.5px;
-  background: var(--grad);
-  -webkit-mask:
-    linear-gradient(#000 0 0) content-box,
-    linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-  mask-composite: exclude;
-}
-.brand__mark {
-  color: var(--accent);
+  top: -0.1rem;
+  left: calc(100% + 0.3rem);
+  padding: 0.2rem 0.3rem;
+  border-radius: 2px;
+  background: var(--accent);
+  color: var(--on-accent);
+  font: 500 0.62rem/1 var(--mono);
+  font-style: normal;
 }
 .brand:hover .brand__mark {
-  transform: rotate(-8deg) scale(1.06);
+  --corner: 0.9rem;
+}
+.brand:hover .brand__mark::after {
+  content: "1.00";
 }
 .brand:hover {
   color: var(--text);
@@ -895,31 +912,22 @@ mark.todo {
 .status {
   display: inline-flex;
   align-items: center;
-  gap: 0.6rem;
-  margin: 0;
-  padding: 0.35rem 0.9rem 0.35rem 0.75rem;
-  border: 1px solid var(--line-strong);
-  border-radius: 999px;
-  background: color-mix(in srgb, var(--surface) 70%, transparent);
-  backdrop-filter: blur(8px);
-  font: 500 0.76rem/1.4 var(--mono);
-  letter-spacing: 0.04em;
-  color: var(--muted);
+  gap: 0.5rem;
+  padding-bottom: 0.25rem;
+  border-bottom: 1px solid var(--accent);
+  font: 500 0.92rem/1.4 var(--font);
+  color: var(--text);
+  text-decoration: none;
 }
-.status__dot {
-  position: relative;
-  width: 0.5rem;
-  height: 0.5rem;
-  border-radius: 50%;
-  background: var(--ok);
+.status:hover {
+  color: var(--accent-ink);
 }
-.status__dot::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  border-radius: 50%;
-  background: var(--ok);
-  animation: ping 2s var(--ease) infinite;
+.status__arrow {
+  color: var(--accent);
+  transition: transform 0.3s var(--ease-out);
+}
+.status:hover .status__arrow {
+  transform: translateX(4px);
 }
 /* el nombre ocupa el ancho de la pantalla */
 .hero__title {
@@ -2871,13 +2879,6 @@ html.intro-on:not(.intro-built)::before {
 }
 @keyframes blink {
   50% {
-    opacity: 0;
-  }
-}
-@keyframes ping {
-  75%,
-  100% {
-    transform: scale(2.6);
     opacity: 0;
   }
 }

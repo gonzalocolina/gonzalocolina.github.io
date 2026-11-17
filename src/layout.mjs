@@ -100,7 +100,7 @@ ${jsonld}
 <header class="site-header">
   <span class="site-header__progress" aria-hidden="true"></span>
   <div class="wrap site-header__inner">
-    <a class="brand" href="@home"${isHome ? ' aria-current="page"' : ""}><span class="brand__mark" aria-hidden="true">GC</span><span class="brand__name">${esc(site.name)}</span></a>
+    <a class="brand" href="@home"${isHome ? ' aria-current="page"' : ""}><span class="brand__mark" aria-hidden="true">g</span><span class="brand__name">${esc(site.name)}</span></a>
     <nav class="nav" aria-label="${esc(t.navLabel)}">
       <button class="nav__toggle" type="button" aria-expanded="false" aria-controls="nav-list">${t.menu}</button>
       <ul class="nav__list" id="nav-list">${nav}</ul>

@@ -28,7 +28,7 @@ src/
 └── assets/                  css, js, fuentes, imágenes, og, motor wasm y librerías (se copian tal cual)
 tools/
 ├── charts.py                genera los gráficos SVG a partir de los datos medidos
-├── og.py                    genera las imágenes Open Graph y el icono de iOS (requiere Pillow)
+├── og.py                    genera las imágenes Open Graph, el icono de iOS y favicon.ico (requiere Pillow)
 ├── fonts/                   IBM Plex y Fraunces (OFL) y subset.sh para regenerar los WOFF2
 └── engine/                  build.sh: compila Optiline a WebAssembly para /jugar/
 ```

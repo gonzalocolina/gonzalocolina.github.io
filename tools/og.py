@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Genera las imágenes Open Graph (1200×630) de cada página, el icono para iOS y la imagen por defecto.
+"""Genera las imágenes Open Graph (1200×630) de cada página, el icono para iOS, favicon.ico y la imagen por defecto.
 
 Lee el título y la descripción del front matter de src/pages/{es,en}/**.html.
 Requiere Pillow (solo para generar las imágenes; la web no lo necesita).
@@ -86,6 +86,15 @@ def display(size):
     return f
 
 
+def display_italic(size, weight=500):
+    """Fraunces cursiva, la de la «g» del logo."""
+    f = ImageFont.truetype(str(FONTS / "Fraunces-Italic-Variable.ttf"), size)
+    axes = {a["name"]: a for a in f.get_variation_axes()}
+    want = {b"Optical Size": 24, b"Weight": weight, b"Softness": 0, b"Wonky": 1}
+    f.set_variation_by_axes([want.get(name, a["default"]) for name, a in axes.items()])
+    return f
+
+
 def mono(size):
     return ImageFont.truetype(str(FONTS / "IBMPlexMono-Medium.ttf"), size)
 
@@ -104,10 +113,30 @@ def wrap(draw, text, font, width):
     return lines
 
 
-def mark(draw, x, y, size):
-    draw.rounded_rectangle((x, y, x + size, y + size), radius=int(size * 0.26), fill=(21, 19, 17), outline=ACCENT, width=3)
-    f = sans(int(size * 0.38), "Bold")
-    draw.text((x + size / 2, y + size / 2 + 1), "GC", font=f, fill=ACCENT, anchor="mm")
+def corners(draw, x, y, size, width, fill=ACCENT):
+    """Las cuatro esquinas de una caja de detección."""
+    c, x1, y1 = round(size * 0.28), x + size, y + size
+    for ax, bx in ((x, x + c), (x1 - c, x1)):
+        for ay, by in ((y, y + width), (y1 - width, y1)):
+            draw.rectangle((ax, ay, bx - 1, by - 1), fill=fill)
+    for ax, bx in ((x, x + width), (x1 - width, x1)):
+        for ay, by in ((y, y + c), (y1 - c, y1)):
+            draw.rectangle((ax, ay, bx - 1, by - 1), fill=fill)
+
+
+def mark(draw, x, y, size, tag=True):
+    """Logo: una «g» dentro de una caja de detección, con su etiqueta de confianza."""
+    corners(draw, x, y, size, max(2, round(size * 0.05)))
+    f = display_italic(round(size * 0.72))
+    l, t, r, b = draw.textbbox((0, 0), "g", font=f)
+    draw.text((x + (size - l - r) / 2, y + (size - t - b) / 2), "g", font=f, fill=TEXT)
+    if tag:
+        f = mono(round(size * 0.3))
+        tx, ty = x + size + round(size * 0.14), y - 2
+        w = draw.textlength("0.99", font=f)
+        pad = round(size * 0.09)
+        draw.rounded_rectangle((tx, ty, tx + w + 2 * pad, ty + round(size * 0.3) + 2 * pad), radius=3, fill=ACCENT)
+        draw.text((tx + pad, ty + pad + round(size * 0.15)), "0.99", font=f, fill=(26, 12, 4), anchor="lm")
 
 
 def card(title, kicker, description, path):
@@ -124,7 +153,7 @@ def card(title, kicker, description, path):
     for yy in range(H):
         d.line((0, yy, 10, yy), fill=grad_at(yy / H))
     mark(d, P, P - 10, 64)
-    d.text((P + 88, P + 22), "Gonzalo Colina", font=sans(30, "SemiBold"), fill=TEXT, anchor="lm")
+    d.text((P + 156, P + 22), "Gonzalo Colina", font=sans(30, "SemiBold"), fill=TEXT, anchor="lm")
     d.text((P, 205), kicker.upper(), font=mono(24), fill=(255, 157, 92))
     size = 76
     while True:
@@ -168,12 +197,17 @@ def main():
         card(title, KICKER[lang].get(pid, ""), meta["description"], OUT / f"{lang}-{pid}.png")
     card("Gonzalo Colina", KICKER["es"]["home"], "Ingeniero informático (UVa) y estudiante del Máster en IA. Aplicaciones con Java, Spring Boot, Vue y Python.", OUT / "default.png")
 
-    # Icono para iOS (180×180)
+    # Icono para iOS (180×180) y favicon.ico (16, 32 y 48): la marca sin etiqueta
     icon = Image.new("RGB", (180, 180), BG)
     icon = glow(icon, 150, 20, 120, ACCENT, 0.35)
-    d = ImageDraw.Draw(icon)
-    d.text((90, 92), "GC", font=sans(72, "Bold"), fill=ACCENT, anchor="mm")
+    mark(ImageDraw.Draw(icon), 36, 36, 108, tag=False)
     icon.save(IMG / "apple-touch-icon.png", "PNG", optimize=True)
+
+    big = Image.new("RGBA", (256, 256), (0, 0, 0, 0))
+    d = ImageDraw.Draw(big)
+    d.rounded_rectangle((0, 0, 255, 255), radius=56, fill=BG)
+    mark(d, 36, 36, 184, tag=False)
+    big.save(ROOT / "src" / "static" / "favicon.ico", sizes=[(16, 16), (32, 32), (48, 48)])
     print("ok")
 
 
