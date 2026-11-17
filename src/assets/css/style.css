@@ -932,7 +932,7 @@ mark.todo {
 /* el nombre ocupa el ancho de la pantalla */
 .hero__title {
   font-family: var(--display);
-  font-size: clamp(3.9rem, 10.9vw, 11rem);
+  font-size: clamp(3.9rem, 10.55vw, 10.6rem);
   font-weight: 400;
   letter-spacing: -0.045em;
   line-height: 0.88;
@@ -942,11 +942,6 @@ mark.todo {
 .hero__title .line {
   display: inline-block;
   padding-bottom: 0.08em;
-}
-.line--it {
-  font-style: italic;
-  font-weight: 350;
-  padding-right: 0.06em;
 }
 .hero__title.is-split .ch {
   display: inline-block;
@@ -959,7 +954,7 @@ mark.todo {
 @media (max-width: 48rem) {
   .hero__title {
     white-space: normal;
-    font-size: clamp(3.9rem, 19.5vw, 8.5rem);
+    font-size: clamp(3.9rem, 18.2vw, 7.9rem);
   }
   .hero__title .line {
     display: block;
