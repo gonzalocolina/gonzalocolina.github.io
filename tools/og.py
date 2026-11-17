@@ -18,16 +18,16 @@ OUT = ROOT / "src" / "assets" / "og"
 IMG = ROOT / "src" / "assets" / "img"
 FONTS = Path(__file__).resolve().parent / "fonts"
 
-BG = (246, 244, 239)
-TEXT = (27, 26, 23)
-MUTED = (94, 90, 82)
-FAINT = (138, 133, 123)
-LINE = (224, 219, 208)
-ACCENT = (194, 65, 12)
+BG = (250, 250, 248)
+TEXT = (23, 24, 28)
+MUTED = (85, 89, 99)
+FAINT = (104, 108, 118)
+LINE = (229, 229, 224)
+ACCENT = (59, 79, 216)
 
 KICKER = {
     "es": {
-        "home": "Ingeniero informático · IA y backend",
+        "home": "Desarrollador de software · Fullstack e IA",
         "optiline": "Caso de estudio · Motor de ajedrez",
         "roadsignai": "Caso de estudio · Visión por computador",
         "tfg": "Caso de estudio · Trabajo Fin de Grado",
@@ -37,14 +37,14 @@ KICKER = {
         "cv": "Currículum",
     },
     "en": {
-        "home": "Software engineer · AI and backend",
+        "home": "Software developer · Full-stack and AI",
         "optiline": "Case study · Chess engine",
         "roadsignai": "Case study · Computer vision",
         "tfg": "Case study · Bachelor’s thesis",
         "aquilae": "Case study · Educational game",
         "pasos": "Case study · Android app",
         "play": "Chess in the browser",
-        "cv": "CV",
+        "cv": "Résumé",
     },
 }
 
@@ -74,9 +74,9 @@ def wrap(draw, text, font, width):
 
 
 def mark(draw, x, y, size):
-    draw.rounded_rectangle((x, y, x + size, y + size), radius=size * 0.22, fill=TEXT)
+    draw.ellipse((x, y, x + size, y + size), fill=ACCENT)
     f = mono(int(size * 0.38))
-    draw.text((x + size / 2, y + size / 2 + 1), "GC", font=f, fill=BG, anchor="mm")
+    draw.text((x + size / 2, y + size / 2 + 1), "GC", font=f, fill=(255, 255, 255), anchor="mm")
 
 
 def card(title, kicker, description, path):
@@ -127,12 +127,12 @@ def main():
         if pid == "home":
             title = "Gonzalo Colina"
         card(title, KICKER[lang].get(pid, ""), meta["description"], OUT / f"{lang}-{pid}.png")
-    card("Gonzalo Colina", KICKER["es"]["home"], "Proyectos de IA y backend con cada cifra enlazada a su prueba.", OUT / "default.png")
+    card("Gonzalo Colina", KICKER["es"]["home"], "Ingeniero informático (UVa) y estudiante del Máster en IA. Aplicaciones con Java, Spring Boot, Vue y Python.", OUT / "default.png")
 
     # Icono para iOS (180×180)
-    icon = Image.new("RGB", (180, 180), TEXT)
+    icon = Image.new("RGB", (180, 180), ACCENT)
     d = ImageDraw.Draw(icon)
-    d.text((90, 92), "GC", font=mono(70), fill=BG, anchor="mm")
+    d.text((90, 92), "GC", font=sans(68, "SemiBold"), fill=(255, 255, 255), anchor="mm")
     icon.save(IMG / "apple-touch-icon.png", "PNG", optimize=True)
     print("ok")
 

@@ -12,6 +12,11 @@ export const icons = {
     '<svg class="icon" viewBox="0 0 16 16" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.4" d="M1.5 3.5h13v9h-13zM1.8 3.8 8 8.6l6.2-4.8"/></svg>',
   theme:
     '<svg class="icon" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.25" fill="none" stroke="currentColor" stroke-width="1.4"/><path fill="currentColor" d="M8 1.75a6.25 6.25 0 010 12.5z"/></svg>',
+  pin: '<svg class="icon" viewBox="0 0 16 16" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.4" d="M8 14.5s4.75-4.2 4.75-8A4.75 4.75 0 003.25 6.5c0 3.8 4.75 8 4.75 8z"/><circle cx="8" cy="6.5" r="1.6" fill="currentColor"/></svg>',
+  work: '<svg class="icon" viewBox="0 0 16 16" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.4" d="M1.75 5.25h12.5v8H1.75zM5.75 5.25V3.5a1 1 0 011-1h2.5a1 1 0 011 1v1.75M1.75 8.75h12.5"/></svg>',
+  cap: '<svg class="icon" viewBox="0 0 16 16" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" d="M8 2.75 1 6.25l7 3.5 7-3.5zM3.75 7.6v3.4c1 1 2.5 1.75 4.25 1.75s3.25-.75 4.25-1.75V7.6M15 6.25v4"/></svg>',
+  spark: '<svg class="icon" viewBox="0 0 16 16" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" d="M8 1.5l1.6 4.4 4.4 1.6-4.4 1.6L8 13.5l-1.6-4.4L2 7.5l4.4-1.6z"/></svg>',
+  globe: '<svg class="icon" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.25" fill="none" stroke="currentColor" stroke-width="1.4"/><path fill="none" stroke="currentColor" stroke-width="1.4" d="M1.75 8h12.5M8 1.75c1.8 1.9 2.6 3.9 2.6 6.25S9.8 12.35 8 14.25C6.2 12.35 5.4 10.35 5.4 8S6.2 3.65 8 1.75z"/></svg>',
   arrow: '<span class="arrow" aria-hidden="true">→</span>',
 };
 
@@ -44,8 +49,9 @@ export function renderPage({ site, page, body, alternates, asset, og }) {
         alternateName: site.name,
         url: site.url + url,
         email: `mailto:${site.email}`,
-        jobTitle: lang === "es" ? "Ingeniero informático" : "Software engineer",
+        jobTitle: lang === "es" ? "Desarrollador de software" : "Software developer",
         alumniOf: { "@type": "CollegeOrUniversity", name: "Universidad de Valladolid" },
+        knowsLanguage: ["es", "en"],
         address: { "@type": "PostalAddress", addressLocality: "Valladolid", addressCountry: "ES" },
         sameAs: [site.github, site.linkedin],
       })}</script>`
@@ -94,7 +100,7 @@ ${jsonld}
     <a class="brand" href="@home"${isHome ? ' aria-current="page"' : ""}><span class="brand__mark" aria-hidden="true">GC</span><span class="brand__name">${esc(site.name)}</span></a>
     <nav class="nav" aria-label="${esc(t.navLabel)}">
       <button class="nav__toggle" type="button" aria-expanded="false" aria-controls="nav-list">${t.menu}</button>
-      <ul class="nav__list" id="nav-list">${nav}<li><a class="nav__play" href="@play"${page.id === "play" ? ' aria-current="page"' : ""}>${t.play}</a></li></ul>
+      <ul class="nav__list" id="nav-list">${nav}</ul>
     </nav>
     <div class="header-tools">
       ${langLink}

@@ -41,7 +41,7 @@
         <li><a href="#approach">Approach</a></li>
         <li><a href="#results">Results</a></li>
         <li><a href="#browser">In the browser</a></li>
-        <li><a href="#failures">What did not work</a></li>
+        <li><a href="#failures">Problems I solved</a></li>
         <li><a href="#next">Next steps</a></li>
       </ol>
     </nav>
@@ -126,7 +126,7 @@
       </section>
 
       <section id="failures">
-        <h2>What did not work</h2>
+        <h2>Problems I solved</h2>
         <ul>
           <li><strong>Truncated games.</strong> The first ablation runs stopped games after 60 plies (30 moves each), and about 90% ended as adjudicated draws: they could not tell real strength apart. They are now telemetry only, and the gate uses full games.</li>
           <li><strong>A lying meter.</strong> The old runner cut games at 120 plies and scored unfinished ones as draws. With the current method, the previous network’s edge over the 2200 rung went from +38 to +207.</li>

@@ -8,18 +8,18 @@ enlaza a la prueba que la respalda.
 experimento con su manifiesto. El TFG publica sus pruebas de carga. La web traslada esa forma de trabajar
 al diseño: sobria, precisa, con cifras en fuente monoespaciada que enlazan a la prueba, y con los detalles cuidados.
 
-## Estado (2026-11-16)
+## Estado (2026-11-17)
 
-**Hecho:** las fases 2, 3 y 4 y la mayor parte de la 0, 1 y 6. Las 17 páginas (portada, 5 casos de estudio, `/jugar/`, `/cv/`
-en ES y EN, y la 404) están maquetadas, con temas claro y oscuro, botón ES/EN, Open Graph por página, sitemap y
-workflow de Pages. Lighthouse en local da 100 en accesibilidad, buenas prácticas y SEO, y de 95 a 100 en rendimiento.
-La portada transfiere ~52 KB (5,6 KB de JS). `/jugar/` funciona con Optiline compilado a WebAssembly.
+**Rediseño (2026-11-17).** La portada presenta a Gonzalo como desarrollador: titular y ficha de resumen, experiencia en
+Xeridia, cinco proyectos al mismo nivel (el TFG destacado), formación, habilidades y contacto. El ajedrez ya no ocupa la
+portada: Optiline es un proyecto más y `/jugar/` se enlaza desde su caso de estudio. Nueva paleta (neutros fríos y acento
+índigo), botones redondeados, menos tipografía monoespaciada, portadas dibujadas para RoadSignAI y Optiline, y nuevos
+favicon e imágenes Open Graph. Los datos personales salen del CV en PDF (Xeridia, fechas, inglés B2); se retiró lo que no
+estaba confirmado (AZ-900, "disponible para prácticas").
 
-**Publicada** en https://gonzalocolina.github.io desde el repo público `gonzalocolina/gonzalocolina.github.io`
-(antes `GonzaloColinaWebPersonal`). Cada push a `main` la vuelve a publicar con `node build.mjs --strict --publish`.
-
-**Falta:** rellenar los `{{TODO}}` de la portada y del CV (cargo, fechas y descripción en Xeridia, años del grado y
-nivel de inglés). Hasta entonces la versión publicada omite esos bloques; en local se ven marcados en amarillo.
+**Pública de nuevo** desde el 2026-11-17: Pages solo funciona con repos públicos en el plan gratuito.
+Publicada en https://gonzalocolina.github.io; el workflow la vuelve a publicar con cada push a `main`
+(`node build.mjs --strict --publish`).
 
 **Opcional:**
 - Vídeo de RoadSignAI (`src/assets/video/roadsignai.mp4`).

@@ -1,163 +1,166 @@
 ---
 {
   "id": "home",
-  "title": "Gonzalo Colina · Software engineer, AI and backend",
+  "title": "Gonzalo Colina · Software developer",
   "ogTitle": "Gonzalo Colina",
-  "description": "Software engineer in Valladolid, Spain. A ~3100 Elo neural-network chess engine, a traffic-sign detector and real-time platforms, with every number linked to its evidence.",
-  "scripts": ["/assets/js/hero.js"]
+  "description": "Computer engineering graduate from the University of Valladolid and Master's student in Artificial Intelligence. I build full web applications with Java, Spring Boot and Vue, and AI projects with Python."
 }
 ---
-{{> pieces}}
 <section class="hero">
   <div class="wrap hero__grid">
     <div>
-      <span class="eyebrow">Software engineer · AI and backend</span>
+      <p class="status">Open to new opportunities</p>
       <h1>Gonzalo Colina</h1>
-      <p class="hero__lead">I build software you can <strong>measure</strong>: a neural-network chess engine that plays at <strong>~3100 Elo</strong>, a traffic-sign detector and a real-time platform that handles <strong>100 clients without a single error</strong>. Every number on this site links to its evidence.</p>
-      <ul class="hero__facts">
-        <li class="is-live">Open to internships</li>
-        <li>Valladolid · Palencia, Spain</li>
-        <li>MSc in AI (UNIR)</li>
-      </ul>
+      <p class="hero__role">Software developer <span>· full-stack and artificial intelligence</span></p>
+      <p class="hero__lead">Computer engineering graduate from the <strong>University of Valladolid</strong> and student of the <strong>Master's in Artificial Intelligence</strong> at UNIR. I build complete applications, from the Java and Spring Boot API to the Vue interface, and AI projects with Python.</p>
       <div class="actions">
         <a class="btn btn--primary" href="#projects">See projects <span class="arrow" aria-hidden="true">→</span></a>
-        <a class="btn" href="@cv">CV</a>
-        <a class="icon-link" href="https://github.com/gonzalocolina" aria-label="GitHub"><svg class="icon" viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0016 8c0-4.42-3.58-8-8-8z"/></svg></a>
-        <a class="icon-link" href="https://www.linkedin.com/in/gonzalo-colina-b%C3%A1scones-965361330/" aria-label="LinkedIn"><svg class="icon" viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M13.6 0H2.4A2.4 2.4 0 000 2.4v11.2A2.4 2.4 0 002.4 16h11.2a2.4 2.4 0 002.4-2.4V2.4A2.4 2.4 0 0013.6 0zM4.9 13.3H2.6V6h2.3v7.3zM3.75 5a1.33 1.33 0 110-2.66 1.33 1.33 0 010 2.66zm9.6 8.3h-2.3V9.75c0-.85-.02-1.94-1.18-1.94-1.18 0-1.36.92-1.36 1.88v3.61H6.2V6h2.2v1h.03c.31-.58 1.06-1.19 2.18-1.19 2.33 0 2.76 1.53 2.76 3.53v3.96z"/></svg></a>
+        <a class="btn" href="@cv">Résumé</a>
+        <a class="icon-link" href="https://github.com/gonzalocolina" aria-label="GitHub">{{icon github}}</a>
+        <a class="icon-link" href="https://www.linkedin.com/in/gonzalo-colina-b%C3%A1scones-965361330/" aria-label="LinkedIn">{{icon linkedin}}</a>
+        <a class="icon-link" href="#contact" aria-label="Contact">{{icon mail}}</a>
       </div>
     </div>
-    <figure class="hero-game hero__board" aria-labelledby="hero-game-cap">
-      <div class="board-host" aria-hidden="true"></div>
-      <div class="hero-game__bar">
-        <div class="hero-game__controls">
-          <button type="button" data-act="prev" aria-label="Previous move">←</button>
-          <button type="button" data-act="play" data-play="Play the game" data-pause="Pause the game" aria-label="Play the game"><svg class="icon" viewBox="0 0 16 16" aria-hidden="true"><path fill="currentColor" d="M4 2.5v11l9-5.5z"/></svg></button>
-          <button type="button" data-act="next" aria-label="Next move">→</button>
-        </div>
-        <span class="hero-game__move">—</span>
-      </div>
-      <figcaption id="hero-game-cap"><strong>Optiline 1–0 unlimited Stockfish 18.</strong> 100 ms per move, 14 November 2026. Its only win in 100 games against full-strength Stockfish. <a class="link-arrow" href="@play">Play against it <span class="arrow" aria-hidden="true">→</span></a></figcaption>
-    </figure>
+    <ul class="glance" aria-label="At a glance">
+      <li><span class="glance__icon">{{icon work}}</span><b>Intern Software Engineer at Xeridia</b><span>February – April 2026 · Valladolid</span></li>
+      <li><span class="glance__icon">{{icon cap}}</span><b>BSc in Computer Engineering</b><span>University of Valladolid · 2021 – 2026</span></li>
+      <li><span class="glance__icon">{{icon spark}}</span><b>Master's in Artificial Intelligence</b><span>UNIR · 2026 – present</span></li>
+      <li><span class="glance__icon">{{icon globe}}</span><b>Spanish native · English B2</b><span>Cambridge English Certificate</span></li>
+      <li><span class="glance__icon">{{icon pin}}</span><b>Valladolid and Palencia, Spain</b><span>Driving licence (B)</span></li>
+    </ul>
   </div>
 </section>
-{{data hero-game}}
+
+<section class="section section--alt" id="experience" aria-labelledby="experience-h">
+  <div class="wrap">
+    <div class="section__head">
+      <span class="eyebrow">Experience</span>
+      <h2 id="experience-h">Where I have worked</h2>
+    </div>
+    <article class="xp" data-reveal>
+      <div class="xp__meta">
+        <span class="xp__logo" aria-hidden="true">X</span>
+        <strong>Xeridia</strong>
+        <span>February – April 2026</span>
+        <span>Valladolid · Internship</span>
+      </div>
+      <div>
+        <h3>Intern Software Engineer</h3>
+        <p class="xp__summary">Built a software project management platform, similar to Jira, with artificial intelligence features.</p>
+        <ul class="points">
+          <li>Backend in <strong>Java with Spring Boot and Spring Data JPA</strong>, with a layered architecture and a REST API.</li>
+          <li>Frontend with <strong>Vue.js</strong>, JavaScript, HTML, CSS and Bootstrap.</li>
+          <li>AI service in <strong>Python with Pydantic</strong>, integrated with the <strong>OpenAI and Gemini</strong> APIs.</li>
+          <li>Team of 6 developers working iteratively and incrementally, with regular demos of what we had built.</li>
+        </ul>
+        <ul class="tags"><li>Java</li><li>Spring Boot</li><li>Spring Data JPA</li><li>REST</li><li>Vue.js</li><li>Bootstrap</li><li>Python</li><li>Pydantic</li><li>OpenAI</li><li>Gemini</li></ul>
+      </div>
+    </article>
+  </div>
+</section>
 
 <section class="section" id="projects" aria-labelledby="projects-h">
   <div class="wrap">
     <div class="section__head">
-      <h2 id="projects-h">Projects</h2>
-      <p>Three large projects and two smaller ones, all finished and in use. Each has a case study with the problem, the decisions, the results and what did not work.</p>
+      <span class="eyebrow">Projects</span>
+      <h2 id="projects-h">What I have built</h2>
+      <p>Web, mobile and artificial intelligence. Each one has its own page with the problem, how I solved it and the results.</p>
     </div>
 
-    <div class="features">
-      <article class="feature" data-reveal>
-        <div class="feature__media">
-          <figure class="media-panel chart">
-            <span class="eyebrow">Ladder against Stockfish 18 · 100 ms/move</span>
-            {{> chart-ladder-en}}
-          </figure>
+    <div class="projects">
+      <article class="project project--wide" data-reveal>
+        <div class="project__cover project__cover--shots">
+          {{img tfg-org-partida | Organiser dashboard with the villain's health, the main scheme's threat and the timer | sizes=(min-width: 72rem) 36rem, (min-width: 56rem) 55vw, 100vw}}
+          {{img tfg-player-partida | Player view on a phone during a game | class=phone}}
         </div>
-        <div>
-          <span class="eyebrow">Chess engine · C++20 · Python · NNUE</span>
-          <h3><a href="@optiline">Optiline</a></h3>
-          <p class="feature__summary">A UCI chess engine with alpha-beta search and a quantised neural network that evaluates over a million positions per second on a single thread. It ships with the whole pipeline that trains its networks, validates them and promotes them only if they win full games.</p>
-          <dl class="metrics">
-            <div class="metric"><dt>Elo on Stockfish 18’s scale at 100 ms</dt><dd>~3100 <small>± 35</small></dd><dd class="proof"><a href="https://github.com/gonzalocolina/Optiline/blob/master/experiments/20261114_simple1024_test80_elo/report.md">report</a></dd></div>
-            <div class="metric"><dt>vs. Stockfish 18 limited to 2900 (200 games)</dt><dd>+125 <small>± 43</small></dd><dd class="proof"><a href="https://github.com/gonzalocolina/Optiline/blob/master/experiments/20261114_simple1024_test80_elo/report.md">games and method</a></dd></div>
-            <div class="metric"><dt>dated experiments with manifests and hashes</dt><dd>80+</dd><dd class="proof"><a href="https://github.com/gonzalocolina/Optiline/tree/master/experiments">experiments/</a></dd></div>
-          </dl>
-          <ul class="tags"><li>C++20</li><li>AVX2</li><li>Python</li><li>NumPy</li><li>CUDA</li><li>WebAssembly</li></ul>
-          <div class="actions">
-            <a class="btn btn--primary" href="@optiline">Case study <span class="arrow" aria-hidden="true">→</span></a>
-            <a class="btn btn--accent" href="@play">Play</a>
-            <a class="btn btn--ghost" href="https://github.com/gonzalocolina/Optiline">Code</a>
+        <div class="project__body">
+          <p class="project__kicker">Bachelor's thesis · Real-time web application</p>
+          <h3><a href="@tfg">Marvel Champions events</a></h3>
+          <p class="project__summary">A platform to run in-person events of the card game with many tables at once. The organiser runs the event from a computer, each table plays from a phone, and everyone sees the same state instantly over WebSockets.</p>
+          <ul class="highlights">
+            <li><b>9.7/10</b><span>thesis grade</span></li>
+            <li><b>100</b><span>clients at once without a single error</span></li>
+            <li><b>12 ms</b><span>for a change to reach everyone (p95)</span></li>
+          </ul>
+          <ul class="tags"><li>Java 17</li><li>Spring Boot</li><li>WebSocket</li><li>Vue 3</li><li>JWT</li><li>Docker</li></ul>
+          <div class="project__links">
+            <a class="more" href="@tfg">View project <span class="arrow" aria-hidden="true">→</span></a>
+            <a href="https://github.com/gonzalocolina/tfg-gonzalo-colina">Code</a>
           </div>
         </div>
       </article>
 
-      <article class="feature" data-reveal>
-        <div class="feature__media">
-          <figure class="media-panel chart">
-            <span class="eyebrow">Accuracy versus speed · GTSDB test</span>
-            {{> chart-roadsignai-en}}
-          </figure>
-        </div>
-        <div>
-          <span class="eyebrow">Computer vision · YOLO · PyTorch</span>
+      <article class="project" data-reveal>
+        <div class="project__cover project__cover--art">{{> cover-roadsignai}}</div>
+        <div class="project__body">
+          <p class="project__kicker">Computer vision · AI</p>
           <h3><a href="@roadsignai">RoadSignAI</a></h3>
-          <p class="feature__summary">A traffic-sign detector that outputs codes from Spain’s 2025 DGT catalogue: 36 classes, frame-to-frame tracking with ByteTrack and FP16 ONNX export. It compares five architectures on the official GTSDB test set on a 4 GB laptop GPU.</p>
-          <dl class="metrics">
-            <div class="metric"><dt>YOLO11s mAP50 on the official test set (300 images)</dt><dd>0.626</dd></div>
-            <div class="metric"><dt>frames per second on a laptop GTX 1650</dt><dd>73 <small>FPS</small></dd></div>
-            <div class="metric"><dt>recall of the two-stage detector + classifier</dt><dd>0.951</dd></div>
-          </dl>
-          <p class="note"><span aria-hidden="true">🔒</span><span><strong>Private code for now.</strong> Happy to walk through it in an interview; the case study explains how it was measured.</span></p>
-          <ul class="tags"><li>Python</li><li>PyTorch</li><li>Ultralytics</li><li>ONNX</li><li>ByteTrack</li></ul>
-          <div class="actions">
-            <a class="btn btn--primary" href="@roadsignai">Case study <span class="arrow" aria-hidden="true">→</span></a>
+          <p class="project__summary">Real-time traffic sign detector: 36 sign types, labelled with the Spanish DGT catalogue codes, and tracking of each sign across frames. Compares five YOLO models on the official GTSDB test set.</p>
+          <ul class="highlights">
+            <li><b>73 FPS</b><span>on a laptop GPU</span></li>
+            <li><b>0.95</b><span>recall with detector and classifier</span></li>
+          </ul>
+          <ul class="tags"><li>Python</li><li>PyTorch</li><li>YOLO</li><li>ONNX</li></ul>
+          <div class="project__links">
+            <a class="more" href="@roadsignai">View project <span class="arrow" aria-hidden="true">→</span></a>
+            <span class="project__lock">Private code</span>
           </div>
         </div>
       </article>
 
-      <article class="feature" data-reveal>
-        <div class="feature__media">
-          <div class="shot-stack">
-            {{img tfg-org-partida | Organiser dashboard with the villain’s health, the main scheme’s threat and the timer | sizes=(min-width: 72rem) 34rem, (min-width: 52rem) 45vw, 100vw | class=shot}}
-            {{img tfg-player-partida | Player view on a phone with the timer, the villain’s health and the threat | class=shot shot--phone}}
-          </div>
-        </div>
-        <div>
-          <span class="eyebrow">Bachelor’s thesis · Java · Spring Boot · Vue 3</span>
-          <h3><a href="@tfg">Real-time Marvel Champions events</a></h3>
-          <p class="feature__summary">A platform that coordinates in-person games played across many tables at once. The organiser runs the event from a desktop and each table reports its progress from a phone; the shared state syncs instantly over WebSockets.</p>
-          <dl class="metrics">
-            <div class="metric"><dt>thesis grade</dt><dd>9.7<small>/10</small></dd></div>
-            <div class="metric"><dt>errors with 100 clients connected at once</dt><dd>0</dd><dd class="proof"><a href="https://github.com/gonzalocolina/tfg-gonzalo-colina/tree/main/load-tests">load-test harness</a></dd></div>
-            <div class="metric"><dt>p95 to propagate a change to every client</dt><dd>12 <small>ms</small></dd><dd class="proof"><a href="https://github.com/gonzalocolina/tfg-gonzalo-colina#resultados-de-las-pruebas-de-carga">results</a></dd></div>
-          </dl>
-          <ul class="tags"><li>Java 17</li><li>Spring Boot</li><li>WebSocket/STOMP</li><li>Vue 3</li><li>JWT</li><li>Docker</li></ul>
-          <div class="actions">
-            <a class="btn btn--primary" href="@tfg">Case study <span class="arrow" aria-hidden="true">→</span></a>
-            <a class="btn btn--ghost" href="https://github.com/gonzalocolina/tfg-gonzalo-colina">Code</a>
+      <article class="project" data-reveal>
+        <div class="project__cover project__cover--art">{{> cover-optiline}}</div>
+        <div class="project__body">
+          <p class="project__kicker">Chess engine · AI and C++</p>
+          <h3><a href="@optiline">Optiline</a></h3>
+          <p class="project__summary">A chess engine with a neural network that evaluates close to a million positions per second on a single thread. It includes the whole process to train new networks and accept them only if they play better.</p>
+          <ul class="highlights">
+            <li><b>~3100</b><span>Elo, measured against Stockfish 18</span></li>
+            <li><b>80+</b><span>documented experiments</span></li>
+          </ul>
+          <ul class="tags"><li>C++20</li><li>Python</li><li>CUDA</li><li>WebAssembly</li></ul>
+          <div class="project__links">
+            <a class="more" href="@optiline">View project <span class="arrow" aria-hidden="true">→</span></a>
+            <a href="https://github.com/gonzalocolina/Optiline">Code</a>
           </div>
         </div>
       </article>
-    </div>
-  </div>
-</section>
 
-<section class="section" aria-labelledby="mas-h">
-  <div class="wrap">
-    <div class="section__head">
-      <h2 id="mas-h">More projects</h2>
-      <p>Two educational products already used by real people: one in classrooms, one on Google Play.</p>
-    </div>
-    <div class="cards">
-      <article class="card" data-reveal>
-        <div class="card__media">{{img aquilae-mapa | Map of the Roman Empire split between four teams in Aquilae | sizes=(min-width: 72rem) 34rem, 100vw}}</div>
-        <div class="card__body">
-          <span class="eyebrow">Educational web game · JavaScript · Leaflet</span>
-          <h3><a href="@aquilae">Aquilae</a></h3>
-          <p>A turn-based strategy game for reviewing Roman history and Latin in class, played on a real map of the Empire. Tested in <strong>3 schools</strong> with secondary and sixth-form students.</p>
-          <div class="actions">
-            <a class="btn btn--primary" href="https://gonzalocolina.github.io/Aquilae/">Play online</a>
-            <a class="link-arrow" href="@aquilae">Case study <span class="arrow" aria-hidden="true">→</span></a>
-          </div>
+      <article class="project" data-reveal>
+        <div class="project__cover project__cover--phones">
+          {{img pasos-inicio | Pasos de María home screen with María de Molina's biography}}
+          {{img pasos-mapa | Map of Valladolid with places linked to María de Molina}}
+          {{img pasos-quiz | Quiz question with a timer}}
         </div>
-      </article>
-      <article class="card" data-reveal>
-        <div class="card__media card__media--phones">
-          {{img pasos-inicio | Pasos de María home screen with María de Molina’s biography}}
-          {{img pasos-mapa | Map of Valladolid with the places linked to María de Molina}}
-          {{img pasos-quiz | Timed quiz question}}
-        </div>
-        <div class="card__body">
-          <span class="eyebrow">Android app · Kotlin · Jetpack Compose</span>
+        <div class="project__body">
+          <p class="project__kicker">Android app · Kotlin</p>
           <h3><a href="@pasos">Pasos de María</a></h3>
-          <p>An app about Queen María de Molina with a map, 360° photos, a real-time multiplayer quiz and a children’s mode. <strong>3rd prize at OnAppExperience</strong>, published on Google Play and translated into 4 languages.</p>
-          <div class="actions">
-            <a class="btn btn--primary" href="https://play.google.com/store/apps/details?id=com.edunova.mariamolina">Google Play</a>
-            <a class="link-arrow" href="@pasos">Case study <span class="arrow" aria-hidden="true">→</span></a>
+          <p class="project__summary">An app to learn the story of María de Molina, with a map, 360° photos and a real-time multiplayer quiz.</p>
+          <ul class="highlights">
+            <li><b>3rd prize</b><span>OnAppExperience contest</span></li>
+            <li><b>Google Play</b><span>published and available</span></li>
+          </ul>
+          <ul class="tags"><li>Kotlin</li><li>Jetpack Compose</li><li>Firebase</li></ul>
+          <div class="project__links">
+            <a class="more" href="@pasos">View project <span class="arrow" aria-hidden="true">→</span></a>
+            <a href="https://play.google.com/store/apps/details?id=com.edunova.mariamolina">Google Play</a>
+          </div>
+        </div>
+      </article>
+
+      <article class="project" data-reveal>
+        <div class="project__cover">{{img aquilae-mapa | Map of the Roman Empire split between four teams in Aquilae | sizes=(min-width: 72rem) 34rem, (min-width: 56rem) 45vw, 100vw}}</div>
+        <div class="project__body">
+          <p class="project__kicker">Educational web game · JavaScript</p>
+          <h3><a href="@aquilae">Aquilae</a></h3>
+          <p class="project__summary">A turn-based strategy game to review Roman history and Latin in class, on a real map of the Empire. Built within the PhilHum-Games+ teaching project at the University of Valladolid.</p>
+          <ul class="highlights">
+            <li><b>3 schools</b><span>have used it in class</span></li>
+          </ul>
+          <ul class="tags"><li>JavaScript</li><li>Leaflet</li><li>Turf.js</li></ul>
+          <div class="project__links">
+            <a class="more" href="@aquilae">View project <span class="arrow" aria-hidden="true">→</span></a>
+            <a href="https://gonzalocolina.github.io/Aquilae/">Play online</a>
           </div>
         </div>
       </article>
@@ -165,94 +168,53 @@
   </div>
 </section>
 
-<section class="section" aria-labelledby="como-h">
-  <div class="wrap">
-    <div class="section__head">
-      <h2 id="como-h">How I work</h2>
+<section class="section section--alt" id="education" aria-labelledby="education-h">
+  <div class="wrap split">
+    <div data-reveal>
+      <span class="eyebrow">Education</span>
+      <h2 id="education-h">Studies</h2>
+      <ol class="edu">
+        <li>
+          <span class="edu__when">2026 – present</span>
+          <h3>Master's in Artificial Intelligence</h3>
+          <p>Universidad Internacional de La Rioja (UNIR) · Online</p>
+        </li>
+        <li>
+          <span class="edu__when">2021 – 2026</span>
+          <h3>BSc in Computer Engineering</h3>
+          <p>University of Valladolid · Software Engineering track. Bachelor's thesis graded 9.7/10.</p>
+        </li>
+      </ol>
     </div>
-    <ol class="principles">
-      <li data-reveal>
-        <h3>Measure before claiming</h3>
-        <p>In Optiline a new network is only promoted if it wins a full-game SPRT; a lower validation loss is not enough. That is why every number here comes with its method.</p>
-      </li>
-      <li data-reveal>
-        <h3>Finish and ship</h3>
-        <p>Aquilae has been used in three schools, Pasos de María is on Google Play and Optiline publishes releases with Linux and Windows binaries.</p>
-      </li>
-      <li data-reveal>
-        <h3>Report what did not work</h3>
-        <p>The case studies include the weak results: the rare signs RoadSignAI misses, the newer model that did not improve, the test runs that produced false draws.</p>
-      </li>
-    </ol>
-  </div>
-</section>
-
-<section class="section" id="experience" aria-labelledby="experience-h">
-  <div class="wrap">
-    <div class="section__head">
-      <h2 id="experience-h">Experience and education</h2>
-      <p><a class="link-arrow" href="@cv">Full CV <span class="arrow" aria-hidden="true">→</span></a></p>
+    <div data-reveal>
+      <span class="eyebrow">Skills</span>
+      <h2>What I work with</h2>
+      <dl class="skills">
+        <div><dt>Backend</dt><dd><ul class="tags"><li>Java</li><li>Spring Boot</li><li>Spring Data JPA</li><li>REST APIs</li><li>WebSocket</li><li>SQL</li></ul></dd></div>
+        <div><dt>Frontend</dt><dd><ul class="tags"><li>Vue.js</li><li>JavaScript</li><li>HTML</li><li>CSS</li><li>Bootstrap</li></ul></dd></div>
+        <div><dt>Artificial intelligence</dt><dd><ul class="tags"><li>Python</li><li>PyTorch</li><li>YOLO</li><li>Pydantic</li><li>OpenAI and Gemini APIs</li></ul></dd></div>
+        <div><dt>Other</dt><dd><ul class="tags"><li>C</li><li>C++</li><li>Kotlin</li><li>Git</li><li>Docker</li></ul></dd></div>
+        <div><dt>Languages</dt><dd><ul class="tags"><li>Spanish (native)</li><li>English B2 (Cambridge)</li></ul></dd></div>
+      </dl>
     </div>
-    <ol class="timeline">
-      <!--todo-block--><li data-reveal>
-        <span class="timeline__when">{{TODO: dates at Xeridia}}</span>
-        <div>
-          <h3>{{TODO: role}} <span>· Xeridia</span></h3>
-          <p>{{TODO: what you did at Xeridia, one line, with a number if there is one}}</p>
-        </div>
-      </li><!--/todo-block-->
-      <li data-reveal>
-        <span class="timeline__when">In progress</span>
-        <div>
-          <h3>MSc in Artificial Intelligence <span>· UNIR</span></h3>
-          <p>Official master’s degree (Máster universitario).</p>
-        </div>
-      </li>
-      <li data-reveal>
-        <span class="timeline__when">{{TODO: degree years}}</span>
-        <div>
-          <h3>BSc in Computer Engineering <span>· University of Valladolid</span></h3>
-          <p>Software Engineering track. Thesis graded 9.7/10.</p>
-        </div>
-      </li>
-      <li data-reveal>
-        <span class="timeline__when">Certification</span>
-        <div>
-          <h3>Microsoft Azure Fundamentals <span>· AZ-900</span></h3>
-          <p>Cloud concepts, Azure services, security and governance.</p>
-        </div>
-      </li>
-      <li data-reveal>
-        <span class="timeline__when">Award</span>
-        <div>
-          <h3>3rd prize, OnAppExperience <span>· Pasos de María</span></h3>
-          <p>For the app we built as a team in the Mobile Systems course (UVa).</p>
-        </div>
-      </li>
-      <li data-reveal>
-        <span class="timeline__when">Languages</span>
-        <div>
-          <h3>Spanish <span>· native</span></h3>
-          <!--todo-block--><p>English: {{TODO: English level (and certificate, if any)}}</p><!--/todo-block-->
-        </div>
-      </li>
-    </ol>
   </div>
 </section>
 
 <section class="section" id="contact" aria-labelledby="contact-h">
-  <div class="wrap contact">
-    <span class="eyebrow">Contact</span>
-    <h2 id="contact-h">I am looking for an internship or a first job in AI or backend.</h2>
-    <p class="muted prose">Based in Valladolid and Palencia, Spain. If you have a role, a project or a question about anything on this site, get in touch.</p>
-    <div class="contact__mail">
-      <a class="big" href="mailto:gonzalocolina05@gmail.com">gonzalocolina05@gmail.com</a>
-      <button class="btn copy" type="button" data-copy="gonzalocolina05@gmail.com" data-copied="Copied ✓"><span class="copy__label">Copy</span></button>
-    </div>
-    <div class="actions">
-      <a class="btn" href="https://www.linkedin.com/in/gonzalo-colina-b%C3%A1scones-965361330/">LinkedIn</a>
-      <a class="btn" href="https://github.com/gonzalocolina">GitHub</a>
-      <a class="btn" href="@cv">CV</a>
+  <div class="wrap">
+    <div class="contact">
+      <span class="eyebrow">Contact</span>
+      <h2 id="contact-h">Let's talk</h2>
+      <p>I'm looking for my next step as a developer, in backend, full-stack or artificial intelligence, in Valladolid or Palencia. Write to me and I'll get back to you as soon as I can.</p>
+      <div class="contact__mail">
+        <a class="big" href="mailto:gonzalocolina05@gmail.com">gonzalocolina05@gmail.com</a>
+        <button class="btn copy" type="button" data-copy="gonzalocolina05@gmail.com" data-copied="Copied ✓"><span class="copy__label">Copy</span></button>
+      </div>
+      <div class="actions">
+        <a class="btn btn--light" href="https://www.linkedin.com/in/gonzalo-colina-b%C3%A1scones-965361330/">{{icon linkedin}} LinkedIn</a>
+        <a class="btn" href="https://github.com/gonzalocolina">{{icon github}} GitHub</a>
+        <a class="btn" href="@cv">Résumé</a>
+      </div>
     </div>
   </div>
 </section>

@@ -24,7 +24,6 @@ src/
 ├── layout.mjs               plantilla: <head>, metadatos, hreflang, Open Graph, cabecera y pie
 ├── pages/es/…, pages/en/…   una página por archivo: front matter JSON + HTML
 ├── partials/                piezas de ajedrez (SVG) y gráficos generados
-├── data/hero-game.json      la partida de la portada (Optiline 1–0 Stockfish 18 sin límite)
 ├── static/                  archivos que van a la raíz (favicon.ico)
 └── assets/                  css, js, fuentes, imágenes, og, motor wasm y librerías (se copian tal cual)
 tools/

@@ -14,6 +14,7 @@
 //   {{data name}}                     src/data/name.json as an inline JSON script
 //   {{> name}}                        src/partials/name.(svg|html)
 //   {{hash /assets/…}}                content hash of an asset (for cache-busting URLs built in pages)
+//   {{icon name}}                     inline SVG icon from `icons` in src/layout.mjs
 //   {{TODO: text}}                    highlighted placeholder; a warning (an error with --strict)
 
 import { createHash } from "node:crypto";
@@ -75,7 +76,7 @@ async function build() {
   // Fresh imports so --serve picks up edits to site.mjs / layout.mjs.
   const bust = `?t=${Date.now()}`;
   const { site } = await import(join(SRC, "site.mjs") + bust);
-  const { renderPage } = await import(join(SRC, "layout.mjs") + bust);
+  const { renderPage, icons } = await import(join(SRC, "layout.mjs") + bust);
 
   await rm(OUT, { recursive: true, force: true });
   await mkdir(OUT, { recursive: true });
@@ -219,6 +220,10 @@ async function build() {
       return `<script type="application/json" id="data-${name}">${json}</script>`;
     });
     html = html.replace(/\{\{hash\s+(\/[^\s}]+)\s*\}\}/g, (_, p) => asset(p).split("?v=")[1] || "");
+    html = html.replace(/\{\{icon\s+([\w-]+)\s*\}\}/g, (_, name) => {
+      if (!icons[name]) fail(`${page.file}: no existe el icono ${name}`);
+      return icons[name] || "";
+    });
     html = html.replace(/\{\{img\s+([^}]+)\}\}/g, (_, spec) => imgTag(spec, page.file));
     html = html.replace(/\{\{video\s+([^}]+)\}\}/g, (_, spec) => videoTag(spec, page.file));
     if (PUBLISH) {

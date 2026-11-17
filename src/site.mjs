@@ -17,8 +17,9 @@ export const site = {
       skip: "Saltar al contenido",
       home: "Inicio",
       nav: [
+        ["@home#experiencia", "Experiencia"],
         ["@home#proyectos", "Proyectos"],
-        ["@home#trayectoria", "Trayectoria"],
+        ["@home#formacion", "Formación"],
         ["@cv", "CV"],
         ["@home#contacto", "Contacto"],
       ],
@@ -40,8 +41,9 @@ export const site = {
       skip: "Skip to content",
       home: "Home",
       nav: [
-        ["@home#projects", "Projects"],
         ["@home#experience", "Experience"],
+        ["@home#projects", "Projects"],
+        ["@home#education", "Education"],
         ["@cv", "CV"],
         ["@home#contact", "Contact"],
       ],
