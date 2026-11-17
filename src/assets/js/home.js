@@ -1,5 +1,5 @@
-// Portada: fondo de red neuronal en canvas, titular letra a letra, texto que se escribe solo,
-// contadores animados e inclinación 3D de la tarjeta del resumen. Todo respeta el movimiento reducido.
+// Portada: fondo de red neuronal en canvas, titular letra a letra, texto que se escribe solo
+// e inclinación 3D de la tarjeta del resumen. Todo se apaga con ?motion=off.
 
 // Las animaciones se ven siempre; solo se apagan a propósito con ?motion=off (lo pone el <head>).
 const reduced = document.documentElement.classList.contains("motion-off");
