@@ -19,7 +19,6 @@ export const site = {
       nav: [
         ["@home#experiencia", "Experiencia"],
         ["@home#proyectos", "Proyectos"],
-        ["@home#formacion", "Formación"],
         ["@cv", "CV"],
         ["@home#contacto", "Contacto"],
       ],
@@ -43,7 +42,6 @@ export const site = {
       nav: [
         ["@home#experience", "Experience"],
         ["@home#projects", "Projects"],
-        ["@home#education", "Education"],
         ["@cv", "CV"],
         ["@home#contact", "Contact"],
       ],

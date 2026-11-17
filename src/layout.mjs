@@ -90,8 +90,8 @@ ${url === "/404.html" ? "" : hreflang}
 <link rel="preload" href="/assets/fonts/fraunces-var.woff2" as="font" type="font/woff2" crossorigin>
 ${isHome ? '<link rel="preload" href="/assets/fonts/fraunces-italic-var.woff2" as="font" type="font/woff2" crossorigin>' : ""}
 ${styles}
-<script>var d=document.documentElement;d.dataset.theme="dark";try{var t=localStorage.getItem("theme");if(t)d.dataset.theme=t}catch(e){}d.classList.add("js");try{if(/[?&]motion=off/.test(location.search))sessionStorage.setItem("motion","off");if(/[?&]motion=on/.test(location.search))sessionStorage.removeItem("motion");if(sessionStorage.getItem("motion")==="off")d.classList.add("motion-off")}catch(e){}</script>
-${isHome ? '<script>(function(d,q){try{if(/[?&]intro=off/.test(q)||d.classList.contains("motion-off"))return;if(!/[?&]intro=on/.test(q)&&sessionStorage.getItem("intro"))return;sessionStorage.setItem("intro","1")}catch(e){return}d.classList.add("intro-on");window.__introFailsafe=setTimeout(function(){d.classList.remove("intro-on")},6000)})(document.documentElement,location.search)</script>' : ""}
+<script>var d=document.documentElement;d.dataset.theme="dark";try{var t=localStorage.getItem("theme");if(t)d.dataset.theme=t}catch(e){}d.classList.add("js");try{if(/[?&]motion=off/.test(location.search))sessionStorage.setItem("motion","off");if(/[?&]motion=on/.test(location.search))sessionStorage.removeItem("motion");if(sessionStorage.getItem("motion")==="off")d.classList.add("motion-off")${isHome ? "" : ';sessionStorage.setItem("intro","1")'}}catch(e){}</script>
+${isHome ? '<script>(function(d,q){try{if(/[?&]intro=off/.test(q)||d.classList.contains("motion-off"))return;if(!/[?&]intro=on/.test(q)&&(sessionStorage.getItem("intro")||location.hash))return;sessionStorage.setItem("intro","1")}catch(e){return}d.classList.add("intro-on");window.__introFailsafe=setTimeout(function(){d.classList.remove("intro-on")},4000)})(document.documentElement,location.search)</script>' : ""}
 ${scripts}
 ${jsonld}
 </head>

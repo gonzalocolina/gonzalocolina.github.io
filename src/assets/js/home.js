@@ -55,51 +55,6 @@ if (typer && !reduced) {
   else setTimeout(tick, 4200);
 }
 
-// ---------------------------------------------------------------- contadores
-const fmtCache = new Map();
-const fmt = (d) => {
-  if (!fmtCache.has(d))
-    fmtCache.set(d, new Intl.NumberFormat(root.lang, { minimumFractionDigits: d, maximumFractionDigits: d, useGrouping: false }));
-  return fmtCache.get(d);
-};
-const counters = document.querySelectorAll("[data-count]");
-if (counters.length && !reduced && "IntersectionObserver" in window) {
-  const run = (el) => {
-    const to = Number(el.dataset.count);
-    const d = Number(el.dataset.decimals || 0);
-    const t0 = performance.now();
-    const dur = 1600;
-    const step = (t) => {
-      const p = Math.min((t - t0) / dur, 1);
-      const e = 1 - Math.pow(1 - p, 4);
-      el.textContent = fmt(d).format(to * e);
-      if (p < 1) requestAnimationFrame(step);
-    };
-    requestAnimationFrame(step);
-  };
-  const cio = new IntersectionObserver(
-    (entries) => {
-      for (const e of entries)
-        if (e.isIntersecting) {
-          run(e.target);
-          cio.unobserve(e.target);
-        }
-    },
-    { threshold: 0.6 },
-  );
-  counters.forEach((el) => (el.textContent = fmt(Number(el.dataset.decimals || 0)).format(0)));
-  const watch = () => counters.forEach((el) => cio.observe(el));
-  // con intro, los contadores esperan a que la portada esté a la vista
-  if (root.classList.contains("intro-on")) {
-    const mo = new MutationObserver(() => {
-      if (root.classList.contains("intro-on")) return;
-      mo.disconnect();
-      watch();
-    });
-    mo.observe(root, { attributes: true, attributeFilter: ["class"] });
-  } else watch();
-}
-
 // ---------------------------------------------------------------- inclinación 3D y botones magnéticos
 if (fine && !reduced) {
   for (const el of document.querySelectorAll("[data-tilt]")) {

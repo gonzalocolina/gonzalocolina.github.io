@@ -4,11 +4,14 @@
 // 3. Una caja de detección, al estilo de RoadSignAI, encuadra el nombre con su etiqueta y confianza.
 // 4. La pantalla se deshace en píxeles desde el nombre hacia fuera y deja ver la portada, que empieza su entrada.
 // El <head> decide si hay intro (clase .intro-on) y tapa la página hasta que este módulo toma el control.
+// Los tiempos de abajo están escritos para la versión larga (≈4,3 s); K los comprime para que dure ≈2 s.
 
 const root = document.documentElement;
 const SVG = "http://www.w3.org/2000/svg";
 const BG = "#0c0a09";
 const ACCENT = "#ff7a2f";
+const K = 0.45;
+const at = (delay, duration) => ({ delay: delay * K, duration: duration * K });
 
 const T = {
   es: {
@@ -67,7 +70,7 @@ const draw = (path, delay, duration, easing = "ease-in-out") => {
   const len = path.getTotalLength();
   path.style.strokeDasharray = `${len} ${len}`;
   path.style.strokeDashoffset = len;
-  return path.animate([{ strokeDashoffset: len }, { strokeDashoffset: 0 }], { delay, duration, easing, fill: "forwards" });
+  return path.animate([{ strokeDashoffset: len }, { strokeDashoffset: 0 }], { ...at(delay, duration), easing, fill: "forwards" });
 };
 
 if (T && root.classList.contains("intro-on")) {
@@ -81,7 +84,7 @@ function run() {
   const small = W < 640;
   const timers = [];
   const anims = [];
-  const later = (fn, ms) => timers.push(setTimeout(fn, ms));
+  const later = (fn, ms) => timers.push(setTimeout(fn, ms * K));
   const page = [...document.querySelectorAll("body > :not(script)")];
   page.forEach((n) => (n.inert = true));
   scrollTo(0, 0);
@@ -139,8 +142,7 @@ function run() {
       const c = el("circle", { cx: n.x, cy: n.y, r: on ? 5 : 3.5, class: on ? "is-on" : "" }, nodes);
       anims.push(
         c.animate([{ opacity: 0, transform: "scale(0)" }, { opacity: 1, transform: "scale(1)" }], {
-          delay: 60 + li * 170,
-          duration: 420,
+          ...at(60 + li * 170, 420),
           easing: "cubic-bezier(.2,1.4,.4,1)",
           fill: "both",
         }),
@@ -148,7 +150,7 @@ function run() {
       c.style.transformOrigin = `${n.x}px ${n.y}px`;
       if (on)
         anims.push(
-          c.animate([{ fill: "#1d1a17" }, { fill: ACCENT }], { delay: 900 + li * 180, duration: 160, fill: "forwards" }),
+          c.animate([{ fill: "#1d1a17" }, { fill: ACCENT }], { ...at(900 + li * 180, 160), fill: "forwards" }),
         );
     }),
   );
@@ -192,7 +194,7 @@ function run() {
         { opacity: 1, offset: 0.9 },
         { transform: `translateX(${bw}px)`, opacity: 0 },
       ],
-      { delay: 2350, duration: 650, easing: "cubic-bezier(.6,0,.4,1)", fill: "both" },
+      { ...at(2350, 650), easing: "cubic-bezier(.6,0,.4,1)", fill: "both" },
     ),
   );
   const box = el("rect", { x: bx, y: by, width: bw, height: bh, class: "intro__box" }, det);
@@ -208,8 +210,7 @@ function run() {
     el("path", { d: `M${cx} ${cy + sy * tick}V${cy}H${cx + sx * tick}` }, corners);
   anims.push(
     corners.animate([{ opacity: 0, transform: "scale(1.06)" }, { opacity: 1, transform: "scale(1)" }], {
-      delay: 3150,
-      duration: 260,
+      ...at(3150, 260),
       fill: "both",
     }),
   );
@@ -223,16 +224,15 @@ function run() {
   tagRect.style.transformOrigin = `${bx}px ${by}px`;
   anims.push(
     tagRect.animate([{ transform: "scaleX(0)" }, { transform: "scaleX(1)" }], {
-      delay: 3250,
-      duration: 360,
+      ...at(3250, 360),
       easing: "cubic-bezier(.7,0,.3,1)",
       fill: "both",
     }),
-    tagText.animate([{ opacity: 0 }, { opacity: 1 }], { delay: 3500, duration: 200, fill: "both" }),
+    tagText.animate([{ opacity: 0 }, { opacity: 1 }], { ...at(3500, 200), fill: "both" }),
   );
   const sub = intro.querySelector(".intro__sub");
   sub.style.top = `${by + bh + 22}px`;
-  later(() => type(sub, T.sub, 14), 3450);
+  later(() => type(sub, T.sub, 14 * K), 3450);
 
   // ------------------------------------------------------------ registro y progreso
   const log = intro.querySelector(".intro__log");
@@ -250,7 +250,7 @@ function run() {
   const t0 = performance.now();
   let raf = 0;
   const progress = (t) => {
-    const p = Math.min((t - t0) / DUR, 1);
+    const p = Math.min((t - t0) / (DUR * K), 1);
     const e = 1 - Math.pow(1 - p, 2);
     bar.style.transform = `scaleX(${e})`;
     pct.textContent = String(Math.round(e * 100)).padStart(3, "0");
@@ -316,9 +316,9 @@ function dissolve(intro, center, done) {
       const x = q * S;
       const y = r * S;
       const d = Math.hypot(x + S / 2 - center.x, (y + S / 2 - center.y) * 1.25) / maxD;
-      tiles.push({ x, y, delay: d * 620 + Math.random() * 140 });
+      tiles.push({ x, y, delay: d * 400 + Math.random() * 90 });
     }
-  const LIFE = 360;
+  const LIFE = 240;
   const paint = (t) => {
     ctx.clearRect(0, 0, W, H);
     let alive = false;

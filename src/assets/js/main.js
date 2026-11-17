@@ -74,10 +74,8 @@ if (hint && store.get("lang") === "en") hint.hidden = false;
 // En la portada con intro no empieza hasta que la intro deja ver la página.
 const mark = (sel, kind = "") => document.querySelectorAll(sel).forEach((el) => el.setAttribute("data-reveal", kind));
 if (!reduced) {
-  // los grupos se revelan por partes en vez de en bloque
-  for (const group of document.querySelectorAll(".split > [data-reveal]")) group.removeAttribute("data-reveal");
   mark(".section .eyebrow");
-  mark(".section__head p, .xp .points li, .edu li, .skills > div, .site-footer__mark");
+  mark(".section__head p, .xp .points li, .skills > div, .site-footer__mark");
   for (const h of document.querySelectorAll(".section h2, .contact h2, .case-body section > h2")) {
     splitWords(h);
     h.setAttribute("data-reveal", "words");
@@ -187,7 +185,7 @@ document.querySelector("[data-print]")?.addEventListener("click", () => print())
 
 // Foco de luz que sigue al cursor en las tarjetas
 if (matchMedia("(pointer: fine)").matches)
-  for (const el of document.querySelectorAll(".project, .xp, .stat, .facts, .metric, .media-panel")) {
+  for (const el of document.querySelectorAll(".project, .xp, .facts, .metric, .media-panel")) {
     el.classList.add("spot");
     el.addEventListener("pointermove", (e) => {
       const r = el.getBoundingClientRect();
