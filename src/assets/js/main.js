@@ -66,24 +66,84 @@ for (const a of document.querySelectorAll("a.lang")) a.addEventListener("click",
 const hint = document.querySelector(".lang-hint");
 if (hint && store.get("lang") === "en") hint.hidden = false;
 
-// Aparición suave al entrar en pantalla; los que entran a la vez lo hacen escalonados
+// Aparición al hacer scroll, una sola vez por elemento:
+// - los bloques suben y aparecen; los que entran a la vez lo hacen escalonados;
+// - los titulares suben palabra a palabra desde detrás de una máscara;
+// - la raya de las etiquetas de sección se dibuja y las portadas de los proyectos se destapan.
+// En la portada con intro no empieza hasta que la intro deja ver la página.
+const mark = (sel, kind = "") => document.querySelectorAll(sel).forEach((el) => el.setAttribute("data-reveal", kind));
+if (!reduced) {
+  // los grupos se revelan por partes en vez de en bloque
+  for (const group of document.querySelectorAll(".split > [data-reveal]")) group.removeAttribute("data-reveal");
+  mark(".section .eyebrow");
+  mark(".section__head p, .xp .points li, .edu li, .skills > div, .site-footer__mark");
+  for (const h of document.querySelectorAll(".section h2, .contact h2, .case-body section > h2")) {
+    splitWords(h);
+    h.setAttribute("data-reveal", "words");
+  }
+}
+function splitWords(h) {
+  let i = 0;
+  const wrap = (inner) => {
+    const w = document.createElement("span");
+    w.className = "w";
+    w.style.setProperty("--wi", i++);
+    w.append(inner);
+    return w;
+  };
+  for (const node of [...h.childNodes]) {
+    if (node.nodeType === Node.TEXT_NODE) {
+      const frag = document.createDocumentFragment();
+      for (const part of node.textContent.split(/(\s+)/)) {
+        if (!part) continue;
+        if (/^\s+$/.test(part)) frag.append(part);
+        else {
+          const s = document.createElement("span");
+          s.textContent = part;
+          frag.append(wrap(s));
+        }
+      }
+      node.replaceWith(frag);
+    } else if (node.nodeType === Node.ELEMENT_NODE) {
+      const holder = document.createElement("span");
+      node.replaceWith(holder);
+      holder.replaceWith(wrap(node));
+    }
+  }
+}
 const revealables = document.querySelectorAll("[data-reveal]");
-if (!reduced && "IntersectionObserver" in window) {
+const startReveal = () => {
+  if (reduced || !("IntersectionObserver" in window)) {
+    revealables.forEach((el) => el.classList.add("is-in"));
+    return;
+  }
   const io = new IntersectionObserver(
     (entries) => {
       let k = 0;
       for (const e of entries)
         if (e.isIntersecting) {
-          e.target.style.transitionDelay = `${k++ * 90}ms`;
-          e.target.classList.add("is-in");
-          e.target.addEventListener("transitionend", () => (e.target.style.transitionDelay = ""), { once: true });
-          io.unobserve(e.target);
+          const el = e.target;
+          const d = k++ * 110;
+          el.style.setProperty("--d", `${d}ms`);
+          el.classList.add("is-in");
+          io.unobserve(el);
+          // sin retardo después, para que el hover responda al momento
+          setTimeout(() => el.style.removeProperty("--d"), d + 1600);
         }
     },
-    { rootMargin: "0px 0px -8% 0px" },
+    { rootMargin: "0px 0px -10% 0px", threshold: 0.12 },
   );
   revealables.forEach((el) => io.observe(el));
-} else revealables.forEach((el) => el.classList.add("is-in"));
+};
+if (root.classList.contains("intro-on")) {
+  // la intro quita esta clase al empezar a desvanecerse (o el <head> si algo falla)
+  const mo = new MutationObserver(() => {
+    if (root.classList.contains("intro-on")) return;
+    mo.disconnect();
+    startReveal();
+  });
+  mo.observe(root, { attributes: true, attributeFilter: ["class"] });
+} else startReveal();
 
 // Vídeos: solo se reproducen mientras están a la vista (y nunca solos con movimiento reducido)
 const videos = document.querySelectorAll("video[data-autoplay]");

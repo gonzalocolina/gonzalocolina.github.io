@@ -86,10 +86,17 @@ if (counters.length && !reduced && "IntersectionObserver" in window) {
     },
     { threshold: 0.6 },
   );
-  counters.forEach((el) => {
-    el.textContent = fmt(Number(el.dataset.decimals || 0)).format(0);
-    cio.observe(el);
-  });
+  counters.forEach((el) => (el.textContent = fmt(Number(el.dataset.decimals || 0)).format(0)));
+  const watch = () => counters.forEach((el) => cio.observe(el));
+  // con intro, los contadores esperan a que la portada esté a la vista
+  if (root.classList.contains("intro-on")) {
+    const mo = new MutationObserver(() => {
+      if (root.classList.contains("intro-on")) return;
+      mo.disconnect();
+      watch();
+    });
+    mo.observe(root, { attributes: true, attributeFilter: ["class"] });
+  } else watch();
 }
 
 // ---------------------------------------------------------------- inclinación 3D y botones magnéticos

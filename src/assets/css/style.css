@@ -2981,10 +2981,10 @@ html.intro-on:not(.intro-built)::before {
 
 .js [data-reveal] {
   opacity: 0;
-  transform: translateY(28px);
+  transform: translateY(48px);
   transition:
-    opacity 0.9s var(--ease-out),
-    transform 0.9s var(--ease-out),
+    opacity 1s var(--ease-out) var(--d, 0ms),
+    transform 1.25s var(--ease-out) var(--d, 0ms),
     border-color 0.3s,
     box-shadow 0.5s var(--ease-out);
 }
@@ -2994,6 +2994,54 @@ html.intro-on:not(.intro-built)::before {
 }
 .js .project[data-reveal].is-in:hover {
   transform: translateY(-6px);
+}
+.js .eyebrow[data-reveal],
+.js .xp .points li[data-reveal],
+.js .skills > div[data-reveal] {
+  transform: translateY(18px);
+}
+/* titulares: cada palabra sube desde detrás de una máscara */
+.js [data-reveal="words"] {
+  opacity: 1;
+  transform: none;
+}
+.w {
+  display: inline-block;
+  overflow: hidden;
+  vertical-align: top;
+  padding: 0.12em 0.08em 0.18em;
+  margin: -0.12em -0.08em -0.18em;
+}
+.w > * {
+  display: inline-block;
+  transform: translateY(135%) rotate(4deg);
+  transform-origin: 0 100%;
+  transition: transform 1.2s var(--ease-out);
+  transition-delay: calc(var(--d, 0ms) + var(--wi, 0) * 75ms);
+}
+[data-reveal="words"].is-in .w > * {
+  transform: none;
+}
+/* la raya de la etiqueta de sección se dibuja */
+.js .eyebrow[data-reveal] .eyebrow__n::after {
+  transform: scaleX(0);
+  transform-origin: 0 50%;
+  transition: transform 1.3s var(--ease-out) calc(var(--d, 0ms) + 0.25s);
+}
+.js .eyebrow[data-reveal].is-in .eyebrow__n::after {
+  transform: none;
+}
+/* las portadas de los proyectos se destapan de arriba abajo y la imagen se asienta */
+.js .project[data-reveal] .project__cover {
+  clip-path: inset(0 0 100% 0);
+  transition: clip-path 1.3s var(--ease-out) calc(var(--d, 0ms) + 0.15s);
+}
+.js .project[data-reveal].is-in .project__cover {
+  clip-path: inset(0);
+}
+.js .project[data-reveal]:not(.is-in) .project__cover > img,
+.js .project[data-reveal]:not(.is-in) .project__cover--art > svg {
+  transform: scale(1.12);
 }
 @view-transition {
   navigation: auto;
@@ -3013,6 +3061,9 @@ html.intro-on:not(.intro-built)::before {
   .js [data-reveal] {
     opacity: 1;
     transform: none;
+  }
+  .js .project[data-reveal] .project__cover {
+    clip-path: none;
   }
   /* sin movimiento, la tira se queda quieta: una sola copia, centrada y en varias líneas si hace falta */
   .marquee {
