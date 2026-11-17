@@ -17,6 +17,7 @@ export const icons = {
   cap: '<svg class="icon" viewBox="0 0 16 16" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" d="M8 2.75 1 6.25l7 3.5 7-3.5zM3.75 7.6v3.4c1 1 2.5 1.75 4.25 1.75s3.25-.75 4.25-1.75V7.6M15 6.25v4"/></svg>',
   spark: '<svg class="icon" viewBox="0 0 16 16" aria-hidden="true"><path fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" d="M8 1.5l1.6 4.4 4.4 1.6-4.4 1.6L8 13.5l-1.6-4.4L2 7.5l4.4-1.6z"/></svg>',
   globe: '<svg class="icon" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="6.25" fill="none" stroke="currentColor" stroke-width="1.4"/><path fill="none" stroke="currentColor" stroke-width="1.4" d="M1.75 8h12.5M8 1.75c1.8 1.9 2.6 3.9 2.6 6.25S9.8 12.35 8 14.25C6.2 12.35 5.4 10.35 5.4 8S6.2 3.65 8 1.75z"/></svg>',
+  badge: '<svg class="icon" viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="6.25" r="4.5" fill="none" stroke="currentColor" stroke-width="1.4"/><path fill="none" stroke="currentColor" stroke-width="1.4" stroke-linejoin="round" d="M5.4 9.9 4.5 14.5 8 12.75l3.5 1.75-.9-4.6M6.25 6.25l1.25 1.25 2.25-2.5"/></svg>',
   arrow: '<span class="arrow" aria-hidden="true">→</span>',
 };
 
@@ -51,6 +52,12 @@ export function renderPage({ site, page, body, alternates, asset, og }) {
         email: `mailto:${site.email}`,
         jobTitle: lang === "es" ? "Desarrollador de software" : "Software developer",
         alumniOf: { "@type": "CollegeOrUniversity", name: "Universidad de Valladolid" },
+        hasCredential: {
+          "@type": "EducationalOccupationalCredential",
+          name: "Microsoft Certified: Azure Fundamentals (AZ-900)",
+          credentialCategory: "certification",
+          recognizedBy: { "@type": "Organization", name: "Microsoft" },
+        },
         knowsLanguage: ["es", "en"],
         address: { "@type": "PostalAddress", addressLocality: "Valladolid", addressCountry: "ES" },
         sameAs: [site.github, site.linkedin],
