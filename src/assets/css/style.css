@@ -2654,6 +2654,10 @@ caption {
 .cv-actions {
   margin-bottom: 2rem;
 }
+/* el enlace a esta misma web solo tiene sentido en el PDF impreso */
+.print-only {
+  display: none;
+}
 
 /* ------------------------------------------------------------------ intro de la portada (intro.js) */
 
@@ -3207,6 +3211,9 @@ html.intro-on:not(.intro-built)::before {
   .cv {
     padding: 0;
     max-width: none;
+  }
+  .print-only {
+    display: revert !important;
   }
   .js [data-reveal] {
     opacity: 1;
