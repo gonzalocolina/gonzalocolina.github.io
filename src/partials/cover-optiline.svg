@@ -1,34 +1,34 @@
 <svg viewBox="0 0 640 400" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
 <defs>
-<linearGradient id="op-bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1a1e2e"/><stop offset="1" stop-color="#0f1118"/></linearGradient>
+<linearGradient id="op-bg" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#1c1917"/><stop offset="1" stop-color="#0c0a09"/></linearGradient>
 </defs>
 <rect width="640" height="400" fill="url(#op-bg)"/>
-<g stroke="#353b55" stroke-width="2" fill="none">
+<g stroke="#3b332d" stroke-width="2" fill="none">
 <path d="M320 70 170 170M320 70v100M320 70l150 100"/>
 <path d="M170 170 110 270M170 170v100M170 170l60 100"/>
 <path d="M320 170l-40 100M320 170l40 100"/>
 <path d="M110 270 85 345M110 270l25 75M230 270l-20 75M230 270l20 75M360 270l-20 75M360 270l20 75"/>
 </g>
-<g stroke="#3a4060" stroke-width="2" fill="none" stroke-dasharray="5 6">
+<g stroke="#40372f" stroke-width="2" fill="none" stroke-dasharray="5 6">
 <path d="M470 170l-30 100M470 170l50 100M280 270l-15 75"/>
 </g>
-<g stroke="#8597ff" stroke-width="3.5" fill="none" stroke-linecap="round">
+<g stroke="#ff7a2f" stroke-width="3.5" fill="none" stroke-linecap="round">
 <path d="M320 70 170 170l60 100 20 75"/>
 </g>
-<g fill="#1f2436" stroke="#4a5070" stroke-width="2">
+<g fill="#211c19" stroke="#5a4e44" stroke-width="2">
 <circle cx="320" cy="170" r="12"/><circle cx="470" cy="170" r="12"/>
 <circle cx="110" cy="270" r="10"/><circle cx="170" cy="270" r="10"/><circle cx="280" cy="270" r="10"/><circle cx="360" cy="270" r="10"/>
 <circle cx="85" cy="345" r="8"/><circle cx="135" cy="345" r="8"/><circle cx="210" cy="345" r="8"/><circle cx="340" cy="345" r="8"/><circle cx="380" cy="345" r="8"/>
 </g>
-<g fill="none" stroke="#3a4060" stroke-width="2" stroke-dasharray="4 4">
+<g fill="none" stroke="#40372f" stroke-width="2" stroke-dasharray="4 4">
 <circle cx="440" cy="270" r="10"/><circle cx="520" cy="270" r="10"/><circle cx="265" cy="345" r="8"/>
 </g>
-<g fill="#8597ff">
+<g fill="#ff7a2f">
 <circle cx="320" cy="70" r="15"/><circle cx="170" cy="170" r="12"/><circle cx="230" cy="270" r="10"/><circle cx="250" cy="345" r="8"/>
 </g>
 <g font-family="Plex Mono, monospace" font-size="13">
-<text x="488" y="174" fill="#6f7591">β-cutoff</text>
-<text x="250" y="374" fill="#a3b1ff" text-anchor="middle">+0.42</text>
-<text x="616" y="380" fill="#6f7591" text-anchor="end">alpha-beta · NNUE int16 · AVX2</text>
+<text x="488" y="174" fill="#8a7d71">β-cutoff</text>
+<text x="250" y="374" fill="#ffb070" text-anchor="middle">+0.42</text>
+<text x="616" y="380" fill="#8a7d71" text-anchor="end">alpha-beta · NNUE int16 · AVX2</text>
 </g>
 </svg>

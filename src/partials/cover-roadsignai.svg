@@ -1,36 +1,36 @@
 <svg viewBox="0 0 640 400" preserveAspectRatio="xMidYMid slice" aria-hidden="true" focusable="false">
 <defs>
-<linearGradient id="rs-sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1a1e2e"/><stop offset="1" stop-color="#0f1118"/></linearGradient>
-<linearGradient id="rs-road" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1c2030"/><stop offset="1" stop-color="#262b3d"/></linearGradient>
+<linearGradient id="rs-sky" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1c1917"/><stop offset="1" stop-color="#0c0a09"/></linearGradient>
+<linearGradient id="rs-road" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1f1b18"/><stop offset="1" stop-color="#2b2521"/></linearGradient>
 </defs>
 <rect width="640" height="400" fill="url(#rs-sky)"/>
-<path d="M0 214H640" stroke="#2b3046"/>
+<path d="M0 214H640" stroke="#332b25"/>
 <path d="M300 214h40l230 186H70z" fill="url(#rs-road)"/>
-<path d="M320 222v12M320 250v18M320 288v26M320 336v38" stroke="#4a5070" stroke-width="4" stroke-linecap="round"/>
-<path d="M302 214 92 400M338 214l210 186" stroke="#353b55" stroke-width="2"/>
+<path d="M320 222v12M320 250v18M320 288v26M320 336v38" stroke="#5a4e44" stroke-width="4" stroke-linecap="round"/>
+<path d="M302 214 92 400M338 214l210 186" stroke="#3b332d" stroke-width="2"/>
 <g>
-<path d="M150 214v-48" stroke="#4a5070" stroke-width="4"/>
+<path d="M150 214v-48" stroke="#5a4e44" stroke-width="4"/>
 <circle cx="150" cy="140" r="30" fill="#f3f4f8"/><circle cx="150" cy="140" r="30" fill="none" stroke="#e5484d" stroke-width="8"/>
-<text x="150" y="149" text-anchor="middle" font-family="Plex Sans, sans-serif" font-weight="600" font-size="26" fill="#12141c">50</text>
-<rect x="110" y="100" width="80" height="80" rx="3" fill="none" stroke="#8597ff" stroke-width="2.5"/>
-<rect x="110" y="78" width="96" height="22" rx="3" fill="#8597ff"/>
-<text x="117" y="94" font-family="Plex Mono, monospace" font-size="13" font-weight="500" fill="#0b0d1a">R-301 0.94</text>
+<text x="150" y="149" text-anchor="middle" font-family="Plex Sans, sans-serif" font-weight="600" font-size="26" fill="#141210">50</text>
+<rect x="110" y="100" width="80" height="80" rx="3" fill="none" stroke="#ff7a2f" stroke-width="2.5"/>
+<rect x="110" y="78" width="96" height="22" rx="3" fill="#ff7a2f"/>
+<text x="117" y="94" font-family="Plex Mono, monospace" font-size="13" font-weight="500" fill="#1a0c04">R-301 0.94</text>
 </g>
 <g>
-<path d="M488 214v-40" stroke="#4a5070" stroke-width="4"/>
+<path d="M488 214v-40" stroke="#5a4e44" stroke-width="4"/>
 <path d="M488 116l30 52h-60z" fill="#f3f4f8" stroke="#e5484d" stroke-width="7" stroke-linejoin="round"/>
-<path d="M488 136v16M488 158v3" stroke="#12141c" stroke-width="5" stroke-linecap="round"/>
-<rect x="450" y="104" width="76" height="72" rx="3" fill="none" stroke="#8597ff" stroke-width="2.5"/>
-<rect x="450" y="82" width="90" height="22" rx="3" fill="#8597ff"/>
-<text x="457" y="98" font-family="Plex Mono, monospace" font-size="13" font-weight="500" fill="#0b0d1a">P-50 0.88</text>
+<path d="M488 136v16M488 158v3" stroke="#141210" stroke-width="5" stroke-linecap="round"/>
+<rect x="450" y="104" width="76" height="72" rx="3" fill="none" stroke="#ff7a2f" stroke-width="2.5"/>
+<rect x="450" y="82" width="90" height="22" rx="3" fill="#ff7a2f"/>
+<text x="457" y="98" font-family="Plex Mono, monospace" font-size="13" font-weight="500" fill="#1a0c04">P-50 0.88</text>
 </g>
 <g opacity="0.85">
-<path d="M378 214v-22" stroke="#4a5070" stroke-width="3"/>
+<path d="M378 214v-22" stroke="#5a4e44" stroke-width="3"/>
 <circle cx="378" cy="180" r="13" fill="#3b82f6" stroke="#f3f4f8" stroke-width="2"/>
 <path d="M372 180h12m-4-4 4 4-4 4" stroke="#f3f4f8" stroke-width="2" fill="none"/>
-<rect x="361" y="163" width="34" height="34" rx="2" fill="none" stroke="#8597ff" stroke-width="2"/>
-<rect x="361" y="148" width="58" height="15" rx="2" fill="#8597ff"/>
-<text x="365" y="159" font-family="Plex Mono, monospace" font-size="10" font-weight="500" fill="#0b0d1a">R-400 0.81</text>
+<rect x="361" y="163" width="34" height="34" rx="2" fill="none" stroke="#ff7a2f" stroke-width="2"/>
+<rect x="361" y="148" width="58" height="15" rx="2" fill="#ff7a2f"/>
+<text x="365" y="159" font-family="Plex Mono, monospace" font-size="10" font-weight="500" fill="#1a0c04">R-400 0.81</text>
 </g>
-<text x="24" y="380" font-family="Plex Mono, monospace" font-size="13" fill="#6f7591">YOLO11s · ByteTrack · ONNX FP16</text>
+<text x="24" y="380" font-family="Plex Mono, monospace" font-size="13" fill="#8a7d71">YOLO11s · ByteTrack · ONNX FP16</text>
 </svg>

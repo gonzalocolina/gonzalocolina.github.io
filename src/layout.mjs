@@ -72,9 +72,8 @@ export function renderPage({ site, page, body, alternates, asset, og }) {
 <meta name="author" content="${esc(site.name)}">
 ${meta.noindex || url === "/404.html" ? '<meta name="robots" content="noindex">' : `<link rel="canonical" href="${canonical}">`}
 ${url === "/404.html" ? "" : hreflang}
-<meta name="color-scheme" content="light dark">
-<meta name="theme-color" content="#f6f4ef" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#131211" media="(prefers-color-scheme: dark)">
+<meta name="color-scheme" content="dark light">
+<meta name="theme-color" content="#0c0a09">
 <meta property="og:type" content="${isHome ? "profile" : "article"}">
 <meta property="og:site_name" content="${esc(site.name)}">
 <meta property="og:title" content="${esc(meta.ogTitle || meta.title)}">
@@ -88,14 +87,18 @@ ${url === "/404.html" ? "" : hreflang}
 <link rel="icon" href="/assets/img/favicon.svg" type="image/svg+xml">
 <link rel="apple-touch-icon" href="/assets/img/apple-touch-icon.png">
 <link rel="preload" href="/assets/fonts/plex-sans-var.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="/assets/fonts/fraunces-var.woff2" as="font" type="font/woff2" crossorigin>
+${isHome ? '<link rel="preload" href="/assets/fonts/fraunces-italic-var.woff2" as="font" type="font/woff2" crossorigin>' : ""}
 ${styles}
-<script>try{var t=localStorage.getItem("theme");if(t)document.documentElement.dataset.theme=t}catch(e){}document.documentElement.classList.add("js")</script>
+<script>var d=document.documentElement;d.dataset.theme="dark";try{var t=localStorage.getItem("theme");if(t)d.dataset.theme=t}catch(e){}d.classList.add("js")</script>
+${isHome ? '<script>(function(d,q){try{if(/[?&]intro=off/.test(q)||matchMedia("(prefers-reduced-motion: reduce)").matches)return;if(!/[?&]intro=on/.test(q)&&sessionStorage.getItem("intro"))return;sessionStorage.setItem("intro","1")}catch(e){return}d.classList.add("intro-on");window.__introFailsafe=setTimeout(function(){d.classList.remove("intro-on")},6000)})(document.documentElement,location.search)</script>' : ""}
 ${scripts}
 ${jsonld}
 </head>
 <body class="${esc(meta.bodyClass || "")}">
 <a class="skip" href="#main">${t.skip}</a>
 <header class="site-header">
+  <span class="site-header__progress" aria-hidden="true"></span>
   <div class="wrap site-header__inner">
     <a class="brand" href="@home"${isHome ? ' aria-current="page"' : ""}><span class="brand__mark" aria-hidden="true">GC</span><span class="brand__name">${esc(site.name)}</span></a>
     <nav class="nav" aria-label="${esc(t.navLabel)}">
@@ -117,6 +120,7 @@ ${body}
     <div>
       <p class="site-footer__name">${esc(site.name)} · ${new Date().getFullYear()}</p>
       <p class="muted">${t.footerMade}</p>
+      <a class="to-top" href="#main">${t.top} <span aria-hidden="true">↑</span></a>
     </div>
     <ul class="site-footer__links">
       <li><a href="mailto:${site.email}">${icons.mail}<span>${site.email}</span></a></li>
@@ -125,6 +129,7 @@ ${body}
     </ul>
     <details class="credits"><summary>${t.footerCredits}</summary><p>${t.credits}</p></details>
   </div>
+  <p class="site-footer__mark" aria-hidden="true">${esc(site.name)}</p>
 </footer>
 </body>
 </html>

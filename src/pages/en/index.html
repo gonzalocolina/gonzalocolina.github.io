@@ -3,39 +3,74 @@
   "id": "home",
   "title": "Gonzalo Colina · Software developer",
   "ogTitle": "Gonzalo Colina",
+  "scripts": ["/assets/js/intro.js", "/assets/js/home.js"],
+  "bodyClass": "home",
   "description": "Computer engineering graduate from the University of Valladolid and Master's student in Artificial Intelligence. I build full web applications with Java, Spring Boot and Vue, and AI projects with Python."
 }
 ---
-<section class="hero">
-  <div class="wrap hero__grid">
-    <div>
-      <p class="status">Open to new opportunities</p>
-      <h1>Gonzalo Colina</h1>
-      <p class="hero__role">Software developer <span>· full-stack and artificial intelligence</span></p>
-      <p class="hero__lead">Computer engineering graduate from the <strong>University of Valladolid</strong> and student of the <strong>Master's in Artificial Intelligence</strong> at UNIR. I build complete applications, from the Java and Spring Boot API to the Vue interface, and AI projects with Python.</p>
+<section class="hero" aria-labelledby="hero-h">
+  <canvas class="hero__canvas" aria-hidden="true"></canvas>
+  <div class="hero__glow" aria-hidden="true"></div>
+  <div class="wrap hero__inner">
+    <div class="hero__top">
+      <p class="hero__eyebrow">Software developer <span class="hero__rule" aria-hidden="true"></span> Valladolid · Palencia, Spain</p>
+      <p class="status"><span class="status__dot" aria-hidden="true"></span>Open to new opportunities</p>
+    </div>
+    <h1 class="hero__title" id="hero-h"><span class="line">Gonzalo</span> <em class="line line--grad">Colina.</em></h1>
+    <div class="hero__grid">
+    <div class="hero__copy">
+      <p class="hero__role">I build <span class="visually-hidden">APIs with Java and Spring Boot, interfaces with Vue, AI models with Python and real-time applications.</span><span class="typer" aria-hidden="true" data-words='["APIs with Java and Spring Boot","interfaces with Vue","AI models with Python","real-time applications"]'>APIs with Java and Spring Boot</span></p>
+      <p class="hero__lead">Computer engineering graduate from the <strong>University of Valladolid</strong> and student of the <strong>Master's in Artificial Intelligence</strong> at UNIR. I build complete applications, from the API to the interface, and AI projects that can be measured.</p>
       <div class="actions">
-        <a class="btn btn--primary" href="#projects">See projects <span class="arrow" aria-hidden="true">→</span></a>
+        <a class="btn btn--primary" href="#projects" data-magnetic>See projects <span class="arrow" aria-hidden="true">→</span></a>
         <a class="btn" href="@cv">Résumé</a>
         <a class="icon-link" href="https://github.com/gonzalocolina" aria-label="GitHub">{{icon github}}</a>
         <a class="icon-link" href="https://www.linkedin.com/in/gonzalo-colina-b%C3%A1scones-965361330/" aria-label="LinkedIn">{{icon linkedin}}</a>
         <a class="icon-link" href="#contact" aria-label="Contact">{{icon mail}}</a>
       </div>
     </div>
-    <ul class="glance" aria-label="At a glance">
-      <li><span class="glance__icon">{{icon work}}</span><b>Intern Software Engineer at Xeridia</b><span>February – April 2026 · Valladolid</span></li>
-      <li><span class="glance__icon">{{icon cap}}</span><b>BSc in Computer Engineering</b><span>University of Valladolid · 2021 – 2026</span></li>
-      <li><span class="glance__icon">{{icon spark}}</span><b>Master's in Artificial Intelligence</b><span>UNIR · 2026 – present</span></li>
-      <li><span class="glance__icon">{{icon globe}}</span><b>Spanish native · English B2</b><span>Cambridge English Certificate</span></li>
-      <li><span class="glance__icon">{{icon pin}}</span><b>Valladolid and Palencia, Spain</b><span>Driving licence (B)</span></li>
-    </ul>
+    <div class="term" data-tilt>
+      <div class="term__bar" aria-hidden="true"><i></i><i></i><i></i><span>gonzalo@valladolid: ~</span></div>
+      <div class="term__body">
+        <p class="term__cmd" aria-hidden="true"><span>$</span> whoami --summary</p>
+        <ul class="glance" aria-label="At a glance">
+          <li style="--i:1"><span class="glance__icon">{{icon work}}</span><b>Intern Software Engineer at Xeridia</b><span>February – April 2026 · Valladolid</span></li>
+          <li style="--i:2"><span class="glance__icon">{{icon cap}}</span><b>BSc in Computer Engineering</b><span>University of Valladolid · 2021 – 2026</span></li>
+          <li style="--i:3"><span class="glance__icon">{{icon spark}}</span><b>Master's in Artificial Intelligence</b><span>UNIR · 2026 – present</span></li>
+          <li style="--i:4"><span class="glance__icon">{{icon globe}}</span><b>Spanish native · English B2</b><span>Cambridge English Certificate</span></li>
+          <li style="--i:5"><span class="glance__icon">{{icon pin}}</span><b>Valladolid and Palencia, Spain</b><span>Driving licence (B)</span></li>
+        </ul>
+        <p class="term__cmd term__cmd--last" aria-hidden="true"><span>$</span> <i class="caret"></i></p>
+      </div>
+    </div>
+    </div>
   </div>
+  <a class="scroll-cue" href="#experience" aria-label="Scroll to Experience"><span aria-hidden="true"></span></a>
 </section>
 
-<section class="section section--alt" id="experience" aria-labelledby="experience-h">
+<div class="marquee" role="region" aria-label="Technologies I work with">
+  <ul class="marquee__track">
+    <li>Java</li><li>Spring Boot</li><li>Vue.js</li><li>Python</li><li>PyTorch</li><li>YOLO</li><li>C++20</li><li>WebSocket</li><li>Docker</li><li>Kotlin</li><li>SQL</li><li>ONNX</li><li>CUDA</li><li>WebAssembly</li>
+  </ul>
+  <ul class="marquee__track" aria-hidden="true">
+    <li>Java</li><li>Spring Boot</li><li>Vue.js</li><li>Python</li><li>PyTorch</li><li>YOLO</li><li>C++20</li><li>WebSocket</li><li>Docker</li><li>Kotlin</li><li>SQL</li><li>ONNX</li><li>CUDA</li><li>WebAssembly</li>
+  </ul>
+</div>
+
+<section class="stats" aria-label="In numbers">
+  <dl class="wrap stats__grid">
+    <div class="stat" data-reveal><dt>Bachelor's thesis grade</dt><dd><span data-count="9.7" data-decimals="1">9.7</span><small>/10</small></dd></div>
+    <div class="stat" data-reveal><dt>Clients at once without a single error in the thesis app</dt><dd><span data-count="100">100</span></dd></div>
+    <div class="stat" data-reveal><dt>Optiline's Elo, measured against Stockfish 18</dt><dd>~<span data-count="3100">3100</span></dd></div>
+    <div class="stat" data-reveal><dt>Real-time sign detection with RoadSignAI</dt><dd><span data-count="73">73</span><small> FPS</small></dd></div>
+  </dl>
+</section>
+
+<section class="section" id="experience" aria-labelledby="experience-h">
   <div class="wrap">
     <div class="section__head">
-      <span class="eyebrow">Experience</span>
-      <h2 id="experience-h">Where I have worked</h2>
+      <span class="eyebrow"><span class="eyebrow__n">01</span>Experience</span>
+      <h2 id="experience-h">Where I have <em>worked</em>.</h2>
     </div>
     <article class="xp" data-reveal>
       <div class="xp__meta">
@@ -53,6 +88,9 @@
           <li>AI service in <strong>Python with Pydantic</strong>, integrated with the <strong>OpenAI and Gemini</strong> APIs.</li>
           <li>Team of 6 developers working iteratively and incrementally, with regular demos of what we had built.</li>
         </ul>
+      </div>
+      <div class="xp__stack">
+        <p class="xp__label">Stack</p>
         <ul class="tags"><li>Java</li><li>Spring Boot</li><li>Spring Data JPA</li><li>REST</li><li>Vue.js</li><li>Bootstrap</li><li>Python</li><li>Pydantic</li><li>OpenAI</li><li>Gemini</li></ul>
       </div>
     </article>
@@ -62,8 +100,8 @@
 <section class="section" id="projects" aria-labelledby="projects-h">
   <div class="wrap">
     <div class="section__head">
-      <span class="eyebrow">Projects</span>
-      <h2 id="projects-h">What I have built</h2>
+      <span class="eyebrow"><span class="eyebrow__n">02</span>Projects</span>
+      <h2 id="projects-h">What I have <em>built</em>.</h2>
       <p>Web, mobile and artificial intelligence. Each one has its own page with the problem, how I solved it and the results.</p>
     </div>
 
@@ -171,8 +209,8 @@
 <section class="section section--alt" id="education" aria-labelledby="education-h">
   <div class="wrap split">
     <div data-reveal>
-      <span class="eyebrow">Education</span>
-      <h2 id="education-h">Studies</h2>
+      <span class="eyebrow"><span class="eyebrow__n">03</span>Education</span>
+      <h2 id="education-h"><em>Studies</em>.</h2>
       <ol class="edu">
         <li>
           <span class="edu__when">2026 – present</span>
@@ -187,8 +225,8 @@
       </ol>
     </div>
     <div data-reveal>
-      <span class="eyebrow">Skills</span>
-      <h2>What I work with</h2>
+      <span class="eyebrow"><span class="eyebrow__n">04</span>Skills</span>
+      <h2>What I work <em>with</em>.</h2>
       <dl class="skills">
         <div><dt>Backend</dt><dd><ul class="tags"><li>Java</li><li>Spring Boot</li><li>Spring Data JPA</li><li>REST APIs</li><li>WebSocket</li><li>SQL</li></ul></dd></div>
         <div><dt>Frontend</dt><dd><ul class="tags"><li>Vue.js</li><li>JavaScript</li><li>HTML</li><li>CSS</li><li>Bootstrap</li></ul></dd></div>
@@ -202,12 +240,13 @@
 
 <section class="section" id="contact" aria-labelledby="contact-h">
   <div class="wrap">
-    <div class="contact">
-      <span class="eyebrow">Contact</span>
-      <h2 id="contact-h">Let's talk</h2>
+    <div class="contact" data-reveal>
+      <div class="contact__aurora" aria-hidden="true"><i></i><i></i><i></i></div>
+      <span class="eyebrow"><span class="eyebrow__n">05</span>Contact</span>
+      <h2 id="contact-h">Let's <em>talk</em>.</h2>
       <p>I'm looking for my next step as a developer, in backend, full-stack or artificial intelligence, in Valladolid or Palencia. Write to me and I'll get back to you as soon as I can.</p>
       <div class="contact__mail">
-        <a class="big" href="mailto:gonzalocolinab@gmail.com">gonzalocolinab@gmail.com</a>
+        <a class="big" data-magnetic href="mailto:gonzalocolinab@gmail.com">gonzalocolinab@gmail.com</a>
         <button class="btn copy" type="button" data-copy="gonzalocolinab@gmail.com" data-copied="Copied ✓"><span class="copy__label">Copy</span></button>
       </div>
       <div class="actions">

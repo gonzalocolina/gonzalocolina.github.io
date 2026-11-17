@@ -10,6 +10,25 @@ al diseño: sobria, precisa, con cifras en fuente monoespaciada que enlazan a la
 
 ## Estado (2026-11-17)
 
+**Intro y maquetación editorial (2026-11-17).** Tomando la idea (no la ejecución) de las webs de referencia: una intro
+temática de la profesión y titulares editoriales a todo el ancho. La intro (`intro.js`) dibuja una red neuronal, traza
+"Gonzalo Colina." con glifos propios de una sola línea, lo encuadra con una caja de detección estilo YOLO
+(`desarrollador_software 0.99`) y sale con una disolución en píxeles desde el nombre. Una vez por sesión, se salta con
+botón/Esc, `?intro=on|off`, nunca con movimiento reducido; si el JS falla, el `<head>` la retira a los 6 s. Contenedor de
+1600 px con márgenes de hasta 56 px, nombre a todo el ancho y titulares en Fraunces (serif de cartel, opsz 144) con la
+palabra clave en cursiva y degradado; Plex Sans y Plex Mono siguen para el texto y las etiquetas. Para no parecerse a
+villarrubi.github.io (mismo público, ver sección 2) se evitó su serif, su escena 3D y su paleta azul.
+
+**Segundo rediseño visual (2026-11-17).** La web pasa a ser el CV de presentación, así que gana impacto: tema oscuro por
+defecto (negro cálido) con acento naranja y degradado ámbar → naranja → coral en lugar del índigo; el claro sigue en el botón.
+Portada a pantalla completa con una red neuronal animada en canvas que reacciona al cursor, titular gigante que entra letra a
+letra, texto que se escribe solo con lo que construyo y el resumen en forma de terminal con inclinación 3D. Debajo, una
+marquesina de tecnologías y cuatro cifras con contador (9,7 · 100 clientes · ~3100 Elo · 73 FPS). Tarjetas con foco de luz que
+sigue al cursor, secciones numeradas, línea de tiempo que se dibuja al hacer scroll, contacto con aurora animada, barra de
+progreso de lectura en la cabecera y firma grande en el pie. Todo el movimiento se desactiva con `prefers-reduced-motion` y
+la portada funciona sin JS. JS propio de la portada en `src/assets/js/home.js` (≈5 KB con main.js, dentro del presupuesto).
+Portadas dibujadas, favicon, icono de iOS e imágenes Open Graph (`tools/og.py`) con la nueva paleta.
+
 **Rediseño (2026-11-17).** La portada presenta a Gonzalo como desarrollador: titular y ficha de resumen, experiencia en
 Xeridia, cinco proyectos al mismo nivel (el TFG destacado), formación, habilidades y contacto. El ajedrez ya no ocupa la
 portada: Optiline es un proyecto más y `/jugar/` se enlaza desde su caso de estudio. Nueva paleta (neutros fríos y acento

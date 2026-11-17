@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# Genera los subconjuntos WOFF2 de IBM Plex que usa la web (latín + flechas y signos usados en los textos).
+# Genera los subconjuntos WOFF2 de IBM Plex y Fraunces que usa la web (latín + flechas y signos usados en los textos).
 # Requiere fonttools y brotli (pip install fonttools brotli).
 set -euo pipefail
 cd "$(dirname "$0")"
@@ -10,4 +10,11 @@ pyftsubset /tmp/plex-sans-inst.$$.ttf --unicodes="$U" --layout-features='kern,li
 rm /tmp/plex-sans-inst.$$.ttf
 pyftsubset IBMPlexMono-Regular.ttf --unicodes="$U" --layout-features='kern,tnum' --flavor=woff2 --output-file=$OUT/plex-mono-400.woff2
 pyftsubset IBMPlexMono-Medium.ttf --unicodes="$U" --layout-features='kern,tnum' --flavor=woff2 --output-file=$OUT/plex-mono-500.woff2
+# Fraunces (titulares): tamaño óptico de cartel fijo (opsz 144), sin suavizado; la cursiva conserva sus formas "wonky".
+for v in "Variable:fraunces-var:0" "Italic-Variable:fraunces-italic-var:1"; do
+  IFS=: read -r src out wonk <<<"$v"
+  python3 -m fontTools.varLib.instancer Fraunces-$src.ttf opsz=144 SOFT=0 WONK=$wonk wght=300:700 -o /tmp/fraunces.$$.ttf
+  pyftsubset /tmp/fraunces.$$.ttf --unicodes="$U" --layout-features='kern,liga,calt,lnum,tnum' --flavor=woff2 --output-file=$OUT/$out.woff2
+  rm /tmp/fraunces.$$.ttf
+done
 ls -la $OUT/*.woff2

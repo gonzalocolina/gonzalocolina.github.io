@@ -66,14 +66,17 @@ for (const a of document.querySelectorAll("a.lang")) a.addEventListener("click",
 const hint = document.querySelector(".lang-hint");
 if (hint && store.get("lang") === "en") hint.hidden = false;
 
-// Aparición suave al entrar en pantalla
+// Aparición suave al entrar en pantalla; los que entran a la vez lo hacen escalonados
 const revealables = document.querySelectorAll("[data-reveal]");
 if (!reduced && "IntersectionObserver" in window) {
   const io = new IntersectionObserver(
     (entries) => {
+      let k = 0;
       for (const e of entries)
         if (e.isIntersecting) {
+          e.target.style.transitionDelay = `${k++ * 90}ms`;
           e.target.classList.add("is-in");
+          e.target.addEventListener("transitionend", () => (e.target.style.transitionDelay = ""), { once: true });
           io.unobserve(e.target);
         }
     },
@@ -120,3 +123,33 @@ if (tocLinks.length && "IntersectionObserver" in window) {
 
 // CV: imprimir / guardar como PDF
 document.querySelector("[data-print]")?.addEventListener("click", () => print());
+
+// Foco de luz que sigue al cursor en las tarjetas
+if (matchMedia("(pointer: fine)").matches)
+  for (const el of document.querySelectorAll(".project, .xp, .stat, .facts, .metric, .media-panel")) {
+    el.classList.add("spot");
+    el.addEventListener("pointermove", (e) => {
+      const r = el.getBoundingClientRect();
+      el.style.setProperty("--mx", `${e.clientX - r.left}px`);
+      el.style.setProperty("--my", `${e.clientY - r.top}px`);
+    });
+  }
+
+// Portada: el menú marca la sección que se está leyendo
+const navLinks = [...document.querySelectorAll('.nav__list a[href*="#"]')].filter((a) => a.pathname === location.pathname);
+if (navLinks.length && "IntersectionObserver" in window) {
+  const byId = new Map(navLinks.map((a) => [a.hash.slice(1), a]));
+  const nio = new IntersectionObserver(
+    (entries) => {
+      for (const e of entries) {
+        const a = byId.get(e.target.id);
+        if (a) a.classList.toggle("is-active", e.isIntersecting);
+      }
+    },
+    { rootMargin: "-45% 0px -50% 0px" },
+  );
+  byId.forEach((_, id) => {
+    const s = document.getElementById(id);
+    if (s) nio.observe(s);
+  });
+}

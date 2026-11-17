@@ -29,7 +29,7 @@ src/
 tools/
 ├── charts.py                genera los gráficos SVG a partir de los datos medidos
 ├── og.py                    genera las imágenes Open Graph y el icono de iOS (requiere Pillow)
-├── fonts/                   IBM Plex (OFL) y subset.sh para regenerar los WOFF2
+├── fonts/                   IBM Plex y Fraunces (OFL) y subset.sh para regenerar los WOFF2
 └── engine/                  build.sh: compila Optiline a WebAssembly para /jugar/
 ```
 
@@ -45,6 +45,13 @@ tools/
 | `{{hash /assets/…}}` | el hash del archivo, para versionar URLs |
 | `{{TODO: texto}}` | un marcador amarillo visible; bloquea la publicación |
 
+## Intro de la portada
+
+La primera visita de cada sesión a la portada abre con una intro (`src/assets/js/intro.js`, unos 4,5 s): una red neuronal
+se dibuja, el nombre se traza a pulso, una caja de detección lo encuadra y la pantalla se deshace en píxeles para dejar ver
+la portada. Se salta con el botón, Esc o Intro, y nunca aparece con «reducir movimiento». `?intro=on` la repite y
+`?intro=off` la omite (útil para enlaces directos y capturas).
+
 ## Tareas habituales
 
 - **Cambiar un texto:** edita la página en `src/pages/es/` y su pareja en `src/pages/en/`.
@@ -58,5 +65,5 @@ tools/
 
 ## Créditos
 
-Tipografía IBM Plex (OFL 1.1). Piezas de ajedrez *cburnett*, de Colin M. L. Burnett (GPLv2+). chess.js (BSD-2).
+Tipografías Fraunces e IBM Plex (OFL 1.1). Piezas de ajedrez *cburnett*, de Colin M. L. Burnett (GPLv2+). chess.js (BSD-2).
 `src/assets/engine/` contiene un build de [Optiline](https://github.com/gonzalocolina/Optiline) (GPL-3.0).
