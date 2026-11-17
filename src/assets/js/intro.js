@@ -4,13 +4,15 @@
 // 3. Una caja de detección, al estilo de RoadSignAI, encuadra el nombre con su etiqueta y confianza.
 // 4. La pantalla se deshace en píxeles desde el nombre hacia fuera y deja ver la portada, que empieza su entrada.
 // El <head> decide si hay intro (clase .intro-on) y tapa la página hasta que este módulo toma el control.
-// Los tiempos de abajo dan una intro de ≈4,3 s; K los escala todos a la vez (0,5 ≈ 2 s, demasiado rápida para leerla).
+// Los tiempos de abajo están escritos para una entrada de ≈4,3 s; K la acelera para que todo aparezca en ≈2 s
+// y HOLD lo deja quieto en pantalla para leerlo antes de la salida.
 
 const root = document.documentElement;
 const SVG = "http://www.w3.org/2000/svg";
 const BG = "#0c0a09";
 const ACCENT = "#ff7a2f";
-const K = 1;
+const K = 0.5;
+const HOLD = 2300;
 const at = (delay, duration) => ({ delay: delay * K, duration: duration * K });
 
 const T = {
@@ -244,13 +246,14 @@ function run() {
       later(() => (li.querySelector("b").textContent = res), 260);
     }, 250 + i * 720),
   );
-  const DUR = 4300;
+  const DUR = 4300; // entrada sin acelerar
+  const TOTAL = DUR * K + HOLD; // la barra de progreso cubre también la pausa
   const bar = intro.querySelector(".intro__progress i");
   const pct = intro.querySelector(".intro__progress span");
   const t0 = performance.now();
   let raf = 0;
   const progress = (t) => {
-    const p = Math.min((t - t0) / (DUR * K), 1);
+    const p = Math.min((t - t0) / TOTAL, 1);
     const e = 1 - Math.pow(1 - p, 2);
     bar.style.transform = `scaleX(${e})`;
     pct.textContent = String(Math.round(e * 100)).padStart(3, "0");
@@ -282,7 +285,7 @@ function run() {
   };
   addEventListener("keydown", onKey);
   skip.addEventListener("click", finish);
-  later(finish, DUR + 250);
+  timers.push(setTimeout(finish, TOTAL + 150));
 }
 
 function type(node, text, speed) {
