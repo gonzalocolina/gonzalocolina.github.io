@@ -150,16 +150,36 @@ export class Board {
     this.relabel?.();
   }
 
-  // { last: [from, to], check: sq, selected: sq, targets: [sq…], captures: [sq…] }
+  // { last: [from, to], check: sq, mate: sq, selected: sq, targets: [sq…], captures: [sq…], badges: { sq: "win" | "mate" | "draw" } }
   highlight(h = {}) {
     this.highlights = h;
     for (const [sq, s] of this.squares) {
       s.classList.toggle("last", !!h.last?.includes(sq));
       s.classList.toggle("check", h.check === sq);
+      s.classList.toggle("mated", h.mate === sq);
       s.classList.toggle("sel", h.selected === sq);
       s.classList.toggle("target", !!h.targets?.includes(sq));
       s.classList.toggle("capture", !!h.captures?.includes(sq));
+      const kind = h.badges?.[sq];
+      let b = s.querySelector(".badge");
+      if (kind && !b) {
+        b = document.createElement("span");
+        b.setAttribute("aria-hidden", "true");
+        s.append(b);
+      }
+      if (kind) b.className = `badge badge--${kind}`;
+      else b?.remove();
     }
+  }
+
+  // Parpadeo breve de una casilla (p. ej. el rey en jaque cuando se intenta una jugada que no lo resuelve).
+  flash(sq) {
+    const s = this.squares.get(sq);
+    if (!s) return;
+    s.classList.remove("flash");
+    void s.offsetWidth;
+    s.classList.add("flash");
+    setTimeout(() => s.classList.remove("flash"), 900);
   }
 
   // ------------------------------------------------------------ interacción (/jugar/)
@@ -185,6 +205,17 @@ export class Board {
     });
 
     let drag = null;
+    let over = null;
+    const setOver = (sq) => {
+      if (over === sq) return;
+      if (over) this.squares.get(over)?.classList.remove("drop");
+      over = sq;
+      if (sq) this.squares.get(sq)?.classList.add("drop");
+    };
+    const squareAtPoint = (e) => {
+      const r = this.el.getBoundingClientRect();
+      return this.squareAt(Math.floor(((e.clientX - r.left) / r.width) * 8), Math.floor(((e.clientY - r.top) / r.height) * 8));
+    };
     this.el.addEventListener("pointerdown", (e) => {
       if (e.button !== 0) return;
       const s = e.target.closest(".sq");
@@ -204,17 +235,26 @@ export class Board {
       const r = this.el.getBoundingClientRect();
       const size = r.width / 8;
       drag.p.el.style.transform = `translate(${e.clientX - r.left - size / 2}px, ${e.clientY - r.top - size / 2}px)`;
+      setOver(squareAtPoint(e));
+    });
+    // Si el navegador cancela el gesto (scroll, llamada entrante…), la pieza vuelve a su casilla.
+    addEventListener("pointercancel", (e) => {
+      if (!drag || e.pointerId !== drag.id) return;
+      const d = drag;
+      drag = null;
+      setOver(null);
+      if (!d.moved) return;
+      d.p.el.classList.remove("dragging");
+      this.place(d.p.el, d.from, true);
     });
     addEventListener("pointerup", (e) => {
       if (!drag || e.pointerId !== drag.id) return;
       const d = drag;
       drag = null;
+      setOver(null);
       if (!d.moved) return;
       d.p.el.classList.remove("dragging");
-      const r = this.el.getBoundingClientRect();
-      const col = Math.floor(((e.clientX - r.left) / r.width) * 8);
-      const row = Math.floor(((e.clientY - r.top) / r.height) * 8);
-      const to = this.squareAt(col, row);
+      const to = squareAtPoint(e);
       this.justDragged = true;
       setTimeout(() => (this.justDragged = false), 0);
       if (!to || to === d.from || !onDrop?.(d.from, to)) this.place(d.p.el, d.from, true);

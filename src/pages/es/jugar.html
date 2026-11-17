@@ -18,7 +18,23 @@
 
   <div class="play__grid">
     <div class="board-wrap">
-      <div class="board-host"></div>
+      <div class="player" data-side="top"></div>
+      <div class="board-stage">
+        <div class="board-host"></div>
+        <div class="result" hidden>
+          <div class="result__card">
+            <div class="result__kings" aria-hidden="true"></div>
+            <p class="result__score"></p>
+            <h2 class="result__title"></h2>
+            <p class="result__text"></p>
+            <div class="result__actions">
+              <button class="btn btn--primary" type="button" data-act="again">Nueva partida</button>
+              <button class="btn" type="button" data-act="review">Ver el tablero</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="player" data-side="bottom"></div>
       <p class="play-status" role="status" aria-live="polite">Cargando el motor…</p>
       <div class="board-tools">
         <button class="btn" type="button" data-act="undo">↶ Deshacer</button>
@@ -59,8 +75,16 @@
           <dt>Línea</dt><dd data-info="pv">–</dd>
         </dl>
       </section>
-      <section class="panel" aria-labelledby="moves-h">
-        <h2 id="moves-h">Jugadas</h2>
+      <section class="panel panel--moves" aria-labelledby="moves-h">
+        <div class="panel__head">
+          <h2 id="moves-h">Jugadas</h2>
+          <div class="movenav" role="group" aria-label="Recorrer la partida" title="Usa ← y → para recorrerla">
+            <button type="button" data-nav="first" aria-label="Ir al principio" title="Ir al principio"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M7 6v12M18 6l-7 6 7 6"/></svg></button>
+            <button type="button" data-nav="prev" aria-label="Jugada anterior" title="Jugada anterior"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 6l-6 6 6 6"/></svg></button>
+            <button type="button" data-nav="next" aria-label="Jugada siguiente" title="Jugada siguiente"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6"/></svg></button>
+            <button type="button" data-nav="last" aria-label="Ir a la posición actual" title="Ir a la posición actual"><svg viewBox="0 0 24 24" aria-hidden="true"><path d="M17 6v12M6 6l7 6-7 6"/></svg></button>
+          </div>
+        </div>
         <ol class="movelist"></ol>
       </section>
     </aside>
