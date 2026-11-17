@@ -1142,31 +1142,6 @@ mark.todo {
   color: var(--muted);
   line-height: 1.4;
 }
-.scroll-cue {
-  position: absolute;
-  left: 50%;
-  bottom: 1.5rem;
-  width: 1.6rem;
-  height: 2.6rem;
-  margin-left: -0.8rem;
-  border: 1.5px solid var(--line-strong);
-  border-radius: 999px;
-  animation: fade-in 1s 2.2s both;
-}
-.scroll-cue span {
-  position: absolute;
-  left: 50%;
-  top: 0.45rem;
-  width: 4px;
-  height: 8px;
-  margin-left: -2px;
-  border-radius: 2px;
-  background: var(--accent);
-  animation: wheel 1.8s var(--ease) infinite;
-}
-.scroll-cue:hover {
-  border-color: var(--accent);
-}
 @media (max-width: 60rem) {
   .hero__grid {
     grid-template-columns: 1fr;
@@ -1174,9 +1149,6 @@ mark.todo {
   }
   .term {
     max-width: 34rem;
-  }
-  .scroll-cue {
-    display: none;
   }
 }
 
