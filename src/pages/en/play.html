@@ -102,12 +102,15 @@
 
   <section class="play-notes prose" id="how-it-works" aria-labelledby="how-h">
     <h2 id="how-h">How it works</h2>
-    <ul>
-      <li><strong>It is the real engine, not a cut-down version.</strong> Optiline is compiled to WebAssembly with SIMD128 and uses the same neural network as the native release. It runs in a single-threaded Web Worker so the page never freezes.</li>
-      <li><strong>A little slower than native.</strong> In the browser it runs about 1.6 times slower than with AVX2. In 100 ms games that gap costs about 40 Elo, measured over 1,600 games with the same time handicap.</li>
-      <li><strong>The ~3100 Elo is the native engine’s</strong> at 100 ms per move. Levels 1 and 2 cap the nodes it may search; they are not calibrated to any Elo, so I do not give them one.</li>
-      <li><strong>It downloads about 1.9 MB once</strong> (engine and network together), which then stay in the browser cache. The current game is saved in your browser in case you close the tab.</li>
-      <li><strong>Open source.</strong> Optiline is GPL-3.0: <a href="https://github.com/gonzalocolina/Optiline">source code</a>. This build starts from commit <code>9cec21b</code> with two small patches (SIMD128 kernels and thread-free search), and the script that reproduces it lives in this site’s repository. More in the <a href="@optiline#browser">case study</a>.</li>
-    </ul>
+    <h3>Everything happens on your device</h3>
+    <p>The first time, the page downloads about 1.9 MB: the engine compiled to WebAssembly plus its neural network. After that they stay in the browser cache and are not downloaded again. The engine thinks in the background so the board keeps responding while it calculates. The game is saved in your browser: if you close the tab, it picks up where you left off.</p>
+    <h3>It is the same engine as the desktop version</h3>
+    <p>Same search code and same neural network: given the same position, it calculates exactly the same thing. The only thing that changes is speed. A browser cannot use the processor as fully as an installed program, so here it searches about 1.6 times fewer positions per second.</p>
+    <p>To find out how much strength that costs, I played the desktop engine against itself with a similar handicap: one side with 100 ms per move, the other with 64 ms. Over 1,600 games, the side with less time lost about 40 Elo.</p>
+    <h3>How strong it is</h3>
+    <p>The ~3100 Elo comes from games of the desktop engine, at 100 ms per move, against Stockfish 18 capped at different levels. It is a position on that scale, not an official rating. Here, levels 3 and 4 give it 0.5 s and 2 s per move, quite a lot more time than in that measurement.</p>
+    <p>Levels 1 and 2 do not limit time but how many positions it may search per move: 60 and 2,000. That is why they play the same on a phone as on a fast computer. I have not measured them against any opponent, so I do not give them an Elo.</p>
+    <h3>Open source</h3>
+    <p>Optiline is free software under the GPL-3.0 licence and its <a href="https://github.com/gonzalocolina/Optiline">code is on GitHub</a>. The script that builds this browser version lives in this site’s repository, and the full measurements are in the <a href="@optiline#browser">case study</a>.</p>
   </section>
 </div>

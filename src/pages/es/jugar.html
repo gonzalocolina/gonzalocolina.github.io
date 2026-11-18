@@ -102,12 +102,15 @@
 
   <section class="play-notes prose" id="como-funciona" aria-labelledby="como-h">
     <h2 id="como-h">Cómo funciona</h2>
-    <ul>
-      <li><strong>Es el motor de verdad, no una versión reducida.</strong> Optiline está compilado a WebAssembly con SIMD128 y usa la misma red neuronal que la release nativa. Corre en un Web Worker con un solo hilo para no bloquear la página.</li>
-      <li><strong>Algo más lento que en nativo.</strong> En el navegador va unas 1,6 veces más lento que con AVX2. Con partidas de 100 ms, esa diferencia cuesta unos 40 Elo, medido con 1600 partidas con la misma desventaja de tiempo.</li>
-      <li><strong>Los ~3100 Elo son del motor nativo</strong> a 100 ms por jugada. Los niveles 1 y 2 limitan los nodos que puede explorar; no están calibrados a un Elo concreto y no les pongo uno.</li>
-      <li><strong>Descarga una vez unos 1,9 MB</strong> (motor y red juntos), que luego quedan en la caché del navegador. La partida en curso se guarda en tu navegador por si cierras la pestaña.</li>
-      <li><strong>Código abierto.</strong> Optiline es GPL-3.0: <a href="https://github.com/gonzalocolina/Optiline">código fuente</a>. Este build parte del commit <code>9cec21b</code> con dos parches pequeños (kernels SIMD128 y búsqueda sin hilos), y el script que lo reproduce está en el repositorio de esta web. Más detalles en el <a href="@optiline#navegador">caso de estudio</a>.</li>
-    </ul>
+    <h3>Todo pasa en tu dispositivo</h3>
+    <p>La primera vez, la página descarga unos 1,9 MB: el motor compilado a WebAssembly y su red neuronal. Después quedan guardados en la caché del navegador y no se vuelven a descargar. El motor piensa en segundo plano para que el tablero siga respondiendo mientras calcula. La partida se guarda en tu navegador: si cierras la pestaña, al volver sigue donde la dejaste.</p>
+    <h3>Es el mismo motor que la versión de escritorio</h3>
+    <p>Mismo código de búsqueda y misma red neuronal: ante la misma posición calcula exactamente lo mismo. Lo único que cambia es la velocidad. El navegador no deja aprovechar el procesador tan a fondo como un programa instalado, así que aquí analiza unas 1,6 veces menos posiciones por segundo.</p>
+    <p>Para saber cuánta fuerza le quita eso, enfrenté el motor de escritorio contra sí mismo con una desventaja parecida: uno con 100 ms por jugada y el otro con 64 ms. En 1600 partidas, el que tenía menos tiempo perdió unos 40 Elo.</p>
+    <h3>Cómo de fuerte es</h3>
+    <p>Los ~3100 Elo salen de partidas del motor de escritorio, con 100 ms por jugada, contra Stockfish 18 limitado a distintos niveles. Es su posición en esa escala, no un rating oficial. Aquí, los niveles 3 y 4 le dan 0,5 s y 2 s por jugada, bastante más tiempo que en esa medición.</p>
+    <p>Los niveles 1 y 2 no limitan el tiempo, sino cuántas posiciones puede analizar por jugada: 60 y 2000. Por eso juegan igual en un móvil que en un ordenador rápido. No los he medido contra ningún rival, así que no les pongo un Elo.</p>
+    <h3>Código abierto</h3>
+    <p>Optiline es software libre con licencia GPL-3.0 y su <a href="https://github.com/gonzalocolina/Optiline">código está en GitHub</a>. El script que genera esta versión para navegador está en el repositorio de esta web, y las mediciones completas, en el <a href="@optiline#navegador">caso de estudio</a>.</p>
   </section>
 </div>
