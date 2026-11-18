@@ -30,7 +30,6 @@ export const site = {
       langSwitchLabel: "Read this page in English",
       langHint: "Hay una versión en inglés de esta web.",
       langHintLink: "English version →",
-      footerMade: "Hecha a mano: HTML, CSS y JavaScript, sin frameworks ni cookies.",
       footerCredits: "Créditos",
       credits:
         'Tipografías <a href="https://github.com/undercasetype/Fraunces">Fraunces</a> e <a href="https://github.com/IBM/plex">IBM Plex</a> (OFL 1.1). Piezas de ajedrez <em>cburnett</em> de Colin M. L. Burnett (GPLv2+). Reglas del ajedrez con <a href="https://github.com/jhlywa/chess.js">chess.js</a> (BSD-2). Motor <a href="https://github.com/gonzalocolina/Optiline">Optiline</a> (GPL-3.0).',
@@ -53,7 +52,6 @@ export const site = {
       langSwitchLabel: "Leer esta página en español",
       langHint: "",
       langHintLink: "",
-      footerMade: "Handmade: HTML, CSS and JavaScript, no frameworks, no cookies.",
       footerCredits: "Credits",
       credits:
         'Typefaces <a href="https://github.com/undercasetype/Fraunces">Fraunces</a> and <a href="https://github.com/IBM/plex">IBM Plex</a> (OFL 1.1). <em>cburnett</em> chess pieces by Colin M. L. Burnett (GPLv2+). Chess rules by <a href="https://github.com/jhlywa/chess.js">chess.js</a> (BSD-2). <a href="https://github.com/gonzalocolina/Optiline">Optiline</a> engine (GPL-3.0).',

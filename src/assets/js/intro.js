@@ -21,7 +21,7 @@ const T = {
     cmd: "~/gonzalo-colina $ ./presentacion --es",
     place: "VALLADOLID · PALENCIA — 2026",
     tag: "desarrollador_software 0.99",
-    sub: "fullstack · inteligencia artificial · medido, no prometido",
+    sub: "fullstack · inteligencia artificial",
     log: [
       ["cargando experiencia", "ok"],
       ["compilando 5 proyectos", "ok"],
@@ -35,7 +35,7 @@ const T = {
     cmd: "~/gonzalo-colina $ ./introduction --en",
     place: "VALLADOLID · PALENCIA — 2026",
     tag: "software_developer 0.99",
-    sub: "full-stack · artificial intelligence · measured, not promised",
+    sub: "full-stack · artificial intelligence",
     log: [
       ["loading experience", "ok"],
       ["compiling 5 projects", "ok"],

@@ -126,7 +126,6 @@ ${body}
   <div class="wrap site-footer__inner">
     <div>
       <p class="site-footer__name">${esc(site.name)} · ${new Date().getFullYear()}</p>
-      <p class="muted">${t.footerMade}</p>
       <a class="to-top" href="#main">${t.top} <span aria-hidden="true">↑</span></a>
     </div>
     <ul class="site-footer__links">
