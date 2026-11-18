@@ -31,6 +31,22 @@ if (title && !reduced) {
 const typer = document.querySelector(".typer");
 if (typer && !reduced) {
   const words = JSON.parse(typer.dataset.words);
+  // las frases largas ocupan dos líneas en pantallas estrechas: se reserva la altura de la más alta
+  // para que el texto de debajo no salte mientras se escribe
+  const reserve = () => {
+    const shown = typer.textContent;
+    typer.style.minHeight = "";
+    let h = 0;
+    for (const word of words) {
+      typer.textContent = word;
+      h = Math.max(h, typer.offsetHeight);
+    }
+    typer.textContent = shown;
+    typer.style.minHeight = `${h}px`;
+  };
+  reserve();
+  document.fonts?.ready.then(reserve);
+  addEventListener("resize", reserve, { passive: true });
   let w = 0;
   let n = words[0].length;
   let deleting = true;

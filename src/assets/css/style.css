@@ -985,7 +985,6 @@ mark.todo {
   min-height: 1.2em;
   font-style: italic;
   color: var(--accent-ink);
-  white-space: nowrap;
 }
 .typer::after {
   content: "";
