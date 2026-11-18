@@ -257,11 +257,14 @@ function run() {
   const pct = intro.querySelector(".intro__progress span");
   const t0 = performance.now();
   let raf = 0;
+  let shown = "000";
   const progress = (t) => {
     const p = Math.min((t - t0) / TOTAL, 1);
     const e = 1 - Math.pow(1 - p, 2);
     bar.style.transform = `scaleX(${e})`;
-    pct.textContent = String(Math.round(e * 100)).padStart(3, "0");
+    // el número solo se reescribe cuando cambia (cada cambio de texto vuelve a maquetar)
+    const n = String(Math.round(e * 100)).padStart(3, "0");
+    if (n !== shown) pct.textContent = shown = n;
     if (p < 1) raf = requestAnimationFrame(progress);
   };
   raf = requestAnimationFrame(progress);
@@ -327,27 +330,33 @@ function dissolve(intro, center, done) {
       tiles.push({ x, y, delay: d * 620 + Math.random() * 140 });
     }
   const LIFE = 360;
+  // Mismo orden de dibujo que siempre; solo se evita reasignar el color cuando no cambia
+  // (cada asignación obliga al lienzo a interpretar el color de nuevo).
   const paint = (t) => {
     ctx.clearRect(0, 0, W, H);
     let alive = false;
+    let fill = null;
+    const use = (c) => {
+      if (c !== fill) ctx.fillStyle = fill = c;
+    };
     for (const tile of tiles) {
       const p = (t - tile.delay) / LIFE;
       if (p >= 1) continue;
       alive = true;
       if (p <= 0) {
-        ctx.fillStyle = BG;
+        use(BG);
         ctx.fillRect(tile.x, tile.y, S + 0.5, S + 0.5);
         continue;
       }
       const e = p * p;
       const s = S * (1 - e);
       const o = (S - s) / 2;
-      ctx.fillStyle = BG;
+      use(BG);
       ctx.fillRect(tile.x + o, tile.y + o, s, s);
       const glow = Math.sin(Math.PI * Math.min(p * 1.6, 1));
       if (glow > 0.02) {
         ctx.globalAlpha = glow * 0.85;
-        ctx.fillStyle = ACCENT;
+        use(ACCENT);
         ctx.fillRect(tile.x + o, tile.y + o, s, s);
         ctx.globalAlpha = 1;
       }

@@ -855,9 +855,22 @@ mark.todo {
   z-index: -2;
   pointer-events: none;
   background:
-    radial-gradient(700px circle at var(--mx, 75%) var(--my, 30%), color-mix(in srgb, var(--accent) 4%, transparent), transparent 70%),
     radial-gradient(44rem 28rem at 88% 0%, color-mix(in srgb, var(--accent) 16%, transparent), transparent 70%),
     radial-gradient(34rem 24rem at 0% 100%, color-mix(in srgb, var(--accent-3) 10%, transparent), transparent 70%);
+}
+/* el brillo que sigue al cursor (o al dedo) va en su propia capa y se mueve con transform:
+   home.js solo cambia --gx/--gy en .hero__glow, sin recalcular la portada ni repintarla */
+.hero__glow::before {
+  content: "";
+  position: absolute;
+  left: 75%;
+  top: 30%;
+  width: 1400px;
+  height: 1400px;
+  margin: -700px 0 0 -700px;
+  background: radial-gradient(700px circle at 50% 50%, color-mix(in srgb, var(--accent) 4%, transparent), transparent 70%);
+  transform: translate(var(--gx, 0px), var(--gy, 0px));
+  will-change: transform;
 }
 /* retícula muy sutil */
 .hero::before {
@@ -1757,39 +1770,45 @@ mark.todo {
   position: absolute;
   inset: 0;
   z-index: -1;
-  filter: blur(50px);
-  opacity: 1;
 }
+/* Cada mancha lleva ya horneado el desenfoque gaussiano de 50 px que antes hacía un filter: blur() sobre el grupo:
+   el degradado es el perfil del círculo original tras el desenfoque y la caja crece 150 px (3σ) por lado sin mover
+   el centro. Así el navegador no recalcula un desenfoque enorme en cada fotograma mientras las manchas se mueven. */
 .contact__aurora i {
   position: absolute;
-  width: 32rem;
-  height: 32rem;
+  width: calc(32rem + 300px);
+  height: calc(32rem + 300px);
   border-radius: 50%;
-  background: radial-gradient(closest-side, #ff7a2f, transparent);
-  right: -8rem;
-  bottom: -14rem;
+  background: radial-gradient(closest-side, rgb(255 122 47 / 0.755), rgb(255 122 47 / 0.749) 3.9%, rgb(255 122 47 / 0.731) 7.9%, rgb(255 122 47 / 0.7) 12.1%, rgb(255 122 47 / 0.653) 16.7%, rgb(255 122 47 / 0.601) 21.2%, rgb(255 122 47 / 0.536) 26.1%, rgb(255 122 47 / 0.287) 43.6%, rgb(255 122 47 / 0.2) 50%, rgb(255 122 47 / 0.126) 56.4%, rgb(255 122 47 / 0.073) 62.3%, rgb(255 122 47 / 0.052) 65.5%, rgb(255 122 47 / 0.034) 69%, rgb(255 122 47 / 0.012) 76.1%, rgb(255 122 47 / 0.002) 84.7%, transparent);
+  right: calc(-8rem - 150px);
+  bottom: calc(-14rem - 150px);
   opacity: 0.7;
   animation: drift 14s ease-in-out infinite alternate;
 }
 .contact__aurora i:nth-child(2) {
-  background: radial-gradient(closest-side, #ffc24b, transparent);
-  right: 18%;
-  bottom: -18rem;
-  width: 26rem;
-  height: 26rem;
+  background: radial-gradient(closest-side, rgb(255 194 75 / 0.699), rgb(255 194 75 / 0.694) 3.6%, rgb(255 194 75 / 0.677) 7.5%, rgb(255 194 75 / 0.648) 11.7%, rgb(255 194 75 / 0.608) 15.9%, rgb(255 194 75 / 0.564) 19.8%, rgb(255 194 75 / 0.506) 24.3%, rgb(255 194 75 / 0.283) 39.9%, rgb(255 194 75 / 0.198) 46.4%, rgb(255 194 75 / 0.124) 53.1%, rgb(255 194 75 / 0.072) 59.2%, rgb(255 194 75 / 0.051) 62.6%, rgb(255 194 75 / 0.034) 66.2%, rgb(255 194 75 / 0.012) 74%, rgb(255 194 75 / 0.002) 83.5%, transparent);
+  right: calc(18% - 150px);
+  bottom: calc(-18rem - 150px);
+  width: calc(26rem + 300px);
+  height: calc(26rem + 300px);
   opacity: 0.35;
   animation-duration: 18s;
   animation-delay: -6s;
 }
 .contact__aurora i:nth-child(3) {
-  background: radial-gradient(closest-side, #ff4f5e, transparent);
-  right: -12rem;
-  bottom: 30%;
-  width: 24rem;
-  height: 24rem;
+  background: radial-gradient(closest-side, rgb(255 79 94 / 0.674), rgb(255 79 94 / 0.668) 3.8%, rgb(255 79 94 / 0.652) 7.6%, rgb(255 79 94 / 0.626) 11.4%, rgb(255 79 94 / 0.588) 15.5%, rgb(255 79 94 / 0.546) 19.3%, rgb(255 79 94 / 0.494) 23.4%, rgb(255 79 94 / 0.276) 38.9%, rgb(255 79 94 / 0.197) 45%, rgb(255 79 94 / 0.123) 51.8%, rgb(255 79 94 / 0.071) 58.2%, rgb(255 79 94 / 0.034) 65.2%, rgb(255 79 94 / 0.012) 73.4%, rgb(255 79 94 / 0.003) 83%, transparent);
+  right: calc(-12rem - 150px);
+  bottom: calc(30% - 150px);
+  width: calc(24rem + 300px);
+  height: calc(24rem + 300px);
   opacity: 0.4;
   animation-duration: 22s;
   animation-delay: -10s;
+}
+/* fuera de la vista, las animaciones que no terminan nunca se detienen (main.js pone .is-idle) */
+.marquee.is-idle .marquee__track,
+.contact__aurora.is-idle i {
+  animation-play-state: paused;
 }
 .contact::before {
   content: "";

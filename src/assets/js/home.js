@@ -46,11 +46,37 @@ if (typer && !reduced) {
   };
   reserve();
   document.fonts?.ready.then(reserve);
-  addEventListener("resize", reserve, { passive: true });
+  // solo si cambia el ancho: en el móvil, la barra del navegador dispara resize al desplazarse
+  // y medir las frases fuerza varias maquetaciones seguidas en mitad del scroll
+  let reservedFor = innerWidth;
+  addEventListener(
+    "resize",
+    () => {
+      if (innerWidth === reservedFor) return;
+      reservedFor = innerWidth;
+      reserve();
+    },
+    { passive: true },
+  );
   let w = 0;
   let n = words[0].length;
   let deleting = true;
+  // fuera de la vista no se escribe: cada letra obliga a recalcular la maquetación mientras se lee el resto
+  let seen = true;
+  let waiting = false;
+  if ("IntersectionObserver" in window)
+    new IntersectionObserver(([e]) => {
+      seen = e.isIntersecting;
+      if (seen && waiting) {
+        waiting = false;
+        setTimeout(tick, 300);
+      }
+    }).observe(typer);
   const tick = () => {
+    if (!seen) {
+      waiting = true;
+      return;
+    }
     if (deleting) {
       n--;
       if (n <= 0) {
@@ -108,14 +134,21 @@ if (canvas && canvas.getContext) {
   let raf = 0;
   let visible = true;
   let colors = {};
+  const glowEl = hero.querySelector(".hero__glow");
+  // durante la intro la red está tapada y con opacidad 0: no se anima hasta que la intro se va
+  const introOn = () => root.classList.contains("intro-on");
 
   const readColors = () => {
     colors = { a: css("--accent"), b: css("--accent-2"), line: css("--net-line"), dot: css("--net-dot") };
   };
 
+  // devuelve false si el tamaño no cambia (en el móvil, la barra del navegador que aparece y desaparece
+  // dispara resize sin cambiar la portada, que mide 100svh): así la red no se reinicia ni se recrea el lienzo
   const resize = () => {
     const r = hero.getBoundingClientRect();
-    dpr = Math.min(devicePixelRatio || 1, 2);
+    const d = Math.min(devicePixelRatio || 1, 2);
+    if (r.width === W && r.height === H && d === dpr) return false;
+    dpr = d;
     W = r.width;
     H = r.height;
     canvas.width = W * dpr;
@@ -130,10 +163,18 @@ if (canvas && canvas.getContext) {
       r: Math.random() * 1.4 + 0.8,
       p: Math.random() * Math.PI * 2,
     }));
+    placeGlow();
+    return true;
   };
 
-  // el brillo de fondo sigue al cursor con retraso, para que no dé tirones
+  // el brillo de fondo sigue al cursor con retraso, para que no dé tirones.
+  // Se mueve con transform respecto a su sitio de partida (75 % 30 %), en su propia capa (ver style.css)
   const glow = { x: null, y: null, tx: null, ty: null };
+  const placeGlow = () => {
+    if (glow.x === null || !glowEl) return;
+    glowEl.style.setProperty("--gx", `${(glow.x - W * 0.75).toFixed(1)}px`);
+    glowEl.style.setProperty("--gy", `${(glow.y - H * 0.3).toFixed(1)}px`);
+  };
   const moveGlow = () => {
     if (glow.tx === null) return;
     if (glow.x === null) {
@@ -145,8 +186,7 @@ if (canvas && canvas.getContext) {
     if (Math.abs(dx) + Math.abs(dy) < 0.5) return;
     glow.x += dx * 0.04;
     glow.y += dy * 0.04;
-    hero.style.setProperty("--mx", `${glow.x.toFixed(1)}px`);
-    hero.style.setProperty("--my", `${glow.y.toFixed(1)}px`);
+    placeGlow();
   };
 
   const LINK = 140;
@@ -172,6 +212,9 @@ if (canvas && canvas.getContext) {
       }
     }
     ctx.lineWidth = 1;
+    // asignar un color obliga al lienzo a interpretarlo: solo se hace cuando cambia
+    let stroke = null;
+    let fill = null;
     for (let i = 0; i < nodes.length; i++) {
       const a = nodes[i];
       for (let j = i + 1; j < nodes.length; j++) {
@@ -184,7 +227,8 @@ if (canvas && canvas.getContext) {
         const mx = (a.x + b.x) / 2 - mouse.x;
         const my = (a.y + b.y) / 2 - mouse.y;
         const near = mx * mx + my * my < 180 * 180;
-        ctx.strokeStyle = near ? colors.a : colors.line;
+        const s = near ? colors.a : colors.line;
+        if (s !== stroke) ctx.strokeStyle = stroke = s;
         ctx.globalAlpha = k * (near ? 0.75 : 0.5);
         ctx.beginPath();
         ctx.moveTo(a.x, a.y);
@@ -198,30 +242,40 @@ if (canvas && canvas.getContext) {
       const near = dx * dx + dy * dy < 180 * 180;
       const pulse = 0.6 + 0.4 * Math.sin(t / 900 + n.p);
       ctx.globalAlpha = near ? 1 : 0.35 + 0.45 * pulse;
-      ctx.fillStyle = near ? colors.b : colors.dot;
+      const f = near ? colors.b : colors.dot;
+      if (f !== fill) ctx.fillStyle = fill = f;
       ctx.beginPath();
       ctx.arc(n.x, n.y, near ? n.r + 1 : n.r, 0, Math.PI * 2);
       ctx.fill();
     }
     ctx.globalAlpha = 1;
-    if (!reduced && visible) raf = requestAnimationFrame(draw);
+    if (!reduced && visible && !introOn()) raf = requestAnimationFrame(draw);
   };
 
   const start = () => {
     cancelAnimationFrame(raf);
+    if (introOn()) return;
     raf = requestAnimationFrame(draw);
   };
 
   readColors();
   resize();
   start();
+  if (introOn()) {
+    // la intro (o el <head>, si algo falla) quita la clase justo cuando la portada empieza a verse
+    const mo = new MutationObserver(() => {
+      if (introOn()) return;
+      mo.disconnect();
+      start();
+    });
+    mo.observe(root, { attributes: true, attributeFilter: ["class"] });
+  }
 
   let rt;
   addEventListener("resize", () => {
     clearTimeout(rt);
     rt = setTimeout(() => {
-      resize();
-      if (reduced) draw();
+      if (resize() && reduced) draw();
     }, 150);
   });
   hero.addEventListener("pointermove", (e) => {

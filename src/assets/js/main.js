@@ -160,6 +160,15 @@ if (videos.length && "IntersectionObserver" in window) {
   });
 }
 
+// Animaciones que no terminan nunca (la tira de tecnologías, la aurora de contacto): se detienen fuera de la vista
+const loops = document.querySelectorAll(".marquee, .contact__aurora");
+if (loops.length && "IntersectionObserver" in window) {
+  const lio = new IntersectionObserver((entries) => {
+    for (const e of entries) e.target.classList.toggle("is-idle", !e.isIntersecting);
+  });
+  loops.forEach((el) => lio.observe(el));
+}
+
 // Índice de los casos de estudio: marca la sección visible
 const tocLinks = [...document.querySelectorAll(".toc a")];
 if (tocLinks.length && "IntersectionObserver" in window) {
